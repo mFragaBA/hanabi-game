@@ -11,3 +11,7 @@ class JuegoConDemasiadosJugadoresException(Exception):
 class JuegoConJugadoresDuplicadosException(Exception):
     def __init__(self, msg: str = 'El nombre de cada jugador tiene que ser único') -> None:
         super().__init__(msg)
+
+class JuegoDescartaCartaFueraDeManoException(Exception):
+    def __init__(self, msg: str = 'La Carta a descartar tiene que estar en la mano del jugador') -> None:
+        super().__init__(msg)
