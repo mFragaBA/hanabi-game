@@ -32,8 +32,16 @@ class JuegoTest(unittest.TestCase):
         self.assertRaises(JuegoConJugadoresDuplicadosException,
                 Juego, jugadores=["Zorro1", "Zorro8", "Zorro12", "Zorro1"])
 
-    def test_juego_inicia_y_reparte_cartas_sin_repetir(self) -> None:
+    def test_juego_inicia_con_pocos_jugadores_y_reparte_cartas_sin_repetir(self) -> None:
         jugadores = ["Román", "Ramón"]
+        juego = Juego(jugadores, 3)
+        cartas_de = juego.cartas_por_jugador()
+
+        self.assertEqual(5, len(cartas_de["Román"])) 
+        self.assertEqual(5, len(cartas_de["Ramón"])) 
+    
+    def test_juego_inicia_con_muchos_jugadores_y_reparte_cartas_sin_repetir(self) -> None:
+        jugadores = ["Román", "Ramón", "Marón", "Morán"]
         juego = Juego(jugadores, 3)
         cartas_de = juego.cartas_por_jugador()
 

@@ -1,8 +1,7 @@
 # pyre-strict
 from typing import List, Dict, Tuple
 from model.exceptions import *
-
-from random import shuffle
+from model.repartidor import Repartidor
 
 class Juego():
 
@@ -14,7 +13,7 @@ class Juego():
         self._jugadores = jugadores
         self._puntaje = 0
         self._vidas = vidas_iniciales
-        self._cartas_por_jugador = repartir_cartas(jugadores)
+        self._cartas_por_jugador = Repartidor(jugadores, 5 if len(jugadores) < 4 else 4).repartir()
 
     def validarJugadores(self, jugadores: List[str]) -> None:
         if len(jugadores) < 2:
@@ -24,31 +23,15 @@ class Juego():
         if any(jugadores.count(jugador) > 1 for jugador in jugadores):
             raise JuegoConJugadoresDuplicadosException()
 
-    def jugadores(self):
+    def jugadores(self) -> List[str]:
         return self._jugadores
 
-    def puntaje(self):
+    def puntaje(self) -> int:
         return self._puntaje
     
-    def vidas(self):
+    def vidas(self) -> int:
         return self._vidas
 
-    def cartas_por_jugador(self):
+    def cartas_por_jugador(self) -> Dict[str, List[Tuple[int, str]]]:
         return self._cartas_por_jugador
 
-def cartas_de_colores(baja: int, alta: int, colores: List[str]) -> List[Tuple[int, str]]:
-    return [(numero, color) for numero in range(baja, alta+1) for color in colores]
-
-def repartir_cartas(jugadores: List[str]) -> Dict[str, List[Tuple[int, str]]]:
-    colores = ["Rojo", "Amarillo", "Verde", "Azul", "Blanco"]
-    
-    mazo = cartas_de_colores(1, 6, colores) + cartas_de_colores(1, 4, colores) + cartas_de_colores(1, 2, colores)
-    shuffle(mazo)
-
-    cartas_por_jugador = {}
-    for jugador in jugadores:
-        cartas_por_jugador[jugador] = mazo[len(mazo)-4:]
-        for _ in range(4):
-            mazo.pop()
-
-    return cartas_por_jugador
