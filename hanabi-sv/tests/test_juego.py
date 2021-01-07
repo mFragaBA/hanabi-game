@@ -37,27 +37,21 @@ class JuegoTest(unittest.TestCase):
                 Juego, jugadores=["Zorro1", "Zorro8", "Zorro12", "Zorro1"])
 
     def test_juego_inicia_con_pocos_jugadores_y_reparte_cartas(self) -> None:
-        jugadores = ["Román", "Ramón"]
-        repartidor = self.repartidor_rojo_verde()
-        juego = Juego(jugadores, 3, repartidor)
+        juego = self.juego_default_2p()
         cartas_de = juego.cartas_por_jugador()
 
         self.assertEqual(5, len(cartas_de["Román"])) 
         self.assertEqual(5, len(cartas_de["Ramón"])) 
     
     def test_juego_inicia_con_muchos_jugadores_y_reparte_cartas(self) -> None:
-        jugadores = ["Román", "Ramón", "Marón", "Morán"]
-        repartidor = self.repartidor_rojo_verde()
-        juego = Juego(jugadores, 3, repartidor)
+        juego = self.juego_default_4p()
         cartas_de = juego.cartas_por_jugador()
 
         self.assertEqual(4, len(cartas_de["Román"])) 
         self.assertEqual(4, len(cartas_de["Ramón"])) 
 
     def test_juego_descartar_carta_recupera_otra_si_da_el_mazo(self) -> None:
-        jugadores = ["Román", "Ramón"]
-        repartidor = self.repartidor_rojo_verde()
-        juego = Juego(jugadores, 3, repartidor)
+        juego = self.juego_default_2p()
         juego.descartar(0)
 
         cartas_de = juego.cartas_por_jugador()
@@ -77,9 +71,7 @@ class JuegoTest(unittest.TestCase):
         self.assertFalse((1, "Azul") in cartas_de["Román"])
 
     def test_juego_descartar_avanza_el_turno(self) -> None:
-        jugadores = ["Román", "Ramón"]
-        repartidor = self.repartidor_rojo_verde()
-        juego = Juego(jugadores, 3, repartidor)
+        juego = self.juego_default_2p()
         
         juego.descartar(0)
         self.assertEqual("Ramón", juego.turno_de())
@@ -91,8 +83,12 @@ class JuegoTest(unittest.TestCase):
         jugadores = ["Román", "Ramón"]
         juego = Juego(jugadores, 5)
 
+        mano_ramon = [ carta for carta in juego.cartas_por_jugador()["Román"]]
+
         self.assertRaises(JuegoDescartaCartaFueraDeManoException,
                 juego.descartar, 10)
+        self.assertEqual(mano_ramon, juego.cartas_por_jugador()["Román"])
+        self.assertEqual("Román", juego.turno_de())
 
     def test_juego_dar_pista_sobre_color(self) -> None:
         jugadores = ["Román", "Ramón"]
@@ -120,6 +116,8 @@ class JuegoTest(unittest.TestCase):
 
         self.assertRaises(JuegoTipoDePistaInvalidoException,
                 juego.dar_pista, "Sonamos", 1, "Ramón")
+        self.assertEqual(7, juego.pistas_restantes())
+        self.assertEqual("Román", juego.turno_de())
     
     def test_juego_pista_tiene_que_ser_de_alguien_en_partida(self) -> None:
         jugadores = ["Román", "Ramón"]
@@ -127,6 +125,8 @@ class JuegoTest(unittest.TestCase):
 
         self.assertRaises(JuegoPistaSinDestinatarioException,
                 juego.dar_pista, "Color", "Blanco", "Mirtha")
+        self.assertEqual(7, juego.pistas_restantes())
+        self.assertEqual("Román", juego.turno_de())
 
     def test_juego_cambia_el_turno_al_dar_pista(self) -> None:
         jugadores = ["Román", "Ramón"]
@@ -176,11 +176,21 @@ class JuegoTest(unittest.TestCase):
 
         self.assertRaises(JuegoSinPistasDisponiblesException,
                 juego.dar_pista, "Número", 1, "Román")
+        self.assertEqual(0, juego.pistas_restantes())
+        self.assertEqual("Ramón", juego.turno_de())
+
+    def test_juego_no_se_puede_dar_pista_a_si_mismo(self) -> None:
+        jugadores = ["Román", "Ramón"]
+        juego = Juego(jugadores, 3, Repartidor(self.mezclar_mazo_minimal_mezcladito))
+        
+        self.assertRaises(JuegoPistaASiMismoException,
+                juego.dar_pista, "Número", 1, "Román")
+        self.assertEqual(7, juego.pistas_restantes())
+        self.assertEqual("Román", juego.turno_de())
+
 
     def test_juego_bajar_remueve_carta_y_pista(self) -> None:
-        jugadores = ["Román", "Ramón"]
-        repartidor = self.repartidor_rojo_verde()
-        juego = Juego(jugadores, 3, repartidor)
+        juego = self.juego_default_2p()
         juego.bajar(0)
 
         cartas_de = juego.cartas_por_jugador()
@@ -202,9 +212,7 @@ class JuegoTest(unittest.TestCase):
 
     
     def test_juego_bajar_avanza_el_turno(self) -> None:
-        jugadores = ["Román", "Ramón"]
-        repartidor = self.repartidor_rojo_verde()
-        juego = Juego(jugadores, 3, repartidor)
+        juego = self.juego_default_2p()
         
         juego.bajar(0)
         self.assertEqual("Ramón", juego.turno_de())
@@ -217,14 +225,17 @@ class JuegoTest(unittest.TestCase):
         jugadores = ["Román", "Ramón"]
         juego = Juego(jugadores, 5)
 
+        mano_ramon = [ carta for carta in juego.cartas_por_jugador()["Román"]]
+
         self.assertRaises(JuegoDescartaCartaFueraDeManoException,
                 juego.bajar, 10)
 
+        self.assertEqual(mano_ramon, juego.cartas_por_jugador()["Román"])
+        self.assertEqual("Román", juego.turno_de())
+
 
     def test_juego_inicia_con_tablero_en_cero(self):
-        jugadores = ["Román", "Ramón"]
-        repartidor = self.repartidor_rojo_verde()
-        juego = Juego(jugadores, 3, repartidor)
+        juego = self.juego_default_2p()
 
         tablero_de_color = juego.tablero()
 
@@ -232,9 +243,7 @@ class JuegoTest(unittest.TestCase):
 
         
     def test_juego_bajar_carta_en_escalera(self) -> None:
-        jugadores = ["Román", "Ramón"]
-        repartidor = self.repartidor_rojo_verde()
-        juego = Juego(jugadores, 3, repartidor)
+        juego = self.juego_default_2p()
         juego.bajar(0)
 
         tablero_de_color = juego.tablero()
@@ -242,9 +251,7 @@ class JuegoTest(unittest.TestCase):
         self.assertEqual(1, tablero_de_color["Verde"])
 
     def test_juego_bajar_carta_completando_color_suma_pista(self) -> None:
-        jugadores = ["Román", "Ramón"]
-        repartidor = self.repartidor_rojo_verde()
-        juego = Juego(jugadores, 3, repartidor)
+        juego = self.juego_default_2p()
 
         # bajar del 1 al 4
         for _ in range(8):
@@ -257,9 +264,7 @@ class JuegoTest(unittest.TestCase):
         self.assertEqual(7, juego.pistas_restantes())
 
     def test_juego_pifie_con_carta_bajada(self):
-        jugadores = ["Román", "Ramón"]
-        repartidor = self.repartidor_rojo_verde()
-        juego = Juego(jugadores, 3, repartidor)
+        juego = self.juego_default_2p()
         juego.bajar(1)
 
         tablero_de_color = juego.tablero()
@@ -268,9 +273,7 @@ class JuegoTest(unittest.TestCase):
         self.assertEqual(2, juego.vidas())
 
     def test_juego_termina_si_se_queda_sin_vidas(self):
-        jugadores = ["Román", "Ramón"]
-        repartidor = self.repartidor_rojo_verde()
-        juego = Juego(jugadores, 3, repartidor)
+        juego = self.juego_default_2p()
         juego.bajar(1)
         juego.bajar(1)
         juego.bajar(1)
@@ -279,9 +282,7 @@ class JuegoTest(unittest.TestCase):
         self.assertTrue(juego.terminado())
     
     def test_juego_terminado_no_puede_descartar(self):
-        jugadores = ["Román", "Ramón"]
-        repartidor = self.repartidor_rojo_verde()
-        juego = Juego(jugadores, 3, repartidor)
+        juego = self.juego_default_2p()
         juego.bajar(1)
         juego.bajar(1)
         juego.bajar(1)
@@ -290,9 +291,7 @@ class JuegoTest(unittest.TestCase):
                 juego.descartar, 0)
 
     def test_juego_terminado_no_puede_bajar(self):
-        jugadores = ["Román", "Ramón"]
-        repartidor = self.repartidor_rojo_verde()
-        juego = Juego(jugadores, 3, repartidor)
+        juego = self.juego_default_2p() 
         juego.bajar(1)
         juego.bajar(1)
         juego.bajar(1)
@@ -301,15 +300,49 @@ class JuegoTest(unittest.TestCase):
                 juego.bajar, 0)
 
     def test_juego_terminado_no_puede_dar_pistas(self):
-        jugadores = ["Román", "Ramón"]
-        repartidor = self.repartidor_rojo_verde()
-        juego = Juego(jugadores, 3, repartidor)
+        juego = self.juego_default_2p()
         juego.bajar(1)
         juego.bajar(1)
         juego.bajar(1)
         
         self.assertRaises(JuegoAccionEnPartidaTerminadaException,
                 juego.dar_pista, "Número", 1, "Román")
+
+    def test_estado_del_juego(self) -> None:
+        juego = self.juego_default_2p()
+        
+        self.maxDiff = None
+        self.assertEqual(
+                {
+                    'terminado': False,
+                    'jugadores': ["Román", "Ramón"],
+                    'turno_de': "Román",
+                    'vidas': 3,
+                    'pistas_restantes': 7,
+                    'cartas_de': {
+                        'Román': [(i, "Verde") for i in range(1, 6)],
+                        'Ramón': [(i, "Rojo") for i in range(1,6)],
+                    },
+                    'pistas_de': {
+                        'Román': [[], [], [], [], []],
+                        'Ramón': [[], [], [], [], []]
+                    },
+                    'tablero': {
+                        'Rojo': 0,
+                        'Azul': 0,
+                        'Amarillo': 0,
+                        'Verde': 0,
+                        'Blanco': 0
+                    },
+                    'puntaje': 0,
+                    'descarte': {
+                        'Rojo': [],
+                        'Azul': [],
+                        'Amarillo': [],
+                        'Verde': [],
+                        'Blanco': []
+                    }
+                }, juego.estado())
 
     def mezclar_mazo_minimal(self, mazo: List[Tuple[int, str]]) -> None:
         mazo.clear()
@@ -355,6 +388,18 @@ class JuegoTest(unittest.TestCase):
 
         return Repartidor(mezclar)
         self.assertTrue((5, "Verde") in cartas_de["Román"])
+
+    def juego_default_2p(self) -> 'Juego':
+        jugadores = ["Román", "Ramón"]
+        repartidor = self.repartidor_rojo_verde()
+        juego = Juego(jugadores, 3, repartidor)
+        return juego
+        
+    def juego_default_4p(self) -> 'Juego':
+        jugadores = ["Román", "Ramón", "Morán", "norMa"]
+        repartidor = self.repartidor_rojo_verde()
+        juego = Juego(jugadores, 3, repartidor)
+        return juego
 
     def colores(self) -> List[str]:
         return [

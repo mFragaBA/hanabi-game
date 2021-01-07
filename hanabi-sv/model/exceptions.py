@@ -28,6 +28,10 @@ class JuegoSinPistasDisponiblesException(Exception):
     def __init__(self, msg: str = 'Tiene que haber al menos una pista para darla') -> None:
         super().__init__(msg)
 
+class JuegoPistaASiMismoException(Exception):
+    def __init__(self, msg: str = 'No puede darse una pista a sui mismo') -> None:
+        super().__init__(msg)
+
 class JuegoAccionEnPartidaTerminadaException(Exception):
     def __init__(self, msg: str = 'La partida ya finalizo') -> None:
         super().__init__(msg)

@@ -1,5 +1,5 @@
 # pyre-strict
-from typing import List, Dict, Tuple, Union, Set
+from typing import List, Dict, Tuple, Union, Set, Any
 from model.exceptions import *
 from model.repartidor import Repartidor
 from model.pista import Pista
@@ -75,6 +75,31 @@ class Juego():
         self._tirar_carta(jugador, carta)
         self._cambiar_turno()
 
+    def estado(self) -> Dict[str, Any]:
+        pistas_de_adaptado = {}
+        for jugador in self._jugadores:
+            pistas_de_jugador = self._pistas_por_jugador[jugador]
+            pistas_de_adaptado[jugador] = [list(pistas) for pistas in pistas_de_jugador]
+        
+        return {
+            'terminado': self._terminado,
+            'jugadores': self._jugadores,
+            'turno_de': self.turno_de(),
+            'vidas': self._vidas,
+            'pistas_restantes': self._pistas_restantes,
+            'cartas_de': self._cartas_por_jugador,
+            'pistas_de': pistas_de_adaptado,
+            'tablero': self._tablero,
+            'puntaje': 0,
+            'descarte': {
+                'Rojo': [],
+                'Azul': [],
+                'Amarillo': [],
+                'Verde': [],
+                'Blanco': []
+            }
+        }
+
     def _validar_pos_carta_para(self, jugador: str, carta: int) -> None:
         if len(self._cartas_por_jugador[jugador]) <= carta:
             raise JuegoDescartaCartaFueraDeManoException()
@@ -94,6 +119,9 @@ class Juego():
 
         if self._pistas_restantes == 0:
             raise JuegoSinPistasDisponiblesException()
+
+        if jugador == self.turno_de():
+            raise JuegoPistaASiMismoException()
 
         cartas_del_jugador = self._cartas_por_jugador[jugador]
         pistas_del_jugador = self._pistas_por_jugador[jugador]
