@@ -1,7 +1,8 @@
 # pyre-strict
-from typing import List, Dict, Tuple
+from typing import List, Dict, Tuple, Union, Set
 from model.exceptions import *
 from model.repartidor import Repartidor
+from model.pista import Pista
 
 class Juego():
 
@@ -20,8 +21,11 @@ class Juego():
         tamanio_mano = 5 if len(jugadores) < 4 else 4
 
         self._cartas_por_jugador = {}
+        self._pistas_por_jugador = {}
         for jugador in self._jugadores:
             self._cartas_por_jugador[jugador] = self._repartidor.repartir(tamanio_mano)
+            self._pistas_por_jugador[jugador] = [set() for _ in range(tamanio_mano)]
+
 
     def validar_jugadores(self, jugadores: List[str]) -> None:
         if len(jugadores) < 2:
@@ -38,12 +42,25 @@ class Juego():
             raise JuegoDescartaCartaFueraDeManoException()
 
         self._cartas_por_jugador[jugador].pop(carta)
+        self._pistas_por_jugador[jugador].pop(carta)
+        
 
         if not self._repartidor.mazo_vacio():
-            self._cartas_por_jugador[jugador] += self._repartidor.repartir(1)
+            self._cartas_por_jugador[jugador].append(self._repartidor.repartir(1))
+            self._pistas_por_jugador[jugador].append(set())
         
-        self._turno_de = (self._turno_de + 1) % len(self._jugadores)
+        self._cambiar_turno()
 
+    def dar_pista(self, tipo: str, valor: Union[int, str], jugador: str) -> None:
+        if jugador not in self._jugadores:
+            raise JuegoPistaSinDestinatarioException()
+
+        cartas_del_jugador = self._cartas_por_jugador[jugador]
+        pistas_del_jugador = self._pistas_por_jugador[jugador]
+        pista = Pista.pista_para(tipo, valor, self).aplicar_a(cartas_del_jugador, pistas_del_jugador)
+
+    def _cambiar_turno(self) -> None:
+        self._turno_de = (self._turno_de + 1) % len(self._jugadores)
 
     def jugadores(self) -> List[str]:
         return self._jugadores
@@ -62,4 +79,7 @@ class Juego():
 
     def cartas_por_jugador(self) -> Dict[str, List[Tuple[int, str]]]:
         return self._cartas_por_jugador
+
+    def pistas_por_jugador(self) -> Dict[str, List[Set[str]]]:
+        return self._pistas_por_jugador
 
