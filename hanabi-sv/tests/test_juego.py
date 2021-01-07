@@ -18,6 +18,7 @@ class JuegoTest(unittest.TestCase):
         self.assertEqual(7, juego.pistas_restantes())
         self.assertEqual(jugadores, juego.jugadores())
         self.assertEqual("Román", juego.turno_de())
+        self.assertFalse(juego.terminado())
 
     def test_juego_no_inicia_sin_jugadores(self) -> None:
         self.assertRaises(JuegoSinJugadoresSuficientesException,
@@ -154,7 +155,161 @@ class JuegoTest(unittest.TestCase):
 
         self.assertEqual(4, len(pistas_de["Román"]))
 
+    def test_juego_descartar_carta_recupera_pista(self):
+        jugadores = ["Román", "Ramón"]
+        juego = Juego(jugadores, 3, Repartidor(self.mezclar_mazo_minimal_mezcladito))
 
+        juego.dar_pista("Número", 1, "Ramón")
+        self.assertEqual(6, juego.pistas_restantes())
+
+        juego.descartar(0)
+        self.assertEqual(7, juego.pistas_restantes())
+
+    def test_juego_tienen_que_haber_pistas_disponibles(self):
+        jugadores = ["Román", "Ramón"]
+        juego = Juego(jugadores, 3, Repartidor(self.mezclar_mazo_minimal_mezcladito))
+
+        for _ in range(3):
+            juego.dar_pista("Número", 1, "Ramón")
+            juego.dar_pista("Número", 1, "Román")
+        juego.dar_pista("Número", 1, "Ramón")
+
+        self.assertRaises(JuegoSinPistasDisponiblesException,
+                juego.dar_pista, "Número", 1, "Román")
+
+    def test_juego_bajar_remueve_carta_y_pista(self) -> None:
+        jugadores = ["Román", "Ramón"]
+        repartidor = self.repartidor_rojo_verde()
+        juego = Juego(jugadores, 3, repartidor)
+        juego.bajar(0)
+
+        cartas_de = juego.cartas_por_jugador()
+
+        self.assertEqual(5, len(cartas_de["Román"]))
+        self.assertFalse((1, "Azul") in cartas_de["Román"])
+        self.assertTrue((5, "Verde") in cartas_de["Román"])
+
+    
+    def test_juego_bajar_carta_no_recupera_con_mazo_vacío(self) -> None:
+        jugadores = ["Román", "Ramón"]
+        juego = Juego(jugadores, 3, Repartidor(self.mezclar_mazo_minimal))
+        juego.bajar(0)
+
+        cartas_de = juego.cartas_por_jugador()
+
+        self.assertEqual(4, len(cartas_de["Román"]))
+        self.assertFalse((1, "Azul") in cartas_de["Román"])
+
+    
+    def test_juego_bajar_avanza_el_turno(self) -> None:
+        jugadores = ["Román", "Ramón"]
+        repartidor = self.repartidor_rojo_verde()
+        juego = Juego(jugadores, 3, repartidor)
+        
+        juego.bajar(0)
+        self.assertEqual("Ramón", juego.turno_de())
+        
+        juego.bajar(0)
+        self.assertEqual("Román", juego.turno_de())
+
+    
+    def test_juego_bajar_tiene_que_ser_carta_de_la_mano(self) -> None:
+        jugadores = ["Román", "Ramón"]
+        juego = Juego(jugadores, 5)
+
+        self.assertRaises(JuegoDescartaCartaFueraDeManoException,
+                juego.bajar, 10)
+
+
+    def test_juego_inicia_con_tablero_en_cero(self):
+        jugadores = ["Román", "Ramón"]
+        repartidor = self.repartidor_rojo_verde()
+        juego = Juego(jugadores, 3, repartidor)
+
+        tablero_de_color = juego.tablero()
+
+        self.assertTrue(all(tablero_de_color[color] == 0 for color in self.colores()))
+
+        
+    def test_juego_bajar_carta_en_escalera(self) -> None:
+        jugadores = ["Román", "Ramón"]
+        repartidor = self.repartidor_rojo_verde()
+        juego = Juego(jugadores, 3, repartidor)
+        juego.bajar(0)
+
+        tablero_de_color = juego.tablero()
+
+        self.assertEqual(1, tablero_de_color["Verde"])
+
+    def test_juego_bajar_carta_completando_color_suma_pista(self) -> None:
+        jugadores = ["Román", "Ramón"]
+        repartidor = self.repartidor_rojo_verde()
+        juego = Juego(jugadores, 3, repartidor)
+
+        # bajar del 1 al 4
+        for _ in range(8):
+            juego.bajar(0)
+        
+        # doy pista y bajo el 5
+        juego.dar_pista("Color", "Amarillo", "Ramón")
+        juego.bajar(0)
+
+        self.assertEqual(7, juego.pistas_restantes())
+
+    def test_juego_pifie_con_carta_bajada(self):
+        jugadores = ["Román", "Ramón"]
+        repartidor = self.repartidor_rojo_verde()
+        juego = Juego(jugadores, 3, repartidor)
+        juego.bajar(1)
+
+        tablero_de_color = juego.tablero()
+
+        self.assertEqual(0, tablero_de_color["Verde"])
+        self.assertEqual(2, juego.vidas())
+
+    def test_juego_termina_si_se_queda_sin_vidas(self):
+        jugadores = ["Román", "Ramón"]
+        repartidor = self.repartidor_rojo_verde()
+        juego = Juego(jugadores, 3, repartidor)
+        juego.bajar(1)
+        juego.bajar(1)
+        juego.bajar(1)
+
+        self.assertEqual(0, juego.vidas())
+        self.assertTrue(juego.terminado())
+    
+    def test_juego_terminado_no_puede_descartar(self):
+        jugadores = ["Román", "Ramón"]
+        repartidor = self.repartidor_rojo_verde()
+        juego = Juego(jugadores, 3, repartidor)
+        juego.bajar(1)
+        juego.bajar(1)
+        juego.bajar(1)
+        
+        self.assertRaises(JuegoAccionEnPartidaTerminadaException,
+                juego.descartar, 0)
+
+    def test_juego_terminado_no_puede_bajar(self):
+        jugadores = ["Román", "Ramón"]
+        repartidor = self.repartidor_rojo_verde()
+        juego = Juego(jugadores, 3, repartidor)
+        juego.bajar(1)
+        juego.bajar(1)
+        juego.bajar(1)
+        
+        self.assertRaises(JuegoAccionEnPartidaTerminadaException,
+                juego.bajar, 0)
+
+    def test_juego_terminado_no_puede_dar_pistas(self):
+        jugadores = ["Román", "Ramón"]
+        repartidor = self.repartidor_rojo_verde()
+        juego = Juego(jugadores, 3, repartidor)
+        juego.bajar(1)
+        juego.bajar(1)
+        juego.bajar(1)
+        
+        self.assertRaises(JuegoAccionEnPartidaTerminadaException,
+                juego.dar_pista, "Número", 1, "Román")
 
     def mezclar_mazo_minimal(self, mazo: List[Tuple[int, str]]) -> None:
         mazo.clear()
@@ -201,3 +356,11 @@ class JuegoTest(unittest.TestCase):
         return Repartidor(mezclar)
         self.assertTrue((5, "Verde") in cartas_de["Román"])
 
+    def colores(self) -> List[str]:
+        return [
+            "Rojo",
+            "Azul",
+            "Verde",
+            "Amarillo",
+            "Blanco",
+        ]

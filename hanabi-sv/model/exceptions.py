@@ -23,3 +23,11 @@ class JuegoTipoDePistaInvalidoException(Exception):
 class JuegoPistaSinDestinatarioException(Exception):
     def __init__(self, msg: str = 'Las pistas tiene que ser a un jugador de la mesa') -> None:
         super().__init__(msg)
+
+class JuegoSinPistasDisponiblesException(Exception):
+    def __init__(self, msg: str = 'Tiene que haber al menos una pista para darla') -> None:
+        super().__init__(msg)
+
+class JuegoAccionEnPartidaTerminadaException(Exception):
+    def __init__(self, msg: str = 'La partida ya finalizo') -> None:
+        super().__init__(msg)
