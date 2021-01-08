@@ -87,6 +87,7 @@ class Juego():
             'turno_de': self.turno_de(),
             'vidas': self._vidas,
             'pistas_restantes': self._pistas_restantes,
+            'cartas_restantes': self._repartidor.cartas_restantes(),
             'cartas_de': self._cartas_por_jugador,
             'pistas_de': pistas_de_adaptado,
             'tablero': self._tablero,
