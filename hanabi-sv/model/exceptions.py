@@ -36,6 +36,14 @@ class JuegoAccionEnPartidaTerminadaException(Exception):
     def __init__(self, msg: str = 'La partida ya finalizo') -> None:
         super().__init__(msg)
 
+class JuegoAccionInvalidaException(Exception):
+    def __init__(self, msg: str = 'Acción inválida. Tiene que ser una entre DESCARTAR, BAJAR, PISTA') -> None:
+        super().__init__(msg)
+
+class JuegoTurnoDeOtroJugadorException(Exception):
+    def __init__(self, msg: str = 'Acción inválida. No es el turno de quien realiza la acción') -> None:
+        super().__init__(msg)
+
 class JugadorExistenteException(Exception):
     def __init__(self, msg: str = 'Un jugador con el mismo nombre ya está en la sala') -> None:
         super().__init__(msg)

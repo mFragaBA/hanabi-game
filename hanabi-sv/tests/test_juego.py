@@ -330,6 +330,34 @@ class JuegoTest(unittest.TestCase):
         self.assertTrue(all("Amarillo" in pistas_de["Ramón"][i] for i in [0, 2, 4]))
         self.assertTrue(all(len(pistas_de["Ramón"][i]) == 0 for i in [1, 3]))
 
+    def test_juego_tomar_accion_tiene_que_ser_valida(self) -> None:
+        juego = self.juego_default_2p()
+
+        accion = {
+                'jugador': "Román",
+                'accion': 'INSTAWIN',
+                'pista_a': "Ramón",
+                'tipo': "Color",
+                'valor': "Amarillo"
+        }
+
+        self.assertRaises(JuegoAccionInvalidaException,
+                juego.tomar_accion, accion)
+
+    def test_juego_tomar_accion_tiene_que_ser_del_que_le_corresponda_el_turno(self) -> None:
+        juego = self.juego_default_2p()
+
+        accion = {
+                'jugador': "Ramón",
+                'accion': 'PISTA',
+                'pista_a': "Ramón",
+                'tipo': "Color",
+                'valor': "Amarillo"
+        }
+
+        self.assertRaises(JuegoTurnoDeOtroJugadorException,
+                juego.tomar_accion, accion)
+         
         
     
     def test_juego_terminado_no_puede_descartar(self):

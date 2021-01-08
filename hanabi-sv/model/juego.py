@@ -45,16 +45,7 @@ class Juego():
             raise JuegoConJugadoresDuplicadosException()
 
     def tomar_accion(self, accion):
-        #if accion['jugador'] != self.turno_de():
-            #raise JuegoAccionDeJugadorInvalidoException()
-        
-        if accion['accion'] == "DESCARTAR":
-            self.descartar(accion['carta'])
-        elif accion['accion'] == "BAJAR":
-            self.bajar(accion['carta'])
-        elif accion['accion'] == "PISTA":
-            self.dar_pista(accion['tipo'], accion['valor'], accion['pista_a'])
-         
+        Accion.accion_para(accion).realizar_en(self)
             
 
     def descartar(self, carta : int) -> None:
@@ -72,6 +63,7 @@ class Juego():
         self._validar_partida_en_curso()
         jugador = self.turno_de()
 
+        ://www.google.com/search?client=firefox-b-e&q=python+check+if+list+of+values+is+defined+in+dict
         self._validar_pos_carta_para(jugador, carta)
 
         numero = self._cartas_por_jugador[jugador][carta][0]
@@ -189,3 +181,51 @@ class Juego():
     def terminado(self) -> bool:
         return self._terminado
 
+class Accion():
+    def __init__(self, accion) -> None:
+        self._accion = accion
+
+    @classmethod
+    def accion_para(cls, accion: Dict[str, Any]):
+        for sub_cls in cls.__subclasses__():
+            if sub_cls.para(accion):
+                return sub_cls(accion)
+
+        raise JuegoAccionInvalidaException()
+
+    def realizar_en(self, juego: 'Juego') -> None:
+        raise NotImplementedError()
+
+    def validar_turno(self, juego: 'Juego') -> None:
+        if juego.turno_de() != self._accion['jugador']:
+            raise JuegoTurnoDeOtroJugadorException()
+
+class AccionDescarte(Accion):
+    
+    @classmethod
+    def para(cls, accion: Dict[str, Any]) -> bool:
+        return accion['accion'] == "DESCARTAR" and all(key in accion for key in ['jugador', 'carta'])
+        
+    def realizar_en(self, juego: 'Juego') -> None:
+        self.validar_turno(juego)
+        juego.descartar(self._accion['carta'])
+
+class AccionBajada(Accion):
+    
+    @classmethod
+    def para(cls, accion: Dict[str, Any]) -> bool:
+        return accion['accion'] == "BAJAR" and all(key in accion for key in ['jugador', 'carta'])
+        
+    def realizar_en(self, juego: 'Juego') -> None:
+        self.validar_turno(juego)
+        juego.bajar(self._accion['carta'])
+
+class AccionPista(Accion):
+    
+    @classmethod
+    def para(cls, accion: Dict[str, Any]) -> bool:
+        return accion['accion'] == "PISTA" and all(key in accion for key in ['jugador', 'pista_a', 'tipo', 'valor'])
+        
+    def realizar_en(self, juego: 'Juego') -> None:
+        self.validar_turno(juego)
+        juego.dar_pista(self._accion['tipo'], self._accion['valor'], self._accion['pista_a'])
