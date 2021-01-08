@@ -23,6 +23,9 @@ class Repartidor():
     def mazo_vacio(self):
         return len(self._mazo) == 0
 
+    def cartas_restantes(self):
+        return len(self._mazo)
+
     @classmethod
     def repartidor_estandar(cls) -> 'Repartidor':
         def funcion_mezcladora(mazo: List[Tuple[int,str]]) -> None:

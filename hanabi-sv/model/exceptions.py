@@ -35,3 +35,20 @@ class JuegoPistaASiMismoException(Exception):
 class JuegoAccionEnPartidaTerminadaException(Exception):
     def __init__(self, msg: str = 'La partida ya finalizo') -> None:
         super().__init__(msg)
+
+class JugadorExistenteException(Exception):
+    def __init__(self, msg: str = 'Un jugador con el mismo nombre ya está en la sala') -> None:
+        super().__init__(msg)
+
+class LobbyCompletoException(Exception):
+    def __init__(self, msg: str = 'La sala está completa') -> None:
+        super().__init__(msg)
+
+class JugadorInexistenteException(Exception):
+    def __init__(self, msg: str = 'No se encontró a dicho jugador') -> None:
+        super().__init__(msg)
+
+class LobbyExistenteException(Exception):
+    def __init__(self, msg: str = 'Ya existe un lobby con ese nombre') -> None:
+        super().__init__(msg)
+

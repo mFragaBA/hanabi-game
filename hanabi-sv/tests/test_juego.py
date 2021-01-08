@@ -311,7 +311,6 @@ class JuegoTest(unittest.TestCase):
     def test_estado_del_juego(self) -> None:
         juego = self.juego_default_2p()
         
-        self.maxDiff = None
         self.assertEqual(
                 {
                     'terminado': False,
@@ -319,6 +318,7 @@ class JuegoTest(unittest.TestCase):
                     'turno_de': "Román",
                     'vidas': 3,
                     'pistas_restantes': 7,
+                    'cartas_restantes': 10,
                     'cartas_de': {
                         'Román': [(i, "Verde") for i in range(1, 6)],
                         'Ramón': [(i, "Rojo") for i in range(1,6)],
