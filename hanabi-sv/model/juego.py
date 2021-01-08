@@ -44,6 +44,19 @@ class Juego():
         if any(jugadores.count(jugador) > 1 for jugador in jugadores):
             raise JuegoConJugadoresDuplicadosException()
 
+    def tomar_accion(self, accion):
+        #if accion['jugador'] != self.turno_de():
+            #raise JuegoAccionDeJugadorInvalidoException()
+        
+        if accion['accion'] == "DESCARTAR":
+            self.descartar(accion['carta'])
+        elif accion['accion'] == "BAJAR":
+            self.bajar(accion['carta'])
+        elif accion['accion'] == "PISTA":
+            self.dar_pista(accion['tipo'], accion['valor'], accion['pista_a'])
+         
+            
+
     def descartar(self, carta : int) -> None:
         self._validar_partida_en_curso()
 
