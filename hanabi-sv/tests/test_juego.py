@@ -57,8 +57,8 @@ class JuegoTest(unittest.TestCase):
         cartas_de = juego.cartas_por_jugador()
 
         self.assertEqual(5, len(cartas_de["Román"]))
-        self.assertFalse((1, "Azul") in cartas_de["Román"])
-        self.assertTrue((5, "Verde") in cartas_de["Román"])
+        self.assertFalse((1, "Verde") in cartas_de["Román"])
+        self.assertTrue((5, "Azul") in cartas_de["Román"])
 
     def test_juego_descartar_carta_no_recupera_con_mazo_vacío(self) -> None:
         jugadores = ["Román", "Ramón"]
@@ -196,8 +196,8 @@ class JuegoTest(unittest.TestCase):
         cartas_de = juego.cartas_por_jugador()
 
         self.assertEqual(5, len(cartas_de["Román"]))
-        self.assertFalse((1, "Azul") in cartas_de["Román"])
-        self.assertTrue((5, "Verde") in cartas_de["Román"])
+        self.assertFalse((1, "Verde") in cartas_de["Román"])
+        self.assertTrue((5, "Azul") in cartas_de["Román"])
 
     
     def test_juego_bajar_carta_no_recupera_con_mazo_vacío(self) -> None:
@@ -263,7 +263,7 @@ class JuegoTest(unittest.TestCase):
 
         self.assertEqual(7, juego.pistas_restantes())
 
-    def test_juego_pifie_con_carta_bajada(self):
+    def test_juego_pifie_con_carta_bajada(self) -> None:
         juego = self.juego_default_2p()
         juego.bajar(1)
 
@@ -272,7 +272,7 @@ class JuegoTest(unittest.TestCase):
         self.assertEqual(0, tablero_de_color["Verde"])
         self.assertEqual(2, juego.vidas())
 
-    def test_juego_termina_si_se_queda_sin_vidas(self):
+    def test_juego_termina_si_se_queda_sin_vidas(self) -> None:
         juego = self.juego_default_2p()
         juego.bajar(1)
         juego.bajar(1)
@@ -280,6 +280,57 @@ class JuegoTest(unittest.TestCase):
 
         self.assertEqual(0, juego.vidas())
         self.assertTrue(juego.terminado())
+
+    def test_juego_tomar_accion_de_descarte(self) -> None:
+        juego = self.juego_default_2p()
+        
+        accion = {
+                'jugador': "Román",
+                'accion': 'DESCARTAR',
+                'carta': 0
+        }
+        juego.tomar_accion(accion)
+        cartas_de = juego.cartas_por_jugador()
+
+        self.assertEqual(5, len(cartas_de["Román"]))
+        self.assertFalse((1, "Verde") in cartas_de["Román"])
+        self.assertTrue((5, "Azul") in cartas_de["Román"])
+    
+    def test_juego_tomar_accion_de_bajada(self) -> None:
+        juego = self.juego_default_2p()
+        
+        accion = {
+                'jugador': "Román",
+                'accion': 'BAJAR',
+                'carta': 0
+        }
+
+        juego.tomar_accion(accion)
+        cartas_de = juego.cartas_por_jugador()
+
+        self.assertEqual(5, len(cartas_de["Román"]))
+        self.assertFalse((1, "Verde") in cartas_de["Román"])
+        self.assertTrue((5, "Azul") in cartas_de["Román"])
+
+    def test_juego_tomar_accion_de_dar_pista(self) -> None:
+        jugadores = ["Román", "Ramón"]
+        juego = Juego(jugadores, 3, Repartidor(self.mezclar_mazo_minimal_mezcladito))
+
+        accion = {
+                'jugador': "Román",
+                'accion': 'PISTA',
+                'pista_a': "Ramón",
+                'tipo': "Color",
+                'valor': "Amarillo"
+        }
+
+        juego.tomar_accion(accion)
+
+        pistas_de = juego.pistas_por_jugador()
+        self.assertTrue(all("Amarillo" in pistas_de["Ramón"][i] for i in [0, 2, 4]))
+        self.assertTrue(all(len(pistas_de["Ramón"][i]) == 0 for i in [1, 3]))
+
+        
     
     def test_juego_terminado_no_puede_descartar(self):
         juego = self.juego_default_2p()
@@ -290,7 +341,7 @@ class JuegoTest(unittest.TestCase):
         self.assertRaises(JuegoAccionEnPartidaTerminadaException,
                 juego.descartar, 0)
 
-    def test_juego_terminado_no_puede_bajar(self):
+    def test_juego_terminado_no_puede_bajar(self) -> None:
         juego = self.juego_default_2p() 
         juego.bajar(1)
         juego.bajar(1)
@@ -299,7 +350,7 @@ class JuegoTest(unittest.TestCase):
         self.assertRaises(JuegoAccionEnPartidaTerminadaException,
                 juego.bajar, 0)
 
-    def test_juego_terminado_no_puede_dar_pistas(self):
+    def test_juego_terminado_no_puede_dar_pistas(self) -> None:
         juego = self.juego_default_2p()
         juego.bajar(1)
         juego.bajar(1)

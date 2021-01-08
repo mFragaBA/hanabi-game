@@ -52,3 +52,15 @@ class LobbyExistenteException(Exception):
     def __init__(self, msg: str = 'Ya existe un lobby con ese nombre') -> None:
         super().__init__(msg)
 
+class LobbyInexistenteException(Exception):
+    def __init__(self, msg: str = 'No existe un lobby con ese nombre') -> None:
+        super().__init__(msg)
+
+class NombreInvalidoException(Exception):
+    def __init__(self, msg: str = 'Ese nombre no es válido') -> None:
+        super().__init__(msg)
+
+class PartidaYaIniciadaException(Exception):
+    def __init__(self, msg: str = 'No se puede unir a una partida ya iniciada') -> None:
+        super().__init__(msg)
+
