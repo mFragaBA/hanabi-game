@@ -9,7 +9,7 @@ class Juego():
     def __init__(self,
             jugadores: List[str] = [],
             vidas_iniciales: int = 3,
-            repartidor: 'Repartidor' = Repartidor.repartidor_estandar(),
+            repartidor: 'Repartidor' = Repartidor(),
             ) -> None:
         self.validar_jugadores(jugadores)
         self._terminado = False
@@ -63,7 +63,6 @@ class Juego():
         self._validar_partida_en_curso()
         jugador = self.turno_de()
 
-        ://www.google.com/search?client=firefox-b-e&q=python+check+if+list+of+values+is+defined+in+dict
         self._validar_pos_carta_para(jugador, carta)
 
         numero = self._cartas_por_jugador[jugador][carta][0]
