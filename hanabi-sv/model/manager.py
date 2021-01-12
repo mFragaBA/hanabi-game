@@ -3,17 +3,20 @@
 from model.exceptions import *
 from model.lobby import Lobby
 from model.juego import Juego
-from typing import List, Dict, Any
+from model.repartidor import Repartidor
+from typing import List, Dict, Any, Callable, Tuple
+from random import shuffle
 
 class Manager():
 
-    def __init__(self) -> None:
+    def __init__(self, mezcladora : Callable[[List[Tuple[int, str]]], None] = shuffle) -> None:
         self._lobbies_por_jugador = {}
         self._lobbies_por_id = {}
-        self._juegos_por_lobby_id = {}
+        self._juegos_por_id = {}
+        self._mezcladora = mezcladora
 
     def listar_lobbies(self) -> List['Lobby']:
-        return list(self._lobbies_por_id.keys())
+        return [ lobby for lobby in self._lobbies_por_id.keys() if lobby not in self._juegos_por_id ]
 
     def crear_lobby(self, lobby_id: str) -> None:
         self._validar_nombre(lobby_id)
@@ -38,7 +41,19 @@ class Manager():
         self._validar_partida_no_iniciada(lobby_id)
 
         jugadores = self._lobbies_por_id[lobby_id].jugadores()
-        self._juegos_por_lobby_id[lobby_id] = Juego(jugadores, 3)
+        self._juegos_por_id[lobby_id] = Juego(jugadores, 3, Repartidor(self._mezcladora))
+
+    def tomar_accion_en(self, lobby_id: str, accion: Dict[str, Any]) -> None:
+        self._validar_lobby_existente(lobby_id)
+        self._validar_partida_iniciada(lobby_id)
+
+        self._juegos_por_id[lobby_id].tomar_accion(accion)
+
+    def estado_en(self, lobby_id: str) -> Dict[str, Any]:
+        self._validar_lobby_existente(lobby_id)
+        self._validar_partida_iniciada(lobby_id)
+
+        return self._juegos_por_id[lobby_id].estado()
 
     def sala_de(self, jugador: str) -> str:
         return self._lobbies_por_jugador[jugador]
@@ -60,6 +75,10 @@ class Manager():
             raise LobbyInexistenteException()
 
     def _validar_partida_no_iniciada(self, lobby_id: str) -> None:
-        if lobby_id in self._juegos_por_lobby_id:
+        if lobby_id in self._juegos_por_id:
             raise PartidaYaIniciadaException()
+
+    def _validar_partida_iniciada(self, lobby_id: str) -> None:
+        if lobby_id not in self._juegos_por_id:
+            raise PartidaNoIniciadaException()
 

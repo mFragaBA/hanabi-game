@@ -466,7 +466,6 @@ class JuegoTest(unittest.TestCase):
             mazo.append((5, "Verde"))
 
         return Repartidor(mezclar)
-        self.assertTrue((5, "Verde") in cartas_de["Román"])
 
     def juego_default_2p(self) -> 'Juego':
         jugadores = ["Román", "Ramón"]

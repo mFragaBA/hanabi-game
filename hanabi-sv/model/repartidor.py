@@ -1,12 +1,13 @@
 # pyre-strict
 
 from typing import List, Tuple, Dict, Callable
+from random import shuffle
 
 class Repartidor():
 
     colores = ["Rojo", "Amarillo", "Verde", "Azul", "Blanco"]
 
-    def __init__(self, funcion_mezcladora: Callable[[List[Tuple[int, str]]], None]):
+    def __init__(self, funcion_mezcladora: Callable[[List[Tuple[int, str]]], None] = shuffle):
         self._mazo = self.cartas_de_colores(1, 6) + self.cartas_de_colores(1, 4) + self.cartas_de_colores(1, 2)
         funcion_mezcladora(self._mazo)
 
@@ -25,14 +26,4 @@ class Repartidor():
 
     def cartas_restantes(self):
         return len(self._mazo)
-
-    @classmethod
-    def repartidor_estandar(cls) -> 'Repartidor':
-        def funcion_mezcladora(mazo: List[Tuple[int,str]]) -> None:
-            from random import shuffle
-            shuffle(mazo)
-        
-        return cls(funcion_mezcladora)
-
-
 

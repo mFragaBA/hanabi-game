@@ -72,3 +72,7 @@ class PartidaYaIniciadaException(Exception):
     def __init__(self, msg: str = 'No se puede unir a una partida ya iniciada') -> None:
         super().__init__(msg)
 
+class PartidaNoIniciadaException(Exception):
+    def __init__(self, msg: str = 'La partida no inició todavía') -> None:
+        super().__init__(msg)
+
