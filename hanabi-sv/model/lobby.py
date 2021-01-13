@@ -1,5 +1,7 @@
 from model.exceptions import *
 
+from typing import List, Dict, Any
+
 class Lobby():
 
     def __init__(self, capacidad: int = 5) -> None:
@@ -19,5 +21,10 @@ class Lobby():
             raise JugadorInexistenteException()
         self._jugadores.remove(jugador)
 
-    def jugadores(self):
+    def jugadores(self) -> List[str]:
         return self._jugadores
+
+    def estado(self) -> Dict[str,Any]:
+        return {
+            'jugadores': self._jugadores
+        }

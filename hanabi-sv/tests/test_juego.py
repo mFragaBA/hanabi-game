@@ -60,7 +60,7 @@ class JuegoTest(unittest.TestCase):
         self.assertFalse((1, "Verde") in cartas_de["Román"])
         self.assertTrue((5, "Azul") in cartas_de["Román"])
 
-    def test_juego_descartar_carta_no_recupera_con_mazo_vacío(self) -> None:
+    def test_juego_descartar_carta_no_recupera_con_mazo_vacio(self) -> None:
         jugadores = ["Román", "Ramón"]
         juego = Juego(jugadores, 3, Repartidor(self.mezclar_mazo_minimal))
         juego.descartar(0)
@@ -110,7 +110,7 @@ class JuegoTest(unittest.TestCase):
         self.assertTrue(all("1" in pistas_de["Ramón"][i] for i in [0, 1]))
         self.assertTrue(all(len(pistas_de["Ramón"][i]) == 0 for i in [2, 3, 4]))
 
-    def test_juego_tipo_de_pista_inválida(self) -> None:
+    def test_juego_tipo_de_pista_invalida(self) -> None:
         jugadores = ["Román", "Ramón"]
         juego = Juego(jugadores, 3, Repartidor(self.mezclar_mazo_minimal_mezcladito))
 
@@ -155,7 +155,7 @@ class JuegoTest(unittest.TestCase):
 
         self.assertEqual(4, len(pistas_de["Román"]))
 
-    def test_juego_descartar_carta_recupera_pista(self):
+    def test_juego_descartar_carta_recupera_pista(self) -> None:
         jugadores = ["Román", "Ramón"]
         juego = Juego(jugadores, 3, Repartidor(self.mezclar_mazo_minimal_mezcladito))
 
@@ -165,7 +165,7 @@ class JuegoTest(unittest.TestCase):
         juego.descartar(0)
         self.assertEqual(7, juego.pistas_restantes())
 
-    def test_juego_tienen_que_haber_pistas_disponibles(self):
+    def test_juego_tienen_que_haber_pistas_disponibles(self) -> None:
         jugadores = ["Román", "Ramón"]
         juego = Juego(jugadores, 3, Repartidor(self.mezclar_mazo_minimal_mezcladito))
 
@@ -200,7 +200,7 @@ class JuegoTest(unittest.TestCase):
         self.assertTrue((5, "Azul") in cartas_de["Román"])
 
     
-    def test_juego_bajar_carta_no_recupera_con_mazo_vacío(self) -> None:
+    def test_juego_bajar_carta_no_recupera_con_mazo_vacio(self) -> None:
         jugadores = ["Román", "Ramón"]
         juego = Juego(jugadores, 3, Repartidor(self.mezclar_mazo_minimal))
         juego.bajar(0)
@@ -234,7 +234,7 @@ class JuegoTest(unittest.TestCase):
         self.assertEqual("Román", juego.turno_de())
 
 
-    def test_juego_inicia_con_tablero_en_cero(self):
+    def test_juego_inicia_con_tablero_en_cero(self) -> None:
         juego = self.juego_default_2p()
 
         tablero_de_color = juego.tablero()
@@ -360,7 +360,7 @@ class JuegoTest(unittest.TestCase):
          
         
     
-    def test_juego_terminado_no_puede_descartar(self):
+    def test_juego_terminado_no_puede_descartar(self) -> None:
         juego = self.juego_default_2p()
         juego.bajar(1)
         juego.bajar(1)
@@ -391,35 +391,38 @@ class JuegoTest(unittest.TestCase):
         juego = self.juego_default_2p()
         
         self.assertEqual(
-                {
-                    'terminado': False,
-                    'jugadores': ["Román", "Ramón"],
-                    'turno_de': "Román",
-                    'vidas': 3,
-                    'pistas_restantes': 7,
-                    'cartas_restantes': 10,
-                    'cartas_de': {
-                        'Román': [(i, "Verde") for i in range(1, 6)],
-                        'Ramón': [(i, "Rojo") for i in range(1,6)],
+                { 'global': {
+                        'terminado': False,
+                        'jugadores': ["Román", "Ramón"],
+                        'turno_de': "Román",
+                        'vidas': 3,
+                        'pistas_restantes': 7,
+                        'cartas_restantes': 10,
+                        'tablero': {
+                            'Rojo': 0,
+                            'Azul': 0,
+                            'Amarillo': 0,
+                            'Verde': 0,
+                            'Blanco': 0
+                        },
+                        'puntaje': 0,
+                        'descarte': {
+                            'Rojo': [],
+                            'Azul': [],
+                            'Amarillo': [],
+                            'Verde': [],
+                            'Blanco': []
+                        }
                     },
-                    'pistas_de': {
-                        'Román': [[], [], [], [], []],
-                        'Ramón': [[], [], [], [], []]
-                    },
-                    'tablero': {
-                        'Rojo': 0,
-                        'Azul': 0,
-                        'Amarillo': 0,
-                        'Verde': 0,
-                        'Blanco': 0
-                    },
-                    'puntaje': 0,
-                    'descarte': {
-                        'Rojo': [],
-                        'Azul': [],
-                        'Amarillo': [],
-                        'Verde': [],
-                        'Blanco': []
+                    'estado_jugadores': {
+                        'Román': {
+                            'cartas': [(i, "Verde") for i in range(1, 6)],
+                            'pistas': [[], [], [], [], []]
+                        },
+                        'Ramón': {
+                            'cartas': [(i, "Rojo") for i in range(1,6)],
+                            'pistas': [[], [], [], [], []]
+                        }
                     }
                 }, juego.estado())
 

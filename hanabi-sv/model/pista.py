@@ -1,6 +1,6 @@
 # pyre-strict
 
-from typing import Union, Dict, Set, List
+from typing import Union, Dict, Set, List, Tuple
 from model.exceptions import *
 
 
@@ -10,8 +10,12 @@ class Pista():
         self._tipo = tipo
         self._valor = valor
 
-    def aplicar_a(self, cartas, pistas):
-        raise NotImplementedError
+    def aplicar_a(self, cartas : List[Tuple[int, str]], pistas : List[Set[Union[int, str]]]) -> None:
+        raise NotImplementedError()
+
+    @classmethod
+    def para(cls, tipo: str) -> bool:
+        raise NotImplementedError()
 
     @classmethod
     def pista_para(cls, tipo: str, valor: Union[str, int]) -> 'Pista':
@@ -26,7 +30,7 @@ class PistaColor(Pista):
     def __init__(self, tipo: str, valor: str) -> None:
         super().__init__(tipo, valor)
 
-    def aplicar_a(self, cartas, pistas):
+    def aplicar_a(self, cartas : List[Tuple[int, str]], pistas : List[Set[Union[int, str]]]) -> None:
         for i in range(len(cartas)):
             if cartas[i][1] == self._valor:
                 pistas[i].add(self._valor)
@@ -40,7 +44,7 @@ class PistaNumero(Pista):
     def __init__(self, tipo: str, valor: str) -> None:
         super().__init__(tipo, valor)
 
-    def aplicar_a(self, cartas, pistas):
+    def aplicar_a(self, cartas : List[Tuple[int, str]], pistas : List[Set[Union[int, str]]]) -> None:
         for i in range(len(cartas)):
             if cartas[i][0] == self._valor:
                 pistas[i].add(str(self._valor))
