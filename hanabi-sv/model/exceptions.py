@@ -48,6 +48,10 @@ class JugadorExistenteException(Exception):
     def __init__(self, msg: str = 'Un jugador con el mismo nombre ya está en la sala') -> None:
         super().__init__(msg)
 
+class JugadorInExistenteException(Exception):
+    def __init__(self, msg: str = 'No hay ningún jugador con dicho nombre en una sala') -> None:
+        super().__init__(msg)
+
 class LobbyCompletoException(Exception):
     def __init__(self, msg: str = 'La sala está completa') -> None:
         super().__init__(msg)
@@ -74,5 +78,13 @@ class PartidaYaIniciadaException(Exception):
 
 class PartidaNoIniciadaException(Exception):
     def __init__(self, msg: str = 'La partida no inició todavía') -> None:
+        super().__init__(msg)
+
+class JugadorEnPartidaExceptioPartidaNoIniciadaExceptionn(Exception):
+    def __init__(self, msg: str = 'No se puede sacar al jugador si todavía está en una partida') -> None:
+        super().__init__(msg)
+
+class JugadorInExistenteEnLobbyException(Exception):
+    def __init__(self, msg: str = 'No se puede sacar al jugador porque no está en esa sala') -> None:
         super().__init__(msg)
 

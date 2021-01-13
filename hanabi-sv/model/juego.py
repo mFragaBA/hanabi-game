@@ -12,17 +12,17 @@ class Juego():
             repartidor: 'Repartidor' = Repartidor(),
             ) -> None:
         self.validar_jugadores(jugadores)
-        self._terminado = False
-        self._jugadores = jugadores
-        self._turno_de = 0
-        self._puntaje = 0
-        self._pistas_restantes = 7
-        self._vidas = vidas_iniciales
-        self._repartidor = repartidor
+        self._terminado : bool = False
+        self._jugadores : List[str] = jugadores
+        self._turno_de : int = 0
+        self._puntaje : int = 0
+        self._pistas_restantes : int = 7
+        self._vidas : int = vidas_iniciales
+        self._repartidor : 'Repartidor' = repartidor
         tamanio_mano = 5 if len(jugadores) < 4 else 4
 
-        self._cartas_por_jugador = {}
-        self._pistas_por_jugador = {}
+        self._cartas_por_jugador : Dict[str, List[Tuple[int, str]]] = {}
+        self._pistas_por_jugador : Dict[str, List[Set[Union[str, int]]]] = {}
         for jugador in self._jugadores:
             self._cartas_por_jugador[jugador] = self._repartidor.repartir(tamanio_mano)
             self._pistas_por_jugador[jugador] = [set() for _ in range(tamanio_mano)]
@@ -44,7 +44,7 @@ class Juego():
         if any(jugadores.count(jugador) > 1 for jugador in jugadores):
             raise JuegoConJugadoresDuplicadosException()
 
-    def tomar_accion(self, accion):
+    def tomar_accion(self, accion : Dict[str, Any]) -> None:
         Accion.accion_para(accion).realizar_en(self)
             
 
@@ -85,25 +85,35 @@ class Juego():
             pistas_de_jugador = self._pistas_por_jugador[jugador]
             pistas_de_adaptado[jugador] = [list(pistas) for pistas in pistas_de_jugador]
         
-        return {
-            'terminado': self._terminado,
-            'jugadores': self._jugadores,
-            'turno_de': self.turno_de(),
-            'vidas': self._vidas,
-            'pistas_restantes': self._pistas_restantes,
-            'cartas_restantes': self._repartidor.cartas_restantes(),
-            'cartas_de': self._cartas_por_jugador,
-            'pistas_de': pistas_de_adaptado,
-            'tablero': self._tablero,
-            'puntaje': 0,
-            'descarte': {
-                'Rojo': [],
-                'Azul': [],
-                'Amarillo': [],
-                'Verde': [],
-                'Blanco': []
-            }
+        estado = {
+            'global': {
+                'terminado': self._terminado,
+                'jugadores': self._jugadores,
+                'turno_de': self.turno_de(),
+                'vidas': self._vidas,
+                'pistas_restantes': self._pistas_restantes,
+                'cartas_restantes': self._repartidor.cartas_restantes(),
+                'tablero': self._tablero,
+                'puntaje': 0,
+                'descarte': {
+                    'Rojo': [],
+                    'Azul': [],
+                    'Amarillo': [],
+                    'Verde': [],
+                    'Blanco': []
+                }
+            },
+            'estado_jugadores': {}
         }
+
+        for jugador, mano in self._cartas_por_jugador.items():
+            estado['estado_jugadores'][jugador] = {
+                'cartas': mano,
+                'pistas': pistas_de_adaptado[jugador]
+            }
+            
+        return estado
+
 
     def _validar_pos_carta_para(self, jugador: str, carta: int) -> None:
         if len(self._cartas_por_jugador[jugador]) <= carta:
@@ -130,7 +140,7 @@ class Juego():
 
         cartas_del_jugador = self._cartas_por_jugador[jugador]
         pistas_del_jugador = self._pistas_por_jugador[jugador]
-        pista = Pista.pista_para(tipo, valor).aplicar_a(cartas_del_jugador, pistas_del_jugador)
+        Pista.pista_para(tipo, valor).aplicar_a(cartas_del_jugador, pistas_del_jugador)
         self._cambiar_turno()
         self._quitar_pista()
 
@@ -174,18 +184,18 @@ class Juego():
     def cartas_por_jugador(self) -> Dict[str, List[Tuple[int, str]]]:
         return self._cartas_por_jugador
 
-    def pistas_por_jugador(self) -> Dict[str, List[Set[str]]]:
+    def pistas_por_jugador(self) -> Dict[str, List[Set[Union[int, str]]]]:
         return self._pistas_por_jugador
 
     def terminado(self) -> bool:
         return self._terminado
 
 class Accion():
-    def __init__(self, accion) -> None:
-        self._accion = accion
+    def __init__(self, accion : Dict[str, Any]) -> None:
+        self._accion : Dict[str, Any] = accion
 
     @classmethod
-    def accion_para(cls, accion: Dict[str, Any]):
+    def accion_para(cls, accion: Dict[str, Any]) -> 'Accion':
         for sub_cls in cls.__subclasses__():
             if sub_cls.para(accion):
                 return sub_cls(accion)
@@ -193,6 +203,10 @@ class Accion():
         raise JuegoAccionInvalidaException()
 
     def realizar_en(self, juego: 'Juego') -> None:
+        raise NotImplementedError()
+
+    @classmethod
+    def para(cls, accion: Dict[str, Any]) -> bool:
         raise NotImplementedError()
 
     def validar_turno(self, juego: 'Juego') -> None:

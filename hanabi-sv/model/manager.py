@@ -10,12 +10,12 @@ from random import shuffle
 class Manager():
 
     def __init__(self, mezcladora : Callable[[List[Tuple[int, str]]], None] = shuffle) -> None:
-        self._lobbies_por_jugador = {}
-        self._lobbies_por_id = {}
-        self._juegos_por_id = {}
+        self._lobbies_por_jugador : Dict[str, str] = {}
+        self._lobbies_por_id : Dict[str, 'Lobby'] = {}
+        self._juegos_por_id : Dict[str, 'Juego'] = {}
         self._mezcladora = mezcladora
 
-    def listar_lobbies(self) -> List['Lobby']:
+    def listar_lobbies(self) -> List['str']:
         return [ lobby for lobby in self._lobbies_por_id.keys() if lobby not in self._juegos_por_id ]
 
     def crear_lobby(self, lobby_id: str) -> None:
@@ -36,12 +36,29 @@ class Manager():
         self._lobbies_por_id[lobby_id].agregar_jugador(jugador)
         self._lobbies_por_jugador[jugador] = lobby_id
 
+    def sacar_jugador(self, jugador: str, lobby_id: str) -> None:
+        self._validar_jugador_en_sala(jugador, lobby_id)
+        self._validar_partida_no_iniciada(lobby_id)
+
+        self._lobbies_por_id[lobby_id].sacar_jugador(jugador)
+        del self._lobbies_por_jugador[jugador]
+
+        if len(self._lobbies_por_id[lobby_id].jugadores()) == 0:
+            del self._lobbies_por_id[lobby_id]
+
+
     def iniciar_juego_en(self, lobby_id: str) -> None:
         self._validar_lobby_existente(lobby_id)
         self._validar_partida_no_iniciada(lobby_id)
 
         jugadores = self._lobbies_por_id[lobby_id].jugadores()
         self._juegos_por_id[lobby_id] = Juego(jugadores, 3, Repartidor(self._mezcladora))
+
+    def cortar_juego_en(self, lobby_id: str) -> None:
+        self._validar_lobby_existente(lobby_id)
+        self._validar_partida_iniciada(lobby_id)
+
+        del self._juegos_por_id[lobby_id]
 
     def tomar_accion_en(self, lobby_id: str, accion: Dict[str, Any]) -> None:
         self._validar_lobby_existente(lobby_id)
@@ -56,6 +73,7 @@ class Manager():
         return self._juegos_por_id[lobby_id].estado()
 
     def sala_de(self, jugador: str) -> str:
+        self._validar_jugador_existente(jugador)
         return self._lobbies_por_jugador[jugador]
 
     def _validar_nombre(self, nombre: str) -> None:
@@ -65,6 +83,10 @@ class Manager():
     def _validar_jugador_no_existente(self, jugador: str) -> None:
         if jugador in self._lobbies_por_jugador:
             raise JugadorExistenteException()
+
+    def _validar_jugador_existente(self, jugador: str) -> None:
+        if jugador not in self._lobbies_por_jugador:
+            raise JugadorInExistenteException()
 
     def _validar_lobby_no_existente(self, lobby_id: str) -> None:
         if lobby_id in self._lobbies_por_id:
@@ -81,4 +103,9 @@ class Manager():
     def _validar_partida_iniciada(self, lobby_id: str) -> None:
         if lobby_id not in self._juegos_por_id:
             raise PartidaNoIniciadaException()
+
+    def _validar_jugador_en_sala(self, jugador: str, lobby_id: str) -> None:
+        self._validar_jugador_existente(jugador)
+        if self._lobbies_por_jugador[jugador] != lobby_id:
+            raise JugadorInExistenteEnLobbyException()
 

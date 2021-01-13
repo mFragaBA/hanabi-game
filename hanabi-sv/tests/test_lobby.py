@@ -9,7 +9,7 @@ from model.lobby import Lobby
 
 class LobbyTest(unittest.TestCase):
 
-    def test_lobby_se_crea_vacío(self) -> None:
+    def test_lobby_se_crea_vacio(self) -> None:
         lobby = Lobby()
 
         self.assertEqual(0, len(lobby.jugadores()))
