@@ -76,6 +76,10 @@ class Manager():
         self._validar_jugador_existente(jugador)
         return self._lobbies_por_jugador[jugador]
 
+    def estado_del_lobby_de(self, jugador: str) -> Dict[str, Any]:
+        self._validar_jugador_existente(jugador)
+        return self._lobbies_por_id[self.sala_de(jugador)].estado()
+
     def _validar_nombre(self, nombre: str) -> None:
         if not nombre or len(nombre) > 40:
             raise NombreInvalidoException()

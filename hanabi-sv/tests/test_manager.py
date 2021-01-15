@@ -274,7 +274,13 @@ class ManagerTest(unittest.TestCase):
 
         self.assertEqual([], manager.listar_lobbies())
 
+    def test_manager_devuelve_puede_agregar_varios_jugadores_a_un_lobby(self) -> None:
+        manager = Manager()
+        manager.agregar_jugador("Román", "Amongas Volley Club")
+        manager.agregar_jugador("Ramón", "Amongas Volley Club")
 
+        self.assertEqual({'jugadores': ["Román", "Ramón"]}, manager.estado_del_lobby_de("Román"))
+        
 
 def mezclar_rojo_verde(mazo: List[Tuple[int, str]]) -> None:
     mazo.clear()

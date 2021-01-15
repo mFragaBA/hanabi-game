@@ -1,25 +1,83 @@
-import logo from './logo.svg';
+import React from 'react'
+import io from 'socket.io-client'
 import './App.css';
+import HomeView from './HomeView.js'
+import ListarLobbiesView from './ListarLobbiesView.js'
+import LobbyView from './LobbyView.js'
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+const url = process.env.NODE_ENV === 'production'
+	? "TODO" : "http://localhost:5000"
+
+const socket = io(url)
+
+class App extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			view: 'HomeView',
+			jugador: '',
+			lobby: '',
+		};
+	}
+
+	componentDidMount() {
+		socket.on('partida_iniciada', () => {
+			this.handlePartidaTerminada()
+		});
+		socket.on('partida_terminada', () => {
+			this.handlePartidaTerminada()
+		});
+		socket.on('unido_a_lobby', (lobby) => {
+			this.handleEntrarALobby(lobby)
+		});
+	}
+
+	handleEntrarALobby(lobby){
+		this.setState({
+			view: 'LobbyView',
+			lobby: lobby,
+		});
+	}
+
+	viewMatchingState() {	
+		if (this.state.view === 'HomeView') {
+			return ( <HomeView app={this} socket={socket}/> );
+		}
+		
+		
+		if (this.state.view === 'ListaLobbiesView') {
+			return ( <ListarLobbiesView app={this} socket={socket}/>);
+		}
+		
+		if (this.state.view === 'LobbyView') {
+			return (<LobbyView
+				app = {this}
+				player = {this.state.player}
+				lobby = {this.state.lobby}
+				socket={socket}/>);
+		}
+		/*
+		if (this.state.view === 'JuegoView') {
+			return (<JuegoView
+				app = {this}
+				player = {this.state.player}
+				socket = {socket}/>);
+		}
+		*/
+		return (
+			<div>
+				La view es inválida ({this.state.view})
+			</div>
+		)
+	}
+
+	render() {
+		return (
+			<div className="h-screen bg-cover bg-hanabi">
+				{ this.viewMatchingState() }
+			</div>
+		)
+	}
 }
 
 export default App;

@@ -47,10 +47,12 @@ lobby_por_sid = {}
 
 @socketio.on('listar_lobbies')
 def handle_listar_lobbies():
-    return gamesManager.listar_lobbies()
+    lobbies = gamesManager.listar_lobbies()
+    print("Lobbies:", lobbies)
+    emit('lista_lobbies', lobbies)
 
 @socketio.on('crear_lobby')
-def handle_crear_partida(data):
+def handle_crear_lobby(data):
     try:
         player_name = data['player_name']
         lobby_name = data['lobby_name']
@@ -62,10 +64,9 @@ def handle_crear_partida(data):
         lobby_por_sid[request.sid] = lobby_name
 
         join_room(lobby_name)
-        socketio.emit('lobby_update', gamesManager.sala_de(player_name).estado(), room=lobby_name)
-
+        emit('unido_a_lobby', room=lobby_name)
     except Exception as ex:
-        emit('error_message', {'error': str(ex)}, room=lobby_name)
+        emit('error_message', {'error': str(ex)})
 
 @socketio.on('unirse_a_lobby')
 def handle_unirse_a_lobby(data):
@@ -79,10 +80,10 @@ def handle_unirse_a_lobby(data):
         lobby_por_sid[request.sid] = lobby_name
 
         join_room(lobby_name)
-        socketio.emit('lobby_update', gamesManager.sala_de(player_name).estado(), room=lobby_name)
-
+        emit('unido_a_lobby')
+        socketio.emit('lobby_update', gamesManager.estado_del_lobby_de(player_name), room=lobby_name, include_self=False)
     except Exception as ex:
-        emit('error_message', {'error': str(ex)}, room=lobby_name)
+        emit('error_message', {'error': str(ex)})
 
 @socketio.on('iniciar_partida')
 def handle_iniciar_partida(data):
@@ -91,10 +92,10 @@ def handle_iniciar_partida(data):
         gamesManager.iniciar_juego_en(lobby_name)
 
         estado = gamesManager.estado_en(lobby_name)
-        
+       
         socketio.emit('partida_iniciada', room=lobby_name)
     except Exception as ex:
-        emit('error_message', {'error': str(ex)}, room=lobby_name)
+        emit('error_message', {'error': str(ex)})
 
 @socketio.on('salir_del_lobby')
 def handle_salir_del_lobby(data):
@@ -105,10 +106,10 @@ def handle_salir_del_lobby(data):
         gamesManager.sacar_jugador(player_name, lobby_name) 
 
         leave_room(lobby_name)
-        socketio.emit('lobby_update', gamesManager.sala_de(player_name).estado(), room=lobby_name)
+        socketio.emit('lobby_update', gamesManager.estado_del_lobby_de(player_name), room=lobby_name)
 
     except Exception as ex:
-        emit('error_message', {'error': str(ex)}, room=lobby_name)
+        emit('error_message', {'error': str(ex)})
 
 @socketio.on('cortar_partida')
 def handle_cortar_partida(data):
@@ -119,10 +120,10 @@ def handle_cortar_partida(data):
         gamesManager.cortar_juego_en(lobby_name) 
 
         leave_room(lobby_name)
-        socketio.emit('partida_terminada', gamesManager.sala_de(player_name).estado(), room=lobby_name)
+        socketio.emit('partida_terminada', gamesManager.estado_del_lobby_de(player_name), room=lobby_name)
 
     except Exception as ex:
-        emit('error_message', {'error': str(ex)}, room=lobby_name)
+        emit('error_message', {'error': str(ex)})
 
 @socketio.on('registrar_accion')
 def handle_registrar_accion(accion):
@@ -137,10 +138,10 @@ def handle_registrar_accion(accion):
         
         socketio.emit('estado_expirado', room=lobby_name)
     except Exception as ex:
-        emit('error_message', {'error': str(ex)}, room=lobby_name)
+        emit('error_message', {'error': str(ex)})
 
-@socketio.on('estado_update')
-def handle_actualizar_estado(data):
+@socketio.on('estado_juego_update')
+def handle_actualizar_estado_juego():
     try:
         player_name = nombre_por_sid[request.sid]
         lobby_name = lobby_por_sid[request.sid]
@@ -151,7 +152,17 @@ def handle_actualizar_estado(data):
         emit('juego_update', estado, room=lobby_room)
     
     except Exception as ex:
-        emit('error_message', {'error': str(ex)}, room=lobby_name)
+        emit('error_message', {'error': str(ex)})
+
+@socketio.on('estado_lobby_update')
+def handle_actualizar_estado_lobby():
+    try:
+        player_name = nombre_por_sid[request.sid]
+        lobby_name = lobby_por_sid[request.sid]
+        
+        emit('lobby_update', gamesManager.estado_del_lobby_de(player_name))
+    except Exception as ex:
+        emit('error_message', {'error': str(ex)})
 
 if __name__ == '__main__':
     socketio.run(app)
