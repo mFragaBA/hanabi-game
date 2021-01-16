@@ -1,23 +1,23 @@
 {
   "files": {
-    "main.css": "/hanabi/static/css/main.404f4e56.chunk.css",
-    "main.js": "/hanabi/static/js/main.f4c4b905.chunk.js",
-    "main.js.map": "/hanabi/static/js/main.f4c4b905.chunk.js.map",
-    "runtime-main.js": "/hanabi/static/js/runtime-main.4aa77005.js",
-    "runtime-main.js.map": "/hanabi/static/js/runtime-main.4aa77005.js.map",
-    "static/js/2.a7435fd3.chunk.js": "/hanabi/static/js/2.a7435fd3.chunk.js",
-    "static/js/2.a7435fd3.chunk.js.map": "/hanabi/static/js/2.a7435fd3.chunk.js.map",
-    "static/js/3.8d9d782b.chunk.js": "/hanabi/static/js/3.8d9d782b.chunk.js",
-    "static/js/3.8d9d782b.chunk.js.map": "/hanabi/static/js/3.8d9d782b.chunk.js.map",
-    "index.html": "/hanabi/index.html",
-    "static/css/main.404f4e56.chunk.css.map": "/hanabi/static/css/main.404f4e56.chunk.css.map",
-    "static/js/2.a7435fd3.chunk.js.LICENSE.txt": "/hanabi/static/js/2.a7435fd3.chunk.js.LICENSE.txt",
-    "static/media/index.css": "/hanabi/static/media/hanabi.335a0922.png"
+    "main.css": "/hanabi-game/static/css/main.f6ac56e2.chunk.css",
+    "main.js": "/hanabi-game/static/js/main.f4c4b905.chunk.js",
+    "main.js.map": "/hanabi-game/static/js/main.f4c4b905.chunk.js.map",
+    "runtime-main.js": "/hanabi-game/static/js/runtime-main.cbdc0222.js",
+    "runtime-main.js.map": "/hanabi-game/static/js/runtime-main.cbdc0222.js.map",
+    "static/js/2.a46b7bdd.chunk.js": "/hanabi-game/static/js/2.a46b7bdd.chunk.js",
+    "static/js/2.a46b7bdd.chunk.js.map": "/hanabi-game/static/js/2.a46b7bdd.chunk.js.map",
+    "static/js/3.8d9d782b.chunk.js": "/hanabi-game/static/js/3.8d9d782b.chunk.js",
+    "static/js/3.8d9d782b.chunk.js.map": "/hanabi-game/static/js/3.8d9d782b.chunk.js.map",
+    "index.html": "/hanabi-game/index.html",
+    "static/css/main.f6ac56e2.chunk.css.map": "/hanabi-game/static/css/main.f6ac56e2.chunk.css.map",
+    "static/js/2.a46b7bdd.chunk.js.LICENSE.txt": "/hanabi-game/static/js/2.a46b7bdd.chunk.js.LICENSE.txt",
+    "static/media/index.css": "/hanabi-game/static/media/hanabi.335a0922.png"
   },
   "entrypoints": [
-    "static/js/runtime-main.4aa77005.js",
-    "static/js/2.a7435fd3.chunk.js",
-    "static/css/main.404f4e56.chunk.css",
+    "static/js/runtime-main.cbdc0222.js",
+    "static/js/2.a46b7bdd.chunk.js",
+    "static/css/main.f6ac56e2.chunk.css",
     "static/js/main.f4c4b905.chunk.js"
   ]
 }
