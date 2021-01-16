@@ -7,9 +7,9 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret!'
 socketio = SocketIO(app,
         engineio_logger=True,
-        cors_allowed_origins=[
-            'http://localhost:3000'],
+        cors_allowed_origins='https://mFragaBA.github.io/hanabi',
         async_mode="gevent")
+
 
 gamesManager = Manager()
 
@@ -44,6 +44,14 @@ def handle_message(arg1, arg2, arg3):
 
 nombre_por_sid = {}
 lobby_por_sid = {}
+
+@socketio.on('disconnect')
+def handle_disconnect():
+    print('+++++++')
+    print("Cliente DESCONECTADO:", request.sid)
+    jugador = nombre_por_sid[request.sid]
+    lobby = gamesManager.sala_de(jugador)
+    gamesManager.sacar_jugador(jugador, lobby)
 
 @socketio.on('listar_lobbies')
 def handle_listar_lobbies():
@@ -86,7 +94,7 @@ def handle_unirse_a_lobby(data):
         emit('error_message', {'error': str(ex)})
 
 @socketio.on('iniciar_partida')
-def handle_iniciar_partida(data):
+def handle_iniciar_partida():
     try:
         lobby_name = lobby_por_sid[request.sid]
         gamesManager.iniciar_juego_en(lobby_name)
