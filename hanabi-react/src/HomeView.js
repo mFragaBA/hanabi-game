@@ -20,6 +20,7 @@ class HomeView extends React.Component {
 	handleCambioDeLobby(event) {
 		let lobby = event.target.value;
 		this.setState({lobby: lobby});
+		this.props.app.setState({lobby: lobby});
 	}
 
 	handleCrearLobbySubmit(event) {
@@ -42,11 +43,11 @@ class HomeView extends React.Component {
 		let jugador = this.state.jugador;
 		let lobby = this.state.lobby;
 
-		this.props.app.setState({
-			view: 'ListaLobbiesView',
-			jugador: jugador,
-			lobby: lobby
-		})
+		if (jugador) {
+			this.props.app.setState({
+				view: 'ListaLobbiesView',
+			})
+		}
 
 	}
 

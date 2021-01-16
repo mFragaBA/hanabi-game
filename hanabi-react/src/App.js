@@ -4,9 +4,10 @@ import './App.css';
 import HomeView from './HomeView.js'
 import ListarLobbiesView from './ListarLobbiesView.js'
 import LobbyView from './LobbyView.js'
+import JuegoView from './JuegoView.js'
 
 const url = process.env.NODE_ENV === 'production'
-	? "TODO" : "http://localhost:5000"
+	? "https://fierce-sea-39458.herokuapp.com" : "http://localhost:5000"
 
 const socket = io(url)
 
@@ -22,7 +23,7 @@ class App extends React.Component {
 
 	componentDidMount() {
 		socket.on('partida_iniciada', () => {
-			this.handlePartidaTerminada()
+			this.handlePartidaIniciada()
 		});
 		socket.on('partida_terminada', () => {
 			this.handlePartidaTerminada()
@@ -36,6 +37,12 @@ class App extends React.Component {
 		this.setState({
 			view: 'LobbyView',
 			lobby: lobby,
+		});
+	}
+
+	handlePartidaIniciada() {
+		this.setState({
+			view: 'JuegoView',
 		});
 	}
 
@@ -56,14 +63,14 @@ class App extends React.Component {
 				lobby = {this.state.lobby}
 				socket={socket}/>);
 		}
-		/*
+		
 		if (this.state.view === 'JuegoView') {
 			return (<JuegoView
 				app = {this}
 				player = {this.state.player}
 				socket = {socket}/>);
 		}
-		*/
+
 		return (
 			<div>
 				La view es inválida ({this.state.view})
@@ -73,7 +80,7 @@ class App extends React.Component {
 
 	render() {
 		return (
-			<div className="h-screen bg-cover bg-hanabi">
+			<div className="h-screen bg-cover bg-hanabi p-20">
 				{ this.viewMatchingState() }
 			</div>
 		)
