@@ -7,7 +7,7 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret!'
 socketio = SocketIO(app,
         engineio_logger=True,
-        cors_allowed_origins='https://mFragaBA.github.io/hanabi',
+        cors_allowed_origins='https://mfragaba.github.io/hanabi',
         async_mode="gevent")
 
 
