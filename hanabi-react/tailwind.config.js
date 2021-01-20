@@ -6,8 +6,12 @@ module.exports = {
   theme: {
     extend: {
     	backgroundImage: theme => ({
-				'hanabi': "url('./img/hanabi.png')",
-			}),
+		'hanabi': "url('./img/hanabi.png')",
+		'dorso': "url('./img/dorso.svg')",
+	}),
+	backgroundColor: theme => ({
+		'carta': '#41437a',
+	}),
 	fontFamily: {
 		'cursive': ['"Comic Sans MS"'],
 	},

@@ -32,6 +32,10 @@ class LobbyView extends React.Component {
 		this.props.socket.emit('iniciar_partida')	
 	}
 
+	handleJugadorSeleccionado = (jugador, index) => {
+		console.log(jugador);
+	}
+
 	render() {
 		return (
 			<div className="flex flex-col h-full">
@@ -39,7 +43,7 @@ class LobbyView extends React.Component {
 					<div className="text-center"> Jugadores en el Lobby </div>
 					<div className="flex flex-row flex-grow">
 						<div className="flex-grow">
-							<ListaSeleccionable items={this.state.jugadores} accion={this.handleLobbySeleccionado}/>
+							<ListaSeleccionable items={this.state.jugadores} accion={this.handleJugadorSeleccionado}/>
 						</div>
 					</div>
 				</div>
