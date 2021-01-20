@@ -7,7 +7,7 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret!'
 socketio = SocketIO(app,
         engineio_logger=True,
-        cors_allowed_origins='https://mfragaba.github.io',
+        cors_allowed_origins=['http://localhost:3000', 'https://mfragaba.github.io'],
         async_mode="gevent")
 
 
@@ -47,11 +47,14 @@ lobby_por_sid = {}
 
 @socketio.on('disconnect')
 def handle_disconnect():
+    #TODO handlear mejor el caso en que la sala se vacíe
     print('+++++++')
     print("Cliente DESCONECTADO:", request.sid)
     jugador = nombre_por_sid[request.sid]
     lobby = gamesManager.sala_de(jugador)
     gamesManager.sacar_jugador(jugador, lobby)
+    leave_room(lobby)
+    socketio.emit('estado_expirado', room=looby)
 
 @socketio.on('listar_lobbies')
 def handle_listar_lobbies():
@@ -128,7 +131,7 @@ def handle_cortar_partida(data):
         gamesManager.cortar_juego_en(lobby_name) 
 
         leave_room(lobby_name)
-        socketio.emit('partida_terminada', gamesManager.estado_del_lobby_de(player_name), room=lobby_name)
+        emit('partida_terminada', gamesManager.estado_del_lobby_de(player_name), room=lobby_name)
 
     except Exception as ex:
         emit('error_message', {'error': str(ex)})
@@ -144,7 +147,7 @@ def handle_registrar_accion(accion):
 
         gamesManager.tomar_accion_en(lobby_name, accion)
         
-        socketio.emit('estado_expirado', room=lobby_name)
+        emit('estado_expirado', room=lobby_name)
     except Exception as ex:
         emit('error_message', {'error': str(ex)})
 
@@ -157,7 +160,7 @@ def handle_actualizar_estado_juego():
         estado = gamesManager.estado_en(lobby_name)
         
         del estado['estado_jugadores'][player_name]
-        emit('juego_update', estado, room=lobby_room)
+        emit('juego_update', estado)
     
     except Exception as ex:
         emit('error_message', {'error': str(ex)})
