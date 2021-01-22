@@ -1,23 +1,28 @@
 {
   "files": {
-    "main.css": "/hanabi-game/static/css/main.f6ac56e2.chunk.css",
-    "main.js": "/hanabi-game/static/js/main.8e8de9eb.chunk.js",
-    "main.js.map": "/hanabi-game/static/js/main.8e8de9eb.chunk.js.map",
-    "runtime-main.js": "/hanabi-game/static/js/runtime-main.cbdc0222.js",
-    "runtime-main.js.map": "/hanabi-game/static/js/runtime-main.cbdc0222.js.map",
-    "static/js/2.a46b7bdd.chunk.js": "/hanabi-game/static/js/2.a46b7bdd.chunk.js",
-    "static/js/2.a46b7bdd.chunk.js.map": "/hanabi-game/static/js/2.a46b7bdd.chunk.js.map",
-    "static/js/3.8d9d782b.chunk.js": "/hanabi-game/static/js/3.8d9d782b.chunk.js",
-    "static/js/3.8d9d782b.chunk.js.map": "/hanabi-game/static/js/3.8d9d782b.chunk.js.map",
+    "main.css": "/hanabi-game/static/css/main.9840d4b2.chunk.css",
+    "main.js": "/hanabi-game/static/js/main.f22ccd25.chunk.js",
+    "main.js.map": "/hanabi-game/static/js/main.f22ccd25.chunk.js.map",
+    "runtime-main.js": "/hanabi-game/static/js/runtime-main.709cc622.js",
+    "runtime-main.js.map": "/hanabi-game/static/js/runtime-main.709cc622.js.map",
+    "static/js/2.04c524e6.chunk.js": "/hanabi-game/static/js/2.04c524e6.chunk.js",
+    "static/js/2.04c524e6.chunk.js.map": "/hanabi-game/static/js/2.04c524e6.chunk.js.map",
+    "static/js/3.14e2554f.chunk.js": "/hanabi-game/static/js/3.14e2554f.chunk.js",
+    "static/js/3.14e2554f.chunk.js.map": "/hanabi-game/static/js/3.14e2554f.chunk.js.map",
     "index.html": "/hanabi-game/index.html",
-    "static/css/main.f6ac56e2.chunk.css.map": "/hanabi-game/static/css/main.f6ac56e2.chunk.css.map",
-    "static/js/2.a46b7bdd.chunk.js.LICENSE.txt": "/hanabi-game/static/js/2.a46b7bdd.chunk.js.LICENSE.txt",
+    "static/css/main.9840d4b2.chunk.css.map": "/hanabi-game/static/css/main.9840d4b2.chunk.css.map",
+    "static/js/2.04c524e6.chunk.js.LICENSE.txt": "/hanabi-game/static/js/2.04c524e6.chunk.js.LICENSE.txt",
+    "static/media/carta_amarilla_token.ad94c799.svg": "/hanabi-game/static/media/carta_amarilla_token.ad94c799.svg",
+    "static/media/carta_azul_token.fc48523e.svg": "/hanabi-game/static/media/carta_azul_token.fc48523e.svg",
+    "static/media/carta_blanca_token.acf012fb.svg": "/hanabi-game/static/media/carta_blanca_token.acf012fb.svg",
+    "static/media/carta_roja_token.80264a1f.svg": "/hanabi-game/static/media/carta_roja_token.80264a1f.svg",
+    "static/media/carta_verde_token.1ee3317e.svg": "/hanabi-game/static/media/carta_verde_token.1ee3317e.svg",
     "static/media/index.css": "/hanabi-game/static/media/hanabi.335a0922.png"
   },
   "entrypoints": [
-    "static/js/runtime-main.cbdc0222.js",
-    "static/js/2.a46b7bdd.chunk.js",
-    "static/css/main.f6ac56e2.chunk.css",
-    "static/js/main.8e8de9eb.chunk.js"
+    "static/js/runtime-main.709cc622.js",
+    "static/js/2.04c524e6.chunk.js",
+    "static/css/main.9840d4b2.chunk.css",
+    "static/js/main.f22ccd25.chunk.js"
   ]
 }
