@@ -11,6 +11,15 @@ export class Mano extends React.Component {
 		};
 	}
 
+	componentDidUpdate(prevProps) {
+		if (this.props.cartas !== prevProps.cartas || this.props.pistas !== prevProps.pistas) {
+			this.setState({
+				cartas: this.props.cartas,
+				pistas: this.props.pistas,
+			});
+		}
+	}
+
 	zIdxFor = (idx) => {
 		return "z-" + String(Number(idx) * 10);
 	}
