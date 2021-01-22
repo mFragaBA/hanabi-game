@@ -66,11 +66,12 @@ class Manager():
 
         self._juegos_por_id[lobby_id].tomar_accion(accion)
 
-    def estado_en(self, lobby_id: str) -> Dict[str, Any]:
-        self._validar_lobby_existente(lobby_id)
+    def estado_en_partida_de(self, jugador: str) -> Dict[str, Any]:
+        self._validar_jugador_existente(jugador)
+        lobby_id = self._lobbies_por_jugador[jugador]
         self._validar_partida_iniciada(lobby_id)
 
-        return self._juegos_por_id[lobby_id].estado()
+        return self._juegos_por_id[lobby_id].estado_para(jugador)
 
     def sala_de(self, jugador: str) -> str:
         self._validar_jugador_existente(jugador)

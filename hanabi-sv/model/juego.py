@@ -79,7 +79,7 @@ class Juego():
         self._tirar_carta(jugador, carta)
         self._cambiar_turno()
 
-    def estado(self) -> Dict[str, Any]:
+    def estado_para(self, jugadorViendo: str) -> Dict[str, Any]:
         pistas_de_adaptado = {}
         for jugador in self._jugadores:
             pistas_de_jugador = self._pistas_por_jugador[jugador]
@@ -107,10 +107,16 @@ class Juego():
         }
 
         for jugador, mano in self._cartas_por_jugador.items():
-            estado['estado_jugadores'][jugador] = {
-                'cartas': mano,
-                'pistas': pistas_de_adaptado[jugador]
-            }
+            if jugadorViendo == jugador:
+                estado['estado_jugadores'][jugador] = {
+                    'cartas': [(-1, '') for _ in mano],
+                    'pistas': [ [] for _ in pistas_de_adaptado[jugador] ]
+                }
+            else:
+                estado['estado_jugadores'][jugador] = {
+                    'cartas': mano,
+                    'pistas': pistas_de_adaptado[jugador]
+                }
             
         return estado
 

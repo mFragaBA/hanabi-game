@@ -67,8 +67,9 @@ def handle_crear_lobby(data):
     try:
         player_name = data['player_name']
         lobby_name = data['lobby_name']
-        
-        gamesManager.crear_lobby(lobby_name)
+ 
+# TODO: arreglar crear_lobby para que use el nombre del jugador así validamos que el nombre sea válido (la otra es que haya un conectar y se encargue de registrar al jugador con dicho nombre)
+#        gamesManager.crear_lobby(lobby_name)
         gamesManager.agregar_jugador(player_name, lobby_name) 
 
         nombre_por_sid[request.sid] = player_name
@@ -102,8 +103,6 @@ def handle_iniciar_partida():
         lobby_name = lobby_por_sid[request.sid]
         gamesManager.iniciar_juego_en(lobby_name)
 
-        estado = gamesManager.estado_en(lobby_name)
-       
         socketio.emit('partida_iniciada', room=lobby_name)
     except Exception as ex:
         emit('error_message', {'error': str(ex)})
@@ -157,9 +156,8 @@ def handle_actualizar_estado_juego():
         player_name = nombre_por_sid[request.sid]
         lobby_name = lobby_por_sid[request.sid]
         
-        estado = gamesManager.estado_en(lobby_name)
+        estado = gamesManager.estado_en_partida_de(player_name)
         
-        del estado['estado_jugadores'][player_name]
         emit('juego_update', estado)
     
     except Exception as ex:

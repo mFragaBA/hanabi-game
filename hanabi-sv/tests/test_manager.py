@@ -157,12 +157,12 @@ class ManagerTest(unittest.TestCase):
                             'pistas': [[], [], [], [], []]
                         },
                         'Ramón': {
-                            'cartas': [(i, "Rojo") for i in range(1,6)],
+                            'cartas': [(-1, "") for i in range(1,6)],
                             'pistas': [[], [], [], [], []]
                         }    
                     }
                 },
-                manager.estado_en("Amongas Volley Club"))
+                manager.estado_en_partida_de("Ramón"))
     
     def test_manager_no_se_puede_tomar_accion_en_lobby_inexistente(self) -> None:
         manager = Manager()
@@ -192,11 +192,11 @@ class ManagerTest(unittest.TestCase):
                 manager.tomar_accion_en, "Amongas Volley Club", accion)
 
 
-    def test_manager_no_se_puede_pedir_estado_en_lobby_inexistente(self) -> None:
+    def test_manager_no_se_puede_pedir_estado_en_juego_de_jugador_inexistente(self) -> None:
         manager = Manager()
 
-        self.assertRaises( LobbyInexistenteException,
-                manager.estado_en, "Amongas Volley Club")
+        self.assertRaises( JugadorInExistenteException,
+                manager.estado_en_partida_de, "Ramón")
 
     def test_manager_no_se_puede_pedir_estado_en_partida_no_iniciada(self) -> None:
         manager = Manager()
@@ -205,7 +205,7 @@ class ManagerTest(unittest.TestCase):
         manager.agregar_jugador("Ramón", "Amongas Volley Club")
 
         self.assertRaises( PartidaNoIniciadaException,
-                manager.estado_en, "Amongas Volley Club")
+                manager.estado_en_partida_de, "Román")
 
     def test_manager_se_saca_la_partida_al_cortar(self) -> None:
         manager = Manager()

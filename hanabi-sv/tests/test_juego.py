@@ -416,7 +416,7 @@ class JuegoTest(unittest.TestCase):
                     },
                     'estado_jugadores': {
                         'Román': {
-                            'cartas': [(i, "Verde") for i in range(1, 6)],
+                            'cartas': [(-1, "") for i in range(1, 6)],
                             'pistas': [[], [], [], [], []]
                         },
                         'Ramón': {
@@ -424,7 +424,7 @@ class JuegoTest(unittest.TestCase):
                             'pistas': [[], [], [], [], []]
                         }
                     }
-                }, juego.estado())
+                }, juego.estado_para('Román'))
 
     def mezclar_mazo_minimal(self, mazo: List[Tuple[int, str]]) -> None:
         mazo.clear()
