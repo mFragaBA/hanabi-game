@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/hanabi-game/static/css/main.9840d4b2.chunk.css",
-    "main.js": "/hanabi-game/static/js/main.50c6e0e2.chunk.js",
-    "main.js.map": "/hanabi-game/static/js/main.50c6e0e2.chunk.js.map",
+    "main.js": "/hanabi-game/static/js/main.d1580d18.chunk.js",
+    "main.js.map": "/hanabi-game/static/js/main.d1580d18.chunk.js.map",
     "runtime-main.js": "/hanabi-game/static/js/runtime-main.709cc622.js",
     "runtime-main.js.map": "/hanabi-game/static/js/runtime-main.709cc622.js.map",
     "static/js/2.04c524e6.chunk.js": "/hanabi-game/static/js/2.04c524e6.chunk.js",
@@ -23,6 +23,6 @@
     "static/js/runtime-main.709cc622.js",
     "static/js/2.04c524e6.chunk.js",
     "static/css/main.9840d4b2.chunk.css",
-    "static/js/main.50c6e0e2.chunk.js"
+    "static/js/main.d1580d18.chunk.js"
   ]
 }
