@@ -32,9 +32,30 @@ let distribucionColumnasTokens = {
 }
 
 export class Carta extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			numero: props.numero,
+			color: props.color,
+			margin: props.margin,
+			onCartaSeleccion: props.onCartaSeleccion,
+			indice: props.indice,
+		};
+	}
+	
+	componentWillReceiveProps(nextProps) {
+		this.setState({
+			numero: nextProps.numero,
+			color: nextProps.color,
+			margin: nextProps.margin,
+			onCartaSeleccion: nextProps.onCartaSeleccion,
+			indice: nextProps.indice,
+		});
+	}
+
 	diseñoCarta() {
-		let numero = this.props.numero;
-		let color = this.props.color;
+		let numero = this.state.numero;
+		let color = this.state.color;
 
 		console.log(numero);
 		console.log(color);
@@ -58,7 +79,7 @@ export class Carta extends React.Component {
 	}
 
 	render() {
-		if (this.props.numero === 0) {
+		if (this.state.numero === 0) {
 			return (
 				<div className="border-dotted border-4 border-light-blue-500 w-28 h-36 rounded">
 					
@@ -66,34 +87,34 @@ export class Carta extends React.Component {
 			);
 		}
 
-		if (this.props.numero === -1) {
-			let cName = `border border-blue-700 w-28 h-36 bg-dorso bg-contain ${this.props.margin} rounded hover:shadow-red`;
+		if (this.state.numero === -1) {
+			let cName = `border border-blue-700 w-28 h-36 bg-dorso bg-contain ${this.state.margin} rounded hover:shadow-red`;
 			return (
-				<div className={cName} onClick={() => this.props.onCartaSeleccion(this.props.indice, [this.props.numero, this.props.color])}>
+				<div className={cName} onClick={() => this.state.onCartaSeleccion(this.state.indice, [this.state.numero, this.state.color])}>
 				</div>	
 			);
 		}
 
-		let cName = `border border-blue-700 w-28 h-36 flex flex-col bg-carta rounded ${this.props.margin} p-0.5 hover:shadow-red`;
+		let cName = `border border-blue-700 w-28 h-36 flex flex-col bg-carta rounded ${this.state.margin} p-0.5 hover:shadow-red`;
 		return (
-			<div className={cName} onClick={() => this.props.onCartaSeleccion(this.props.indice, [this.props.numero, this.props.color])}>
+			<div className={cName} onClick={() => this.state.onCartaSeleccion(this.state.indice, [this.state.numero, this.state.color])}>
 				<div className="flex flex-row flex-none">
-					<div className={"text-left flex-grow " + textColor[this.props.color]}>
-						{ this.props.numero }
+					<div className={"text-left flex-grow " + textColor[this.state.color]}>
+						{ this.state.numero }
 					</div>
-					<div className={"text-right " + textColor[this.props.color]}>
-						{ this.props.numero }
+					<div className={"text-right " + textColor[this.state.color]}>
+						{ this.state.numero }
 					</div>
 				</div>
 				<div className="flex-grow p-1">
 					{this.diseñoCarta()}
 				</div>
 				<div className="flex flex-row flex-none">
-					<div className={"text-left flex-grow " + textColor[this.props.color]}>
-						{ this.props.numero }
+					<div className={"text-left flex-grow " + textColor[this.state.color]}>
+						{ this.state.numero }
 					</div>
-					<div className={"text-right " + textColor[this.props.color]}>
-						{ this.props.numero }
+					<div className={"text-right " + textColor[this.state.color]}>
+						{ this.state.numero }
 					</div>
 				</div>
 			</div>

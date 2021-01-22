@@ -159,14 +159,14 @@ class JuegoView extends React.Component {
 						<div className="flex flex-row justify-center">	
 							{this.tablero().map((carta, index) => 
 								<div className="m-1">
-									<Carta numero={carta[0]} color={carta[1]} onCartaSeleccion={this.dummy}/>
+									<Carta key={index} numero={carta[0]} color={carta[1]} onCartaSeleccion={this.dummy}/>
 								</div>
 							)}	
 						</div>
 					</div>
 					<div className="flex flex-col">
 						{Object.keys(this.state.estado_jugadores).map((key, index) => this.props.jugador !== key ?
-						<Mano key={key} jugador={key} mano={this.state.estado_jugadores[key]} onCartaSeleccion={this.darPista} /> : <Mano key={key} jugador={key} mano={this.state.estado_jugadores[key]} onCartaSeleccion={this.elegirCarta} />
+						<Mano key={index} jugador={key} mano={this.state.estado_jugadores[key]} onCartaSeleccion={this.darPista} /> : <Mano key={index} jugador={key} mano={this.state.estado_jugadores[key]} onCartaSeleccion={this.elegirCarta} />
 						)}
 					</div>
 				</div>
