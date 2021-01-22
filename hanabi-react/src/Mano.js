@@ -1,6 +1,26 @@
 import React from 'react';
 import Carta from './Carta';
 
+function arraysEqual(a,b) {
+    /*
+        Array-aware equality checker:
+        Returns whether arguments a and b are == to each other;
+        however if they are equal-lengthed arrays, returns whether their 
+        elements are pairwise == to each other recursively under this
+        definition.
+    */
+    if (a instanceof Array && b instanceof Array) {
+        if (a.length!=b.length)  // assert same length
+            return false;
+        for(var i=0; i<a.length; i++)  // assert each element equal
+            if (!arraysEqual(a[i],b[i]))
+                return false;
+        return true;
+    } else {
+        return a==b;  // if not both arrays, should be the same
+    }
+}
+
 export class Mano extends React.Component {
 	constructor(props) {
 		super(props);
@@ -12,7 +32,7 @@ export class Mano extends React.Component {
 	}
 
 	componentDidUpdate(prevProps) {
-		if (this.props.cartas !== prevProps.cartas || this.props.pistas !== prevProps.pistas) {
+		if (!arraysEqual(this.props.cartas, prevProps.cartas) || !arraysEqual(this.props.pistas, prevProps.pistas)) {
 			this.setState({
 				cartas: this.props.cartas,
 				pistas: this.props.pistas,
