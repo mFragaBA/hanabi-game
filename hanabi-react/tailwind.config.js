@@ -15,6 +15,9 @@ module.exports = {
 	fontFamily: {
 		'cursive': ['"Comic Sans MS"'],
 	},
+	boxShadow: {
+		red: '0 35px 60px -15px rgba(242, 217, 132, 0.6)',
+	},
     },
   },
   variants: {

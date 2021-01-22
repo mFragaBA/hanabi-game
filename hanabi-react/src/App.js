@@ -59,7 +59,7 @@ class App extends React.Component {
 		if (this.state.view === 'LobbyView') {
 			return (<LobbyView
 				app = {this}
-				player = {this.state.player}
+				player = {this.state.jugador}
 				lobby = {this.state.lobby}
 				socket={socket}/>);
 		}
@@ -67,7 +67,7 @@ class App extends React.Component {
 		if (this.state.view === 'JuegoView') {
 			return (<JuegoView
 				app = {this}
-				player = {this.state.player}
+				jugador = {this.state.jugador}
 				socket = {socket}/>);
 		}
 

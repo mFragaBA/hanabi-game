@@ -31,12 +31,7 @@ let distribucionColumnasTokens = {
 	'5': [2, 1, 2],
 }
 
-class Carta extends React.Component {
-	constructor(props) {
-		super(props);
-	}
-
-
+export class Carta extends React.Component {
 	diseñoCarta() {
 		let numero = this.props.numero;
 		let color = this.props.color;
@@ -63,8 +58,25 @@ class Carta extends React.Component {
 	}
 
 	render() {
+		if (this.props.numero === 0) {
+			return (
+				<div className="border-dotted border-4 border-light-blue-500 w-28 h-36 rounded">
+					
+				</div>
+			);
+		}
+
+		if (this.props.numero === -1) {
+			let cName = `border border-blue-700 w-28 h-36 bg-dorso bg-contain ${this.props.margin} rounded hover:shadow-red`;
+			return (
+				<div className={cName} onClick={() => this.props.onCartaSeleccion(this.props.indice, [this.props.numero, this.props.color])}>
+				</div>	
+			);
+		}
+
+		let cName = `border border-blue-700 w-28 h-36 flex flex-col bg-carta rounded ${this.props.margin} p-0.5 hover:shadow-red`;
 		return (
-			<div className="border border-blue-700 w-28 h-36 flex flex-col bg-carta rounded -mr-10 p-0.5">
+			<div className={cName} onClick={() => this.props.onCartaSeleccion(this.props.indice, [this.props.numero, this.props.color])}>
 				<div className="flex flex-row flex-none">
 					<div className={"text-left flex-grow " + textColor[this.props.color]}>
 						{ this.props.numero }
