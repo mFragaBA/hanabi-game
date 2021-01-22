@@ -8,7 +8,7 @@ class Repartidor():
     colores = ["Rojo", "Amarillo", "Verde", "Azul", "Blanco"]
 
     def __init__(self, funcion_mezcladora: Callable[[List[Tuple[int, str]]], None] = shuffle) -> None:
-        self._mazo : List[Tuple[int, str]] = self.cartas_de_colores(1, 6) + self.cartas_de_colores(1, 4) + self.cartas_de_colores(1, 2)
+        self._mazo : List[Tuple[int, str]] = self.cartas_de_colores(1, 5) + self.cartas_de_colores(1, 4) + self.cartas_de_colores(1, 2)
         funcion_mezcladora(self._mazo)
 
     def repartir(self, cantidad: int) -> List[Tuple[int,str]]:
