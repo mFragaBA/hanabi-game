@@ -148,7 +148,7 @@ class JuegoView extends React.Component {
 						<div className="flex flex-row justify-center" onClick={this.bajarCarta}>	
 							{this.tablero().map((carta, index) => 
 								<div className="m-1">
-									<Carta key={index} numero={carta[0]} color={carta[1]} onCartaSeleccion={this.dummy}/>
+									<Carta key={index} numero={carta[0]} color={carta[1]} onCartaSeleccion={this.dummy} pistas={[]}/>
 								</div>
 							)}	
 						</div>

@@ -31,33 +31,10 @@ let distribucionColumnasTokens = {
 	'5': [2, 1, 2],
 }
 
-export class Carta extends React.Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			numero: props.numero,
-			color: props.color,
-			margin: props.margin,
-			onCartaSeleccion: props.onCartaSeleccion,
-			indice: props.indice,
-			pistas: props.pistas,
-		};
-	}
-	
-	componentWillReceiveProps(nextProps) {
-		this.setState({
-			numero: nextProps.numero,
-			color: nextProps.color,
-			margin: nextProps.margin,
-			onCartaSeleccion: nextProps.onCartaSeleccion,
-			indice: nextProps.indice,
-			pistas: nextProps.pistas,
-		});
-	}
-
-	diseñoCarta() {
-		let numero = this.state.numero;
-		let color = this.state.color;
+export default function Carta(props) {
+	let diseñoCarta = () => {
+		let numero = props.numero;
+		let color = props.color;
 
 		console.log(numero);
 		console.log(color);
@@ -80,68 +57,34 @@ export class Carta extends React.Component {
 		);
 	}
 
-	render() {
-		if (this.state.numero === 0) {
-			return (
-				<div className="border-dotted border-4 border-light-blue-500 w-28 h-36 rounded">
-					
-				</div>
-			);
+	if (props.numero === 0) {
+		return (
+			<div className="border-dotted border-4 border-light-blue-500 w-28 h-36 rounded">
+				
+			</div>
+		);
+	}
+		
+	let pistaStr = "";
+	let pistaStrColorClassName = "border border-blue-700 text-center bg-pink-400 bg-opacity-60 rounded " + props.margin;
+
+	props.pistas.forEach(pista => {
+		if (pista[0] == "Color") {
+			if (pistaStr == "") pistaStr = pista[1];
+			pistaStrColorClassName = pistaStrColorClassName + textColor[pista[1]];
+		} else if (pista[0] == "Numero") {
+			console.log("pista", pista[1]);
+			pistaStr = pista[1]; 
 		}
-			
-		let pistaStr = "";
-		let pistaStrColorClassName = "border border-blue-700 text-center bg-pink-400 bg-opacity-60 rounded " + this.state.margin;
+	});
 
-		this.state.pistas.forEach(pista => {
-			if (pista[0] == "Color") {
-				if (pistaStr == "") pistaStr = pista[1];
-				pistaStrColorClassName = pistaStrColorClassName + textColor[pista[1]];
-			} else if (pista[0] == "Numero") {
-				console.log("pista", pista[1]);
-				pistaStr = pista[1]; 
-			}
-		});
-
-		if (this.state.numero === -1) {
-			let cName = `border border-blue-700 w-28 h-36 bg-dorso bg-contain ${this.state.margin} rounded hover:shadow-red`;
-			return (
-				<div className="flex flex-col">
-					<div className={cName} onClick={() => this.state.onCartaSeleccion(this.state.indice, [this.state.numero, this.state.color])}>
-					</div>	
-					{this.state.pistas.length > 0 && 
-						<div className={pistaStrColorClassName}>
-							{pistaStr}
-						</div>
-					}
-				</div>
-			);
-		}
-
-		let cName = `border border-blue-700 w-28 h-36 flex flex-col bg-carta rounded ${this.state.margin} p-0.5 hover:shadow-red`;
+	if (props.numero === -1) {
+		let cName = `border border-blue-700 w-28 h-36 bg-dorso bg-contain ${props.margin} rounded hover:shadow-red`;
 		return (
 			<div className="flex flex-col">
-				<div className={cName} onClick={() => this.state.onCartaSeleccion(this.state.indice, [this.state.numero, this.state.color])}>
-					<div className="flex flex-row flex-none">
-						<div className={"text-left flex-grow " + textColor[this.state.color]}>
-							{ this.state.numero }
-						</div>
-						<div className={"text-right " + textColor[this.state.color]}>
-							{ this.state.numero }
-						</div>
-					</div>
-					<div className="flex-grow p-1">
-						{this.diseñoCarta()}
-					</div>
-					<div className="flex flex-row flex-none">
-						<div className={"text-left flex-grow " + textColor[this.state.color]}>
-							{ this.state.numero }
-						</div>
-						<div className={"text-right " + textColor[this.state.color]}>
-							{ this.state.numero }
-						</div>
-					</div>
-				</div>
-				{this.state.pistas.length > 0 && 
+				<div className={cName} onClick={() => props.onCartaSeleccion(props.indice, [props.numero, props.color])}>
+				</div>	
+				{props.pistas.length > 0 && 
 					<div className={pistaStrColorClassName}>
 						{pistaStr}
 					</div>
@@ -150,6 +93,36 @@ export class Carta extends React.Component {
 		);
 	}
 
-}
+	let cName = `border border-blue-700 w-28 h-36 flex flex-col bg-carta rounded ${props.margin} p-0.5 hover:shadow-red`;
+	return (
+		<div className="flex flex-col">
+			<div className={cName} onClick={() => props.onCartaSeleccion(props.indice, [props.numero, props.color])}>
+				<div className="flex flex-row flex-none">
+					<div className={"text-left flex-grow " + textColor[props.color]}>
+						{ props.numero }
+					</div>
+					<div className={"text-right " + textColor[props.color]}>
+						{ props.numero }
+					</div>
+				</div>
+				<div className="flex-grow p-1">
+					{diseñoCarta()}
+				</div>
+				<div className="flex flex-row flex-none">
+					<div className={"text-left flex-grow " + textColor[props.color]}>
+						{ props.numero }
+					</div>
+					<div className={"text-right " + textColor[props.color]}>
+						{ props.numero }
+					</div>
+				</div>
+			</div>
+			{props.pistas.length > 0 && 
+				<div className={pistaStrColorClassName}>
+					{pistaStr}
+				</div>
+			}
+		</div>
+	);
 
-export default Carta;
+}
