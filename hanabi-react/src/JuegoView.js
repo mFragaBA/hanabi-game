@@ -50,16 +50,10 @@ class JuegoView extends React.Component {
 	}
 
 	elegirPista = (pistaStr) => {
-		if (this.state.accion === 'pista' && pistaStr === this.state.seleccion) {
-			this.setState({
-				accion: '',
-			});
-		} else {
-			this.setState({
-				accion: 'pista',
-				seleccion: pistaStr,
-			});
-		}
+		this.setState({
+			accion: 'pista',
+			seleccion: pistaStr,
+		});
 	}
 
 	elegirCarta = (jugador, carta_info) => {
@@ -155,6 +149,15 @@ class JuegoView extends React.Component {
 					<div className="flex flex-col flex-grow border border-yellow-500">
 						{descarte}
 						{tablero}
+						<div className="flex flex-row justify-center">
+							<button type="button" className="rounded mr-3" onClick={ () => this.elegirPista("Color")}>
+								Pista-Color	
+							</button>
+
+							<button type="button" className="rounded ml-3" onClick={ () => this.elegirPista("Numero")}>
+								Pista-Numero	
+							</button>
+						</div>
 						
 						<div className="flex flex-row justify-center">	
 							{this.tablero().map((carta, index) => 

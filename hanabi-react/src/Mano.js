@@ -26,9 +26,9 @@ export class Mano extends React.Component {
 	onCartaSeleccion = (index, carta) => {
 		this.props.onCartaSeleccion(this.props.jugador, 
 			{
-				index: index,
-				numero: carta[0],
-				color: carta[1],
+				'index': index,
+				'Numero': carta[0],
+				'Color': carta[1],
 			});	
 	}
 
