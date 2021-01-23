@@ -87,22 +87,25 @@ class JuegoView extends React.Component {
 	}
 
 	bajarCarta = () => {
-		console.log(this.state);
-		let accion = {
-			jugador: this.props.jugador,
-			accion: 'BAJAR',
-			carta: this.state.seleccion,
-		};
-		this.registrarYResetear(accion);
+		if (this.state.accion === 'cartaElegida') {
+			let accion = {
+				jugador: this.props.jugador,
+				accion: 'BAJAR',
+				carta: this.state.seleccion,
+			};
+			this.registrarYResetear(accion);
+		}
 	}
 
 	descartarCarta = () => {
-		let accion = {
-			jugador: this.props.jugador,
-			accion: 'DESCARTAR',
-			carta: this.state.seleccion,
-		};
-		this.registrarYResetear(accion);
+		if (this.state.accion === 'cartaElegida') {
+			let accion = {
+				jugador: this.props.jugador,
+				accion: 'DESCARTAR',
+				carta: this.state.seleccion,
+			};
+			this.registrarYResetear(accion);
+		}
 	}
 
 	dummy = (dum, dumdum) => {
@@ -122,22 +125,6 @@ class JuegoView extends React.Component {
 	render() {
 
 		if (this.state && this.state.global && this.state.estado_jugadores) {
-			
-			let descarte = this.state.accion === 'cartaElegida' ? 
-				(
-					<button type="button" className="rounded" onClick={this.descartarCarta}>Descartar</button>
-				) : 
-				(	
-					<button type="button" className="rounded">Descartar</button>
-				);
-			
-			let tablero = this.state.accion === 'cartaElegida' ? 
-				(
-					<button type="button" className="rounded" onClick={this.bajarCarta}>Bajar</button>
-				) : 
-				(	
-					<button type="button" className="rounded">Bajar</button>
-				);
 
 			return (
 				<div className="flex flex-row">
@@ -147,8 +134,7 @@ class JuegoView extends React.Component {
 						</div>
 					</div>
 					<div className="flex flex-col flex-grow border border-yellow-500">
-						{descarte}
-						{tablero}
+						<button type="button" className="rounded" onClick={this.descartarCarta}>Descartar</button>
 						<div className="flex flex-row justify-center">
 							<button type="button" className="rounded mr-3" onClick={ () => this.elegirPista("Color")}>
 								Pista-Color	
@@ -159,7 +145,7 @@ class JuegoView extends React.Component {
 							</button>
 						</div>
 						
-						<div className="flex flex-row justify-center">	
+						<div className="flex flex-row justify-center" onClick={this.bajarCarta}>	
 							{this.tablero().map((carta, index) => 
 								<div className="m-1">
 									<Carta key={index} numero={carta[0]} color={carta[1]} onCartaSeleccion={this.dummy}/>
