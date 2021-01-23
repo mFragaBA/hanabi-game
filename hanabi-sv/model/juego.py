@@ -22,7 +22,7 @@ class Juego():
         tamanio_mano = 5 if len(jugadores) < 4 else 4
 
         self._cartas_por_jugador : Dict[str, List[Tuple[int, str]]] = {}
-        self._pistas_por_jugador : Dict[str, List[Set[Union[str, int]]]] = {}
+        self._pistas_por_jugador : Dict[str, List[Set[Tuple[str, Union[str, int]]]]] = {}
         for jugador in self._jugadores:
             self._cartas_por_jugador[jugador] = self._repartidor.repartir(tamanio_mano)
             self._pistas_por_jugador[jugador] = [set() for _ in range(tamanio_mano)]
@@ -110,7 +110,7 @@ class Juego():
             if jugadorViendo == jugador:
                 estado['estado_jugadores'][jugador] = {
                     'cartas': [(-1, '') for _ in mano],
-                    'pistas': [ [] for _ in pistas_de_adaptado[jugador] ]
+                    'pistas': pistas_de_adaptado[jugador]
                 }
             else:
                 estado['estado_jugadores'][jugador] = {
@@ -190,7 +190,7 @@ class Juego():
     def cartas_por_jugador(self) -> Dict[str, List[Tuple[int, str]]]:
         return self._cartas_por_jugador
 
-    def pistas_por_jugador(self) -> Dict[str, List[Set[Union[int, str]]]]:
+    def pistas_por_jugador(self) -> Dict[str, List[Set[Tuple[str, Union[int, str]]]]]:
         return self._pistas_por_jugador
 
     def terminado(self) -> bool:

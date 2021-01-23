@@ -97,17 +97,17 @@ class JuegoTest(unittest.TestCase):
         juego.dar_pista("Color", "Amarillo", "Ramón")
 
         pistas_de = juego.pistas_por_jugador()
-        self.assertTrue(all("Amarillo" in pistas_de["Ramón"][i] for i in [0, 2, 4]))
+        self.assertTrue(all(("Color", "Amarillo") in pistas_de["Ramón"][i] for i in [0, 2, 4]))
         self.assertTrue(all(len(pistas_de["Ramón"][i]) == 0 for i in [1, 3]))
     
     def test_juego_dar_pista_sobre_numero(self) -> None:
         jugadores = ["Román", "Ramón"]
         juego = Juego(jugadores, 3, Repartidor(self.mezclar_mazo_minimal_mezcladito))
 
-        juego.dar_pista("Número", 1, "Ramón")
+        juego.dar_pista("Numero", 1, "Ramón")
 
         pistas_de = juego.pistas_por_jugador()
-        self.assertTrue(all("1" in pistas_de["Ramón"][i] for i in [0, 1]))
+        self.assertTrue(all(("Numero", 1) in pistas_de["Ramón"][i] for i in [0, 1]))
         self.assertTrue(all(len(pistas_de["Ramón"][i]) == 0 for i in [2, 3, 4]))
 
     def test_juego_tipo_de_pista_invalida(self) -> None:
@@ -132,7 +132,7 @@ class JuegoTest(unittest.TestCase):
         jugadores = ["Román", "Ramón"]
         juego = Juego(jugadores, 3, Repartidor(self.mezclar_mazo_minimal_mezcladito))
 
-        juego.dar_pista("Número", 1, "Ramón")
+        juego.dar_pista("Numero", 1, "Ramón")
         
         self.assertEqual("Ramón", juego.turno_de())
 
@@ -140,7 +140,7 @@ class JuegoTest(unittest.TestCase):
         jugadores = ["Román", "Ramón"]
         juego = Juego(jugadores, 3, Repartidor(self.mezclar_mazo_minimal_mezcladito))
 
-        juego.dar_pista("Número", 1, "Ramón")
+        juego.dar_pista("Numero", 1, "Ramón")
         juego.descartar(0)
 
         pistas_de = juego.pistas_por_jugador()
@@ -159,7 +159,7 @@ class JuegoTest(unittest.TestCase):
         jugadores = ["Román", "Ramón"]
         juego = Juego(jugadores, 3, Repartidor(self.mezclar_mazo_minimal_mezcladito))
 
-        juego.dar_pista("Número", 1, "Ramón")
+        juego.dar_pista("Numero", 1, "Ramón")
         self.assertEqual(6, juego.pistas_restantes())
 
         juego.descartar(0)
@@ -170,12 +170,12 @@ class JuegoTest(unittest.TestCase):
         juego = Juego(jugadores, 3, Repartidor(self.mezclar_mazo_minimal_mezcladito))
 
         for _ in range(3):
-            juego.dar_pista("Número", 1, "Ramón")
-            juego.dar_pista("Número", 1, "Román")
-        juego.dar_pista("Número", 1, "Ramón")
+            juego.dar_pista("Numero", 1, "Ramón")
+            juego.dar_pista("Numero", 1, "Román")
+        juego.dar_pista("Numero", 1, "Ramón")
 
         self.assertRaises(JuegoSinPistasDisponiblesException,
-                juego.dar_pista, "Número", 1, "Román")
+                juego.dar_pista, "Numero", 1, "Román")
         self.assertEqual(0, juego.pistas_restantes())
         self.assertEqual("Ramón", juego.turno_de())
 
@@ -184,7 +184,7 @@ class JuegoTest(unittest.TestCase):
         juego = Juego(jugadores, 3, Repartidor(self.mezclar_mazo_minimal_mezcladito))
         
         self.assertRaises(JuegoPistaASiMismoException,
-                juego.dar_pista, "Número", 1, "Román")
+                juego.dar_pista, "Numero", 1, "Román")
         self.assertEqual(7, juego.pistas_restantes())
         self.assertEqual("Román", juego.turno_de())
 
@@ -327,7 +327,7 @@ class JuegoTest(unittest.TestCase):
         juego.tomar_accion(accion)
 
         pistas_de = juego.pistas_por_jugador()
-        self.assertTrue(all("Amarillo" in pistas_de["Ramón"][i] for i in [0, 2, 4]))
+        self.assertTrue(all(("Color", "Amarillo") in pistas_de["Ramón"][i] for i in [0, 2, 4]))
         self.assertTrue(all(len(pistas_de["Ramón"][i]) == 0 for i in [1, 3]))
 
     def test_juego_tomar_accion_tiene_que_ser_valida(self) -> None:
@@ -385,7 +385,7 @@ class JuegoTest(unittest.TestCase):
         juego.bajar(1)
         
         self.assertRaises(JuegoAccionEnPartidaTerminadaException,
-                juego.dar_pista, "Número", 1, "Román")
+                juego.dar_pista, "Numero", 1, "Román")
 
     def test_estado_del_juego(self) -> None:
         juego = self.juego_default_2p()
