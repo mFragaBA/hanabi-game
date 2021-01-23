@@ -66,7 +66,7 @@ export default function Carta(props) {
 	}
 		
 	let pistaStr = "";
-	let pistaStrColorClassName = "border border-blue-700 text-center bg-pink-400 bg-opacity-60 rounded " + props.margin;
+	let pistaStrColorClassName = "border border-blue-700 text-center bg-pink-400 bg-opacity-60 rounded " + props.margin + " ";
 
 	props.pistas.forEach(pista => {
 		if (pista[0] == "Color") {
