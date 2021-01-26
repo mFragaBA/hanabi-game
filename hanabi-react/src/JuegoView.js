@@ -133,7 +133,7 @@ class JuegoView extends React.Component {
 							{this.state.global.cartas_restantes}	
 						</div>
 					</div>
-					<div className="flex flex-col flex-grow border border-yellow-500">
+					<div className="flex flex-col flex-grow bg-green-700 border border-yellow-500 rounded mx-2">
 						<div className="flex flex-row justify-center">
 							<button type="button" className="rounded border border-black bg-white text-2xl" onClick={this.descartarCarta}>Descartar</button>
 						</div>
