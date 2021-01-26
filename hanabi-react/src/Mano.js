@@ -42,7 +42,7 @@ export default function Mano(props) {
 			<div className="rounded border border-blue-400 text-right text-xl bg-pink-500 bg-opacity-60">
 				{jugador}
 			</div>
-			<TiraDeCartas cartas={cartas} pistas={pistas} hover={"hover:shadow-red"} onCartaSeleccion={onCartaSeleccion}/>
+			<TiraDeCartas cartas={cartas} pistas={pistas} hover={"transform hover:scale-110"} onCartaSeleccion={onCartaSeleccion}/>
 		</div>
 	)
 }
