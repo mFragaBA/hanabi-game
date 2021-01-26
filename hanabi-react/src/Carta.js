@@ -79,13 +79,13 @@ export default function Carta(props) {
 	});
 
 	if (props.numero === -1) {
-		let cName = "border border-blue-700 w-28 h-36 bg-dorso bg-contain rounded";
+		let cName = "border border-white w-28 h-36 bg-dorso bg-contain rounded";
 		return (
 			<div className="flex flex-col">
 				<div className={cName} onClick={() => props.onCartaSeleccion(props.indice, [props.numero, props.color])}>
 				</div>	
 				{props.pistas.length > 0 && 
-					<div className={pistaStrColorClassName}>
+					<div className={"flex-none " + pistaStrColorClassName}>
 						{pistaStr}
 					</div>
 				}
@@ -93,9 +93,9 @@ export default function Carta(props) {
 		);
 	}
 
-	let cName = "border border-blue-700 w-28 h-36 flex flex-col bg-carta rounded p-0.5";
+	let cName = "border border-white w-28 h-36 flex flex-col bg-carta rounded p-0.5 text-lg";
 	return (
-		<div className="flex flex-col">
+		<div className="flex flex-col items-center">
 			<div className={cName} onClick={() => props.onCartaSeleccion(props.indice, [props.numero, props.color])}>
 				<div className="flex flex-row flex-none">
 					<div className={"text-left flex-grow " + textColor[props.color]}>
@@ -118,8 +118,10 @@ export default function Carta(props) {
 				</div>
 			</div>
 			{props.pistas.length > 0 && 
-				<div className={pistaStrColorClassName}>
-					{pistaStr}
+				<div>
+					<div className={"px-2 " + pistaStrColorClassName}>
+						{pistaStr}
+					</div>
 				</div>
 			}
 		</div>

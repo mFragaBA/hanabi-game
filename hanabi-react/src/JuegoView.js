@@ -134,13 +134,15 @@ class JuegoView extends React.Component {
 						</div>
 					</div>
 					<div className="flex flex-col flex-grow border border-yellow-500">
-						<button type="button" className="rounded" onClick={this.descartarCarta}>Descartar</button>
 						<div className="flex flex-row justify-center">
-							<button type="button" className="rounded mr-3" onClick={ () => this.elegirPista("Color")}>
+							<button type="button" className="rounded border border-black bg-white text-2xl" onClick={this.descartarCarta}>Descartar</button>
+						</div>
+						<div className="flex flex-row justify-center text-2xl">
+							<button type="button" className="rounded mr-3 border border-black bg-white" onClick={ () => this.elegirPista("Color")}>
 								Pista-Color	
 							</button>
 
-							<button type="button" className="rounded ml-3" onClick={ () => this.elegirPista("Numero")}>
+							<button type="button" className="rounded ml-3 border border-black bg-white" onClick={ () => this.elegirPista("Numero")}>
 								Pista-Numero	
 							</button>
 						</div>
