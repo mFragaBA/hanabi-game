@@ -39,7 +39,7 @@ export default function Mano(props) {
 	return (
 		<div className="flex flex-col">
 			<div className="rounded border border-blue-400 text-right text-xl bg-pink-500 bg-opacity-60">
-				{jugador}
+				{(props.turnoDelJugador ? "turno de - " : "") + jugador}
 			</div>
 			<TiraDeCartas cartas={cartas} pistas={pistas} onCartaSeleccion={onCartaSeleccion} cartaElegida={props.cartaElegida}/>
 		</div>

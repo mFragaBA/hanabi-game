@@ -157,7 +157,7 @@ class JuegoView extends React.Component {
 					</div>
 					<div className="flex flex-col">
 						{Object.keys(this.state.estado_jugadores).map((key, index) => this.props.jugador !== key ?
-						<Mano key={index} jugador={key} mano={this.state.estado_jugadores[key]} onCartaSeleccion={this.darPista} cartaElegida={ -1 } /> : <Mano key={index} jugador={key} mano={this.state.estado_jugadores[key]} onCartaSeleccion={this.elegirCarta} cartaElegida={ this.state.accion === 'cartaElegida' ? this.state.seleccion : -1} />
+						<Mano key={index} jugador={key} mano={this.state.estado_jugadores[key]} onCartaSeleccion={this.darPista} cartaElegida={ -1 } turnoDelJugador={key === this.state.global.turno_de} /> : <Mano key={index} jugador={key} mano={this.state.estado_jugadores[key]} onCartaSeleccion={this.elegirCarta} cartaElegida={ this.state.accion === 'cartaElegida' ? this.state.seleccion : -1} turnoDelJugador={key === this.state.global.turno_de} />
 						)}
 					</div>
 				</div>
