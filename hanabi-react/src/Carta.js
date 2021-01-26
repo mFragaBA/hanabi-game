@@ -79,13 +79,13 @@ export default function Carta(props) {
 	});
 
 	if (props.numero === -1) {
-		let cName = "border border-white w-28 h-36 bg-dorso bg-contain rounded";
+		let cName = "border border-white w-28 h-36 bg-dorso bg-contain rounded text-lg";
 		return (
-			<div className="flex flex-col">
+			<div className="flex flex-col items-center">
 				<div className={cName} onClick={() => props.onCartaSeleccion(props.indice, [props.numero, props.color])}>
 				</div>	
 				{props.pistas.length > 0 && 
-					<div className={"flex-none " + pistaStrColorClassName}>
+					<div className={"flex-none px-2 " + pistaStrColorClassName}>
 						{pistaStr}
 					</div>
 				}

@@ -134,15 +134,15 @@ class JuegoView extends React.Component {
 						</div>
 					</div>
 					<div className="flex flex-col flex-grow bg-green-700 border border-yellow-500 rounded mx-2">
-						<div className="flex flex-row justify-center">
+						<div className="flex flex-row justify-center my-1">
 							<button type="button" className="rounded border border-black bg-white text-2xl" onClick={this.descartarCarta}>Descartar</button>
 						</div>
-						<div className="flex flex-row justify-center text-2xl">
-							<button type="button" className="rounded mr-3 border border-black bg-white" onClick={ () => this.elegirPista("Color")}>
+						<div className="flex flex-row justify-center text-2xl my-1">
+							<button type="button" className={"rounded mr-3 border border-black " + ((this.state.accion === 'pista' && this.state.seleccion === 'Color') ? "bg-red-400" : "bg-white")} onClick={ () => this.elegirPista("Color")}>
 								Pista-Color	
 							</button>
 
-							<button type="button" className="rounded ml-3 border border-black bg-white" onClick={ () => this.elegirPista("Numero")}>
+							<button type="button" className={"rounded ml-3 border border-black " + ((this.state.accion === 'pista' && this.state.seleccion === 'Numero') ? "bg-red-400" : "bg-white")} onClick={ () => this.elegirPista("Numero")}>
 								Pista-Numero	
 							</button>
 						</div>
@@ -157,7 +157,7 @@ class JuegoView extends React.Component {
 					</div>
 					<div className="flex flex-col">
 						{Object.keys(this.state.estado_jugadores).map((key, index) => this.props.jugador !== key ?
-						<Mano key={index} jugador={key} mano={this.state.estado_jugadores[key]} onCartaSeleccion={this.darPista} /> : <Mano key={index} jugador={key} mano={this.state.estado_jugadores[key]} onCartaSeleccion={this.elegirCarta} />
+						<Mano key={index} jugador={key} mano={this.state.estado_jugadores[key]} onCartaSeleccion={this.darPista} cartaElegida={ -1 } /> : <Mano key={index} jugador={key} mano={this.state.estado_jugadores[key]} onCartaSeleccion={this.elegirCarta} cartaElegida={ this.state.accion === 'cartaElegida' ? this.state.seleccion : -1} />
 						)}
 					</div>
 				</div>
