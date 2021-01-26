@@ -66,7 +66,7 @@ export default function Carta(props) {
 	}
 		
 	let pistaStr = "";
-	let pistaStrColorClassName = "border border-blue-700 text-center bg-pink-400 bg-opacity-60 rounded " + props.margin + " ";
+	let pistaStrColorClassName = "border border-blue-700 text-center bg-pink-400 bg-opacity-60 rounded ";
 
 	props.pistas.forEach(pista => {
 		if (pista[0] == "Color") {
@@ -79,7 +79,7 @@ export default function Carta(props) {
 	});
 
 	if (props.numero === -1) {
-		let cName = `border border-blue-700 w-28 h-36 bg-dorso bg-contain ${props.margin} rounded hover:shadow-red`;
+		let cName = "border border-blue-700 w-28 h-36 bg-dorso bg-contain rounded";
 		return (
 			<div className="flex flex-col">
 				<div className={cName} onClick={() => props.onCartaSeleccion(props.indice, [props.numero, props.color])}>
@@ -93,7 +93,7 @@ export default function Carta(props) {
 		);
 	}
 
-	let cName = `border border-blue-700 w-28 h-36 flex flex-col bg-carta rounded ${props.margin} p-0.5 hover:shadow-red`;
+	let cName = "border border-blue-700 w-28 h-36 flex flex-col bg-carta rounded p-0.5";
 	return (
 		<div className="flex flex-col">
 			<div className={cName} onClick={() => props.onCartaSeleccion(props.indice, [props.numero, props.color])}>

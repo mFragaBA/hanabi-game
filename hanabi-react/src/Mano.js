@@ -1,30 +1,18 @@
 import React from 'react';
 import Carta from './Carta';
 
-export class Mano extends React.Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			jugador: props.jugador,
-			cartas: props.mano.cartas,
-			pistas: props.mano.pistas,
-		};
-	}
+export default function Mano(props) {
 
-	componentWillReceiveProps(nextProps) {
-		this.setState({
-			jugador: nextProps.jugador,
-			cartas: nextProps.mano.cartas,
-			pistas: nextProps.mano.pistas,
-		});
-	}
+	let cartas = props.mano.cartas
+	let pistas = props.mano.pistas
+	let jugador = props.jugador
 
-	zIdxFor = (idx) => {
+	let zIdxFor = (idx) => {
 		return "z-" + String(Number(idx) * 10);
 	}
 
-	onCartaSeleccion = (index, carta) => {
-		this.props.onCartaSeleccion(this.props.jugador, 
+	let onCartaSeleccion = (index, carta) => {
+		props.onCartaSeleccion(jugador, 
 			{
 				'index': index,
 				'Numero': carta[0],
@@ -32,28 +20,19 @@ export class Mano extends React.Component {
 			});	
 	}
 
-	cartas = () => {
-		return (
+	return (
+		<div className="flex flex-col">
+			<div className="rounded border border-blue-400 text-right bg-pink-500 bg-opacity-60">
+				{jugador}
+			</div>
 			<div className="flex flex-row">
-				{ this.state.cartas.map((carta, index) =>
-					<div className={this.zIdxFor(index)}>
-						<Carta numero={carta[0]} color={carta[1]} pistas={this.state.pistas[index]} onCartaSeleccion={this.onCartaSeleccion} key={index} indice={index} margin="-mr-10"/>
+				{ cartas.map((carta, index) =>
+					<div className={zIdxFor(index) + " -mr-10 hover:shadow-red"}>
+						<Carta numero={carta[0]} color={carta[1]} pistas={pistas[index]} onCartaSeleccion={onCartaSeleccion} key={index} indice={index}/>
 					</div>
 				) }
 			</div>
-		);
-	}
-
-	render() {
-		return (
-			<div className="flex flex-col">
-				<div className="rounded border border-blue-400 text-right bg-pink-500 bg-opacity-60">
-					{this.state.jugador}
-				</div>
-				{this.cartas()}
-			</div>
-		)
-	}
+		</div>
+	)
 }
 
-export default Mano;
