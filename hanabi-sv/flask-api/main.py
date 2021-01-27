@@ -50,11 +50,14 @@ def handle_disconnect():
     #TODO handlear mejor el caso en que la sala se vacíe
     print('+++++++')
     print("Cliente DESCONECTADO:", request.sid)
-    jugador = nombre_por_sid[request.sid]
-    lobby = gamesManager.sala_de(jugador)
-    gamesManager.sacar_jugador(jugador, lobby)
-    leave_room(lobby)
-    socketio.emit('estado_expirado', room=looby)
+
+    if request.sid in nombre_por_sid:
+        jugador = (request.sid, nombre_por_sid[request.sid])
+
+        lobby = gamesManager.sala_de(jugador)
+        gamesManager.sacar_jugador(jugador, lobby)
+        leave_room(lobby)
+        socketio.emit('estado_expirado', room=lobby)
 
 @socketio.on('listar_lobbies')
 def handle_listar_lobbies():
@@ -67,10 +70,11 @@ def handle_crear_lobby(data):
     try:
         player_name = data['player_name']
         lobby_name = data['lobby_name']
+        jugador = (request.sid, player_name)
  
 # TODO: arreglar crear_lobby para que use el nombre del jugador así validamos que el nombre sea válido (la otra es que haya un conectar y se encargue de registrar al jugador con dicho nombre)
 #        gamesManager.crear_lobby(lobby_name)
-        gamesManager.agregar_jugador(player_name, lobby_name) 
+        gamesManager.agregar_jugador(jugador, lobby_name) 
 
         nombre_por_sid[request.sid] = player_name
         lobby_por_sid[request.sid] = lobby_name
@@ -86,14 +90,16 @@ def handle_unirse_a_lobby(data):
         player_name = data['player_name']
         lobby_name = data['lobby_name']
         
-        gamesManager.agregar_jugador(player_name, lobby_name) 
+        jugador = (request.sid, player_name)
+
+        gamesManager.agregar_jugador(jugador, lobby_name) 
 
         nombre_por_sid[request.sid] = player_name
         lobby_por_sid[request.sid] = lobby_name
 
         join_room(lobby_name)
         emit('unido_a_lobby')
-        socketio.emit('lobby_update', gamesManager.estado_del_lobby_de(player_name), room=lobby_name, include_self=False)
+        socketio.emit('lobby_update', gamesManager.estado_del_lobby_de(jugador), room=lobby_name, include_self=False)
     except Exception as ex:
         emit('error_message', {'error': str(ex)})
 
@@ -112,11 +118,12 @@ def handle_salir_del_lobby(data):
     try:
         player_name = nombre_por_sid[request.sid]
         lobby_name = lobby_por_sid[request.sid]
+        jugador = (request.sid, player_name)
         
-        gamesManager.sacar_jugador(player_name, lobby_name) 
+        gamesManager.sacar_jugador(jugador, lobby_name) 
 
         leave_room(lobby_name)
-        socketio.emit('lobby_update', gamesManager.estado_del_lobby_de(player_name), room=lobby_name)
+        socketio.emit('lobby_update', gamesManager.estado_del_lobby_de(jugador), room=lobby_name)
 
     except Exception as ex:
         emit('error_message', {'error': str(ex)})
@@ -126,11 +133,12 @@ def handle_cortar_partida(data):
     try:
         player_name = nombre_por_sid[request.sid]
         lobby_name = lobby_por_sid[request.sid]
+        jugador = (request.sid, player_name)
         
         gamesManager.cortar_juego_en(lobby_name) 
 
         leave_room(lobby_name)
-        emit('partida_terminada', gamesManager.estado_del_lobby_de(player_name), room=lobby_name)
+        emit('partida_terminada', gamesManager.estado_del_lobby_de(jugador), room=lobby_name)
 
     except Exception as ex:
         emit('error_message', {'error': str(ex)})
@@ -140,6 +148,7 @@ def handle_registrar_accion(accion):
     try:
         player_name = nombre_por_sid[request.sid]
         lobby_name = lobby_por_sid[request.sid]
+        jugador = (request.sid, player_name)
         
         if 'jugador' not in accion or accion['jugador'] != player_name:
             return
@@ -155,8 +164,9 @@ def handle_actualizar_estado_juego():
     try:
         player_name = nombre_por_sid[request.sid]
         lobby_name = lobby_por_sid[request.sid]
+        jugador = (request.sid, player_name)
         
-        estado = gamesManager.estado_en_partida_de(player_name)
+        estado = gamesManager.estado_en_partida_de(jugador)
         
         emit('juego_update', estado)
     
@@ -168,8 +178,9 @@ def handle_actualizar_estado_lobby():
     try:
         player_name = nombre_por_sid[request.sid]
         lobby_name = lobby_por_sid[request.sid]
+        jugador = (request.sid, player_name)
         
-        emit('lobby_update', gamesManager.estado_del_lobby_de(player_name))
+        emit('lobby_update', gamesManager.estado_del_lobby_de(jugador))
     except Exception as ex:
         emit('error_message', {'error': str(ex)})
 

@@ -34,7 +34,7 @@ class ManagerTest(unittest.TestCase):
     def test_manager_no_puedo_agregar_jugador_con_nombre_invalido(self) -> None:
         manager = Manager()
         self.assertRaises(NombreInvalidoException,
-                manager.agregar_jugador, "Román" * 50, "Amongas Volley Club")
+                manager.agregar_jugador, ("test-sid", "Román" * 50), "Amongas Volley Club")
 
 
     def test_manager_no_puede_crear_lobby_ya_existente(self) -> None:
@@ -48,49 +48,49 @@ class ManagerTest(unittest.TestCase):
         manager = Manager()
         manager.crear_lobby("Amongas Volley Club")
 
-        manager.agregar_jugador("Román", "Amongas Volley Club")
+        manager.agregar_jugador(("test-sid", "Román"), "Amongas Volley Club")
 
-        self.assertEqual("Amongas Volley Club", manager.sala_de("Román"))
+        self.assertEqual("Amongas Volley Club", manager.sala_de(("test-sid", "Román")))
 
     def test_manager_unirse_a_lobby_inexistente_lo_tiene_que_crear(self) -> None:
         manager = Manager()
 
-        manager.agregar_jugador("Román", "Amongas Volley Club")
+        manager.agregar_jugador(("test-sid", "Román"), "Amongas Volley Club")
 
         self.assertTrue("Amongas Volley Club" in manager.listar_lobbies())
-        self.assertEqual("Amongas Volley Club", manager.sala_de("Román"))
+        self.assertEqual("Amongas Volley Club", manager.sala_de(("test-sid", "Román")))
 
     def test_manager_no_puede_unirse_con_usuario_repetido(self) -> None:
         manager = Manager()
 
-        manager.agregar_jugador("Román", "Amongas Volley Club")
+        manager.agregar_jugador(("test-sid", "Román"), "Amongas Volley Club")
 
         self.assertRaises(JugadorExistenteException,
-                manager.agregar_jugador, "Román", "Amongas Volley Club 2")
+                manager.agregar_jugador, ("test-sid", "Román"), "Amongas Volley Club 2")
         self.assertFalse("Amongas Volley Club 2" in manager.listar_lobbies())
 
     def test_manager_pueden_haber_varios_lobbies(self) -> None:
         manager = Manager()
 
-        manager.agregar_jugador("Román", "Amongas Volley Club")
-        manager.agregar_jugador("Ramón", "Amongas Volley Club 2")
+        manager.agregar_jugador(("test-sid", "Román"), "Amongas Volley Club")
+        manager.agregar_jugador(("test-sid", "Ramón"), "Amongas Volley Club 2")
 
         self.assertEquals(["Amongas Volley Club", "Amongas Volley Club 2"], 
                 manager.listar_lobbies())
 
     def test_manager_no_se_puede_unir_a_partida_iniciada(self) -> None:
         manager = Manager()
-        manager.agregar_jugador("Román", "Amongas Volley Club")
-        manager.agregar_jugador("Ramón", "Amongas Volley Club")
+        manager.agregar_jugador(("test-sid", "Román"), "Amongas Volley Club")
+        manager.agregar_jugador(("test-sid", "Ramón"), "Amongas Volley Club")
         manager.iniciar_juego_en("Amongas Volley Club")
 
         self.assertRaises(PartidaYaIniciadaException,
-                manager.agregar_jugador, "Carlos", "Amongas Volley Club")
+                manager.agregar_jugador, ("test-sid", "Carlos"), "Amongas Volley Club")
 
     def test_manager_no_se_puede_iniciar_una_partida_ya_iniciada(self) -> None:
         manager = Manager()
-        manager.agregar_jugador("Román", "Amongas Volley Club")
-        manager.agregar_jugador("Ramón", "Amongas Volley Club")
+        manager.agregar_jugador(("test-sid", "Román"), "Amongas Volley Club")
+        manager.agregar_jugador(("test-sid", "Ramón"), "Amongas Volley Club")
         manager.iniciar_juego_en("Amongas Volley Club")
 
         self.assertRaises(PartidaYaIniciadaException,
@@ -103,20 +103,16 @@ class ManagerTest(unittest.TestCase):
                 manager.iniciar_juego_en, "Amongas Volley Club")
 
     def test_manager_iniciar_partida_la_deja_de_mostrar_al_listar(self) -> None:
-        manager = Manager()
-        manager.agregar_jugador("Román", "Amongas Volley Club")
-        manager.agregar_jugador("Ramón", "Amongas Volley Club")
+        manager = default_manager_2p()
         manager.iniciar_juego_en("Amongas Volley Club")
 
         self.assertFalse("Amongas Volley Club" in manager.listar_lobbies())
 
 
     def test_manager_tomar_accion_en_partida(self) -> None:
-        self.maxDiff = None
         manager = Manager(mezclar_rojo_verde)
-
-        manager.agregar_jugador("Román", "Amongas Volley Club")
-        manager.agregar_jugador("Ramón", "Amongas Volley Club")
+        manager.agregar_jugador(("test-sid", "Román"), "Amongas Volley Club")
+        manager.agregar_jugador(("test-sid", "Ramón"), "Amongas Volley Club")
         manager.iniciar_juego_en("Amongas Volley Club")
 
         accion = {
@@ -162,7 +158,7 @@ class ManagerTest(unittest.TestCase):
                         }    
                     }
                 },
-                manager.estado_en_partida_de("Ramón"))
+                manager.estado_en_partida_de(("test-sid", "Ramón")))
     
     def test_manager_no_se_puede_tomar_accion_en_lobby_inexistente(self) -> None:
         manager = Manager()
@@ -177,10 +173,7 @@ class ManagerTest(unittest.TestCase):
                 manager.tomar_accion_en, "Amongas Volley Club", accion)
 
     def test_manager_no_se_puede_tomar_accion_en_partida_no_iniciada(self) -> None:
-        manager = Manager()
-
-        manager.agregar_jugador("Román", "Amongas Volley Club")
-        manager.agregar_jugador("Ramón", "Amongas Volley Club")
+        manager = default_manager_2p()
 
         accion = {
                 'jugador': "Román",
@@ -199,88 +192,68 @@ class ManagerTest(unittest.TestCase):
                 manager.estado_en_partida_de, "Ramón")
 
     def test_manager_no_se_puede_pedir_estado_en_partida_no_iniciada(self) -> None:
-        manager = Manager()
-
-        manager.agregar_jugador("Román", "Amongas Volley Club")
-        manager.agregar_jugador("Ramón", "Amongas Volley Club")
+        manager = default_manager_2p()
 
         self.assertRaises( PartidaNoIniciadaException,
-                manager.estado_en_partida_de, "Román")
+                manager.estado_en_partida_de, ("test-sid", "Román"))
 
     def test_manager_se_saca_la_partida_al_cortar(self) -> None:
-        manager = Manager()
-
-        manager.agregar_jugador("Román", "Amongas Volley Club")
-        manager.agregar_jugador("Ramón", "Amongas Volley Club")
+        manager = default_manager_2p()
         manager.iniciar_juego_en("Amongas Volley Club")
         manager.cortar_juego_en("Amongas Volley Club")
 
         self.assertTrue("Amongas Volley Club" in manager.listar_lobbies())
 
     def test_manager_no_puede_cortar_partidas_no_iniciadas(self) -> None:
-        manager = Manager()
-
-        manager.agregar_jugador("Román", "Amongas Volley Club")
-        manager.agregar_jugador("Ramón", "Amongas Volley Club")
-
+        manager = default_manager_2p()
         self.assertRaises(PartidaNoIniciadaException,
                 manager.cortar_juego_en, "Amongas Volley Club")
 
     def test_manager_sacar_al_jugador_lo_remueve_completamente(self) -> None:
-        manager = Manager()
-
-        manager.agregar_jugador("Román", "Amongas Volley Club")
-        manager.agregar_jugador("Ramón", "Amongas Volley Club")
-        manager.sacar_jugador("Román", "Amongas Volley Club")
+        manager = default_manager_2p()
+        manager.sacar_jugador(("test-sid", "Román"), "Amongas Volley Club")
 
         self.assertRaises(JugadorInExistenteException,
-                manager.sala_de, "Román")
+                manager.sala_de, ("test-sid", "Román"))
     
     def test_manager_no_se_puede_sacar_al_jugador_si_no_existe(self) -> None:
-        manager = Manager()
-
-        manager.agregar_jugador("Román", "Amongas Volley Club")
-        manager.agregar_jugador("Ramón", "Amongas Volley Club")
+        manager = default_manager_2p()
 
         self.assertRaises(JugadorInExistenteException,
                 manager.sacar_jugador, "Ron", "Amongas Volley Club")
 
     def test_manager_no_se_puede_sacar_al_jugador_si_no_esta_en_la_sala(self) -> None:
-        manager = Manager()
-
-        manager.agregar_jugador("Román", "Amongas Volley Club")
-        manager.agregar_jugador("Ramón", "Amongas Volley Club")
+        manager = default_manager_2p()
 
         self.assertRaises(JugadorInExistenteEnLobbyException,
-                manager.sacar_jugador, "Ramón", "Amongas Volley Club 2")
+                manager.sacar_jugador, ("test-sid", "Ramón"), "Amongas Volley Club 2")
 
     def test_manager_no_se_puede_sacar_al_jugador_si_la_partida_inicio(self) -> None:
-        manager = Manager()
-
-        manager.agregar_jugador("Román", "Amongas Volley Club")
-        manager.agregar_jugador("Ramón", "Amongas Volley Club")
+        manager = default_manager_2p()
         manager.iniciar_juego_en("Amongas Volley Club")
 
         self.assertRaises(PartidaYaIniciadaException,
-                manager.sacar_jugador, "Ramón", "Amongas Volley Club")
+                manager.sacar_jugador, ("test-sid", "Ramón"), "Amongas Volley Club")
 
     def test_manager_se_borra_el_lobby_si_la_sala_queda_vacia(self) -> None:
-        manager = Manager()
-
-        manager.agregar_jugador("Román", "Amongas Volley Club")
-        manager.agregar_jugador("Ramón", "Amongas Volley Club")
-        manager.sacar_jugador("Román", "Amongas Volley Club")
-        manager.sacar_jugador("Ramón", "Amongas Volley Club")
+        manager = default_manager_2p() 
+        manager.sacar_jugador(("test-sid", "Román"), "Amongas Volley Club")
+        manager.sacar_jugador(("test-sid", "Ramón"), "Amongas Volley Club")
 
         self.assertEqual([], manager.listar_lobbies())
 
     def test_manager_devuelve_puede_agregar_varios_jugadores_a_un_lobby(self) -> None:
-        manager = Manager()
-        manager.agregar_jugador("Román", "Amongas Volley Club")
-        manager.agregar_jugador("Ramón", "Amongas Volley Club")
+        manager = default_manager_2p()
 
-        self.assertEqual({'jugadores': ["Román", "Ramón"]}, manager.estado_del_lobby_de("Román"))
+        self.assertEqual({'jugadores': ["Román", "Ramón"]}, manager.estado_del_lobby_de(("test-sid", "Román")))
         
+
+def default_manager_2p() -> 'Manager':
+        manager = Manager()
+        manager.agregar_jugador(("test-sid", "Román"), "Amongas Volley Club")
+        manager.agregar_jugador(("test-sid", "Ramón"), "Amongas Volley Club")
+        return manager
+
 
 def mezclar_rojo_verde(mazo: List[Tuple[int, str]]) -> None:
     mazo.clear()
