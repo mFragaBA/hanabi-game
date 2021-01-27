@@ -13,7 +13,7 @@ function TiraDeCartas(props) {
 	return (
 		<div className="flex flex-row">
 			{ cartas.map((carta, index) =>
-				<div className={zIdxFor(index) + " -mr-8 " + (index === props.cartaElegida ? "transform scale-110" : "transform hover:scale-110")}>
+				<div className={"-mr-8 " + (index === props.cartaElegida ? zIdxFor(index) + " transform scale-110" : " transform hover:scale-110 hover:z-50")}>
 					<Carta numero={carta[0]} color={carta[1]} pistas={pistas[index]} onCartaSeleccion={props.onCartaSeleccion} key={index} indice={index}/>
 				</div>
 			) }
