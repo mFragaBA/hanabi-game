@@ -154,6 +154,14 @@ class JuegoView extends React.Component {
 								</div>
 							)}	
 						</div>
+						<div className="flex flex-col items-center">
+							<div>
+							Pistas Vidas: {this.state.global.vidas}
+							</div>
+							<div>
+							Pistas Restantes: {this.state.global.pistas_restantes}
+							</div>
+						</div>
 					</div>
 					<div className="flex flex-col">
 						{Object.keys(this.state.estado_jugadores).map((key, index) => this.props.jugador !== key ?
