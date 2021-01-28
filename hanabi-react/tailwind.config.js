@@ -23,6 +23,7 @@ module.exports = {
   variants: {
     extend: {
       zIndex: ['hover'],
+      backgroundColor: ['even', 'odd'],
     },
   },
   plugins: [],

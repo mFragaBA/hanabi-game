@@ -14,6 +14,7 @@ class LobbyView extends React.Component {
 
 	componentDidMount() {
 		this.props.socket.on('lobby_update', this.handleLobbyUpdate);
+    this.props.socket.on('estado_expirado', this.handleEstadoExpirado);
 		this.props.socket.emit('estado_lobby_update');
 	}
 
@@ -22,11 +23,14 @@ class LobbyView extends React.Component {
 	}
 
 	handleLobbyUpdate = (estado) => {
-		console.log(estado)
 		this.setState({
 			jugadores: estado['jugadores'],
 		});
 	}
+
+  handleEstadoExpirado = () => {
+    this.props.socket.emit('estado_lobby_update'); 
+  }
 
 	handleIniciarPartida() {
 		this.props.socket.emit('iniciar_partida')	
