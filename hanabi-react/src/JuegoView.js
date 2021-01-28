@@ -156,7 +156,7 @@ class JuegoView extends React.Component {
 						</div>
 						<div className="flex flex-col items-center">
 							<div>
-							Pistas Vidas: {this.state.global.vidas}
+							Vidas: {this.state.global.vidas}
 							</div>
 							<div>
 							Pistas Restantes: {this.state.global.pistas_restantes}
