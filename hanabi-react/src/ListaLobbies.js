@@ -12,7 +12,7 @@ export default function ListaLobbies(props) {
 			</thead>
 			<tbody>
 				{props.lobbies.map((item, index) =>
-					<tr className="even:bg-gray-100 odd:bg-gray-200 hover:bg-black hover:text-white" key={index} onClick={ () => props.accion(item, index)}>
+					<tr className="even:bg-gray-100 odd:bg-gray-200 hover:bg-gray-500 hover:text-white" key={index} onClick={ () => props.accion(item, index)}>
 						<td>{item.nombre}</td>
 						<td>{item.cantJugadores} / {item.capacidad}</td>
 					</tr>
