@@ -17,7 +17,7 @@ class ManagerTest(unittest.TestCase):
         manager = Manager()
         manager.crear_lobby("Amongas Volley Club")
 
-        self.assertTrue("Amongas Volley Club" in manager.listar_lobbies())
+        self.assertTrue("Amongas Volley Club" in [lobby['nombre'] for lobby in manager.listar_lobbies()])
 
     def test_manager_no_puede_crear_lobby_con_nombre_invalido(self) -> None:
         manager = Manager()
@@ -57,7 +57,7 @@ class ManagerTest(unittest.TestCase):
 
         manager.agregar_jugador(("test-sid", "Román"), "Amongas Volley Club")
 
-        self.assertTrue("Amongas Volley Club" in manager.listar_lobbies())
+        self.assertTrue("Amongas Volley Club" in [lobby['nombre'] for lobby in manager.listar_lobbies()])
         self.assertEqual("Amongas Volley Club", manager.sala_de(("test-sid", "Román")))
 
     def test_manager_no_puede_unirse_con_usuario_repetido(self) -> None:
@@ -76,7 +76,7 @@ class ManagerTest(unittest.TestCase):
         manager.agregar_jugador(("test-sid", "Ramón"), "Amongas Volley Club 2")
 
         self.assertEquals(["Amongas Volley Club", "Amongas Volley Club 2"], 
-                manager.listar_lobbies())
+                [lobby['nombre'] for lobby in manager.listar_lobbies()])
 
     def test_manager_no_se_puede_unir_a_partida_iniciada(self) -> None:
         manager = Manager()
@@ -202,7 +202,7 @@ class ManagerTest(unittest.TestCase):
         manager.iniciar_juego_en("Amongas Volley Club")
         manager.cortar_juego_en("Amongas Volley Club")
 
-        self.assertTrue("Amongas Volley Club" in manager.listar_lobbies())
+        self.assertTrue("Amongas Volley Club" in [lobby['nombre'] for lobby in manager.listar_lobbies()])
 
     def test_manager_no_puede_cortar_partidas_no_iniciadas(self) -> None:
         manager = default_manager_2p()
@@ -245,7 +245,7 @@ class ManagerTest(unittest.TestCase):
     def test_manager_devuelve_puede_agregar_varios_jugadores_a_un_lobby(self) -> None:
         manager = default_manager_2p()
 
-        self.assertEqual({'jugadores': ["Román", "Ramón"]}, manager.estado_del_lobby_de(("test-sid", "Román")))
+        self.assertEqual({'jugadores': ["Román", "Ramón"], 'nombre': "Amongas Volley Club"}, manager.estado_del_lobby_de(("test-sid", "Román")))
         
 
 def default_manager_2p() -> 'Manager':

@@ -15,14 +15,14 @@ class Manager():
         self._juegos_por_id : Dict[str, 'Juego'] = {}
         self._mezcladora = mezcladora
 
-    def listar_lobbies(self) -> List['str']:
-        return [ lobby for lobby in self._lobbies_por_id.keys() if lobby not in self._juegos_por_id ]
+    def listar_lobbies(self) -> List[Dict[str,Any]]:
+        return [ self._lobbies_por_id[lobby].lobby_info() for lobby in self._lobbies_por_id.keys() if lobby not in self._juegos_por_id ]
 
     def crear_lobby(self, lobby_id: str) -> None:
         self._validar_nombre(lobby_id)
         self._validar_lobby_no_existente(lobby_id)
 
-        self._lobbies_por_id[lobby_id] = Lobby()
+        self._lobbies_por_id[lobby_id] = Lobby(lobby_id)
 
     def agregar_jugador(self, jugador: Tuple[str,str], lobby_id: str) -> None:
         self._validar_nombre(jugador[1])

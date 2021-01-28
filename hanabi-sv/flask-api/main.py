@@ -62,7 +62,6 @@ def handle_disconnect():
 @socketio.on('listar_lobbies')
 def handle_listar_lobbies():
     lobbies = gamesManager.listar_lobbies()
-    print("Lobbies:", lobbies)
     emit('lista_lobbies', lobbies)
 
 @socketio.on('crear_lobby')

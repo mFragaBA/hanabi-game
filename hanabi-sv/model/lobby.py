@@ -4,7 +4,8 @@ from typing import List, Dict, Any
 
 class Lobby():
 
-    def __init__(self, capacidad: int = 5) -> None:
+    def __init__(self, nombre: str, capacidad: int = 5) -> None:
+        self._nombre = nombre
         self._jugadores = []
         self._capacidad = capacidad
 
@@ -26,5 +27,13 @@ class Lobby():
 
     def estado(self) -> Dict[str,Any]:
         return {
+            'nombre': self._nombre,
             'jugadores': self._jugadores
+        }
+
+    def lobby_info(self) -> Dict[str,Any]:
+        return {
+            'nombre': self._nombre,
+            'cantJugadores': len(self._jugadores),
+            'capacidad': self._capacidad
         }
