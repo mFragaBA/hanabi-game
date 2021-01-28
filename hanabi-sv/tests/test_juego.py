@@ -426,6 +426,41 @@ class JuegoTest(unittest.TestCase):
                     }
                 }, juego.estado_para('Román'))
 
+    def test_juego_termina_una_ronda_después_de_terminar_el_mazo(self) -> None:
+        jugadores = ["Román", "Ramón"]
+        juego = Juego(jugadores, 3, Repartidor(self.mezclar_mazo_minimal_mas_uno))
+        
+        accion = {
+                'jugador': "Román",
+                'accion': 'DESCARTAR',
+                'carta': 0
+        }
+        juego.tomar_accion(accion)
+
+        accionSegunda = {
+                'jugador': "Ramón",
+                'accion': 'PISTA',
+                'pista_a': "Román",
+                'tipo': "Color",
+                'valor': "Amarillo"
+        }
+        juego.tomar_accion(accionSegunda)
+        
+        accionTercera = {
+                'jugador': "Román",
+                'accion': 'PISTA',
+                'pista_a': "Ramón",
+                'tipo': "Color",
+                'valor': "Amarillo"
+        }
+        juego.tomar_accion(accionTercera)
+
+        print("estado: ", juego.estado_para("Román"))
+
+        self.assertTrue(juego.estado_para("Román")['global']['terminado'])
+        self.assertTrue(juego.estado_para("Ramón")['global']['terminado'])
+        
+
     def mezclar_mazo_minimal(self, mazo: List[Tuple[int, str]]) -> None:
         mazo.clear()
         mazo.append((1, "Amarillo"))
@@ -438,6 +473,11 @@ class JuegoTest(unittest.TestCase):
         mazo.append((3, "Azul"))
         mazo.append((4, "Azul"))
         mazo.append((5, "Azul"))
+
+    def mezclar_mazo_minimal_mas_uno(self, mazo: List[Tuple[int,str]]) -> None:
+        self.mezclar_mazo_minimal(mazo)
+        mazo.append((1, "Amarillo"))
+
 
     def mezclar_mazo_minimal_mezcladito(self, mazo: List[Tuple[int, str]]) -> None:
         mazo.clear()

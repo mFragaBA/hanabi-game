@@ -75,7 +75,7 @@ class ManagerTest(unittest.TestCase):
         manager.agregar_jugador(("test-sid", "Román"), "Amongas Volley Club")
         manager.agregar_jugador(("test-sid", "Ramón"), "Amongas Volley Club 2")
 
-        self.assertEquals(["Amongas Volley Club", "Amongas Volley Club 2"], 
+        self.assertEqual(["Amongas Volley Club", "Amongas Volley Club 2"], 
                 [lobby['nombre'] for lobby in manager.listar_lobbies()])
 
     def test_manager_no_se_puede_unir_a_partida_iniciada(self) -> None:

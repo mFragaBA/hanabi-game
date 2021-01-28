@@ -19,6 +19,9 @@ class Juego():
         self._pistas_restantes : int = 7
         self._vidas : int = vidas_iniciales
         self._repartidor : 'Repartidor' = repartidor
+        self._ultima_ronda : bool = False
+        self._inicio_ultima_ronda : bool = False
+        self._termina_con : str = ""
         tamanio_mano = 5 if len(jugadores) < 4 else 4
 
         self._cartas_por_jugador : Dict[str, List[Tuple[int, str]]] = {}
@@ -120,7 +123,6 @@ class Juego():
             
         return estado
 
-
     def _validar_pos_carta_para(self, jugador: str, carta: int) -> None:
         if len(self._cartas_por_jugador[jugador]) <= carta:
             raise JuegoDescartaCartaFueraDeManoException()
@@ -132,6 +134,10 @@ class Juego():
         if not self._repartidor.mazo_vacio():
             self._cartas_por_jugador[jugador].append(self._repartidor.repartir(1)[0])
             self._pistas_por_jugador[jugador].append(set())
+        
+            if self._repartidor.mazo_vacio():
+                self._ultima_ronda = True
+                self._termina_con = jugador 
 
     def dar_pista(self, tipo: str, valor: Union[int, str], jugador: str) -> None:
         self._validar_partida_en_curso()
@@ -151,7 +157,13 @@ class Juego():
         self._quitar_pista()
 
     def _cambiar_turno(self) -> None:
+        if self._inicio_ultima_ronda and self.turno_de() == self._termina_con:
+            self._terminado = True
         self._turno_de = (self._turno_de + 1) % len(self._jugadores)
+        if self._ultima_ronda:
+            self._inicio_ultima_ronda = True
+            print("empieza la última ronda, la termina", self._termina_con)
+            
 
     def _validar_partida_en_curso(self) -> None:
         if self._terminado:
