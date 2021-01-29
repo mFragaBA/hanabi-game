@@ -58,6 +58,7 @@ def handle_disconnect():
         gamesManager.sacar_jugador(jugador, lobby)
         leave_room(lobby)
         socketio.emit('estado_expirado', room=lobby)
+        del nombre_por_sid[request.sid]
 
 @socketio.on('listar_lobbies')
 def handle_listar_lobbies():
