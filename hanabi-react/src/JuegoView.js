@@ -127,7 +127,7 @@ class JuegoView extends React.Component {
 		if (this.state && this.state.global && this.state.estado_jugadores) {
 
 			return (
-				<div className="flex flex-row">
+				<div className="flex flex-row items-start">
 					<div className="text-2xl">
 						<div className="border border-green-400 rounded bg-dorso bg-contain w-28 h-36 flex justify-center items-center">
 							{this.state.global.cartas_restantes}	
