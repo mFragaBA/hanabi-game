@@ -80,8 +80,10 @@ class App extends React.Component {
 
 	render() {
 		return (
-			<div className="h-screen bg-cover bg-fixed bg-hanabi p-20">
-				{ this.viewMatchingState() }
+			<div className="min-h-screen bg-cover bg-scroll bg-no-repeat bg-hanabi">
+				<div className="h-screen p-20 overflow-auto">
+					{ this.viewMatchingState() }
+				</div>
 			</div>
 		)
 	}
