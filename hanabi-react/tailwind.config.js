@@ -18,6 +18,13 @@ module.exports = {
 	boxShadow: {
 		red: '0 35px 60px -15px rgba(242, 217, 132, 0.6)',
 	},
+	maxHeight: {
+		'0': '0',
+		'1/4': '25%',
+		'1/2': '50%',
+		'3/4': '75%',
+		'full': '100%',	
+	},
     },
   },
   variants: {
