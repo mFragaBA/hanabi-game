@@ -19,13 +19,13 @@ class Manager():
         return [ self._lobbies_por_id[lobby].lobby_info() for lobby in self._lobbies_por_id.keys() if lobby not in self._juegos_por_id ]
 
     def crear_lobby(self, lobby_id: str) -> None:
-        self._validar_nombre(lobby_id)
+        self._validar_nombre_sala(lobby_id)
         self._validar_lobby_no_existente(lobby_id)
 
         self._lobbies_por_id[lobby_id] = Lobby(lobby_id)
 
     def agregar_jugador(self, jugador: Tuple[str,str], lobby_id: str) -> None:
-        self._validar_nombre(jugador[1])
+        self._validar_nombre_jugador(jugador[1])
         self._validar_jugador_no_existente(jugador)
 
         if lobby_id not in self._lobbies_por_id:
@@ -81,7 +81,11 @@ class Manager():
         self._validar_jugador_existente(jugador)
         return self._lobbies_por_id[self.sala_de(jugador)].estado()
 
-    def _validar_nombre(self, nombre: str) -> None:
+    def _validar_nombre_jugador(self, nombre: str) -> None:
+        if not nombre or len(nombre) > 20:
+            raise NombreInvalidoException()
+    
+    def _validar_nombre_sala(self, nombre: str) -> None:
         if not nombre or len(nombre) > 40:
             raise NombreInvalidoException()
 
