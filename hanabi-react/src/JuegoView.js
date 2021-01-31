@@ -122,6 +122,29 @@ class JuegoView extends React.Component {
 		return cartas_en_juego;
 	}
 
+	descarte() {
+		let backColor = {
+			Amarillo: "bg-yellow-400",
+			Azul: "bg-blue-400",
+			Verde: "bg-green-400",
+			Blanco: "bg-white",
+			Rojo: "bg-red-400",
+		}
+		return ( 
+			<div className="flex flex-col p-5">
+			{ Object.entries(this.state.global.descarte).map( ([color, numeros]) => 
+				<div className="flex flex-row">
+					{numeros.map( (numero, index) =>
+						<div className={"m-0.5 flex-none border rounded text-black " + backColor[color]}>
+							{numero}
+						</div>
+					)}
+				</div>
+			)}
+			</div>
+		);
+	}
+
 	render() {
 
 		if (this.state && this.state.global && this.state.estado_jugadores) {
@@ -153,6 +176,7 @@ class JuegoView extends React.Component {
 									<Carta key={index} numero={carta[0]} color={carta[1]} onCartaSeleccion={this.dummy} pistas={[]}/>
 								</div>
 							)}	
+
 						</div>
 						<div className="flex flex-col items-center">
 							<div>
@@ -162,6 +186,7 @@ class JuegoView extends React.Component {
 							Pistas Restantes: {this.state.global.pistas_restantes}
 							</div>
 						</div>
+						{this.descarte()}
 					</div>
 					<div className="flex flex-col">
 						{Object.keys(this.state.estado_jugadores).map((key, index) => this.props.jugador !== key ?
