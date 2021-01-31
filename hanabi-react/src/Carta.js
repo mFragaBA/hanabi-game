@@ -22,6 +22,14 @@ const textColor = {
 	Blanco: "text-white",
 	Rojo: "text-red-400",
 }
+		
+const backColor = {
+	Amarillo: "bg-yellow-400",
+	Azul: "bg-blue-400",
+	Verde: "bg-green-400",
+	Blanco: "bg-white",
+	Rojo: "bg-red-400",
+}
 
 let distribucionColumnasTokens = {
 	'1': [1],
@@ -65,18 +73,20 @@ export default function Carta(props) {
 		);
 	}
 		
-	let pistaStr = "";
-	let pistaStrColorClassName = "border border-blue-700 text-center bg-pink-400 bg-opacity-60 rounded ";
+	let pistaStr = "?";
+	let pistaClassName = "m-0.5 flex-none border rounded text-center text-lg text-black h-8 w-4 ";
+	let tieneColor = false;
 
 	props.pistas.forEach(pista => {
 		if (pista[0] == "Color") {
-			if (pistaStr == "") pistaStr = pista[1];
-			pistaStrColorClassName = pistaStrColorClassName + textColor[pista[1]];
+			pistaClassName = pistaClassName + backColor[pista[1]];
+			tieneColor = true;
 		} else if (pista[0] == "Numero") {
-			console.log("pista", pista[1]);
 			pistaStr = pista[1]; 
 		}
 	});
+
+	if (!tieneColor) pistaClassName += "bg-pink-400";
 
 	if (props.numero === -1) {
 		let cName = "border border-white w-28 h-36 bg-dorso bg-contain rounded text-lg";
@@ -85,7 +95,7 @@ export default function Carta(props) {
 				<div className={cName} onClick={() => props.onCartaSeleccion(props.indice, [props.numero, props.color])}>
 				</div>	
 				{props.pistas.length > 0 && 
-					<div className={"flex-none px-2 " + pistaStrColorClassName}>
+					<div className={"flex-none " + pistaClassName}>
 						{pistaStr}
 					</div>
 				}
@@ -119,7 +129,7 @@ export default function Carta(props) {
 			</div>
 			{props.pistas.length > 0 && 
 				<div>
-					<div className={"px-2 " + pistaStrColorClassName}>
+					<div className={"flex-none " + pistaClassName}>
 						{pistaStr}
 					</div>
 				</div>
