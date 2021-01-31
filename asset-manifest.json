@@ -1,17 +1,17 @@
 {
   "files": {
-    "main.css": "/hanabi-game/static/css/main.e6b1e4bd.chunk.css",
-    "main.js": "/hanabi-game/static/js/main.2b0f9251.chunk.js",
-    "main.js.map": "/hanabi-game/static/js/main.2b0f9251.chunk.js.map",
+    "main.css": "/hanabi-game/static/css/main.c0d9b343.chunk.css",
+    "main.js": "/hanabi-game/static/js/main.cf72401a.chunk.js",
+    "main.js.map": "/hanabi-game/static/js/main.cf72401a.chunk.js.map",
     "runtime-main.js": "/hanabi-game/static/js/runtime-main.709cc622.js",
     "runtime-main.js.map": "/hanabi-game/static/js/runtime-main.709cc622.js.map",
-    "static/js/2.04c524e6.chunk.js": "/hanabi-game/static/js/2.04c524e6.chunk.js",
-    "static/js/2.04c524e6.chunk.js.map": "/hanabi-game/static/js/2.04c524e6.chunk.js.map",
+    "static/js/2.376287f4.chunk.js": "/hanabi-game/static/js/2.376287f4.chunk.js",
+    "static/js/2.376287f4.chunk.js.map": "/hanabi-game/static/js/2.376287f4.chunk.js.map",
     "static/js/3.14e2554f.chunk.js": "/hanabi-game/static/js/3.14e2554f.chunk.js",
     "static/js/3.14e2554f.chunk.js.map": "/hanabi-game/static/js/3.14e2554f.chunk.js.map",
     "index.html": "/hanabi-game/index.html",
-    "static/css/main.e6b1e4bd.chunk.css.map": "/hanabi-game/static/css/main.e6b1e4bd.chunk.css.map",
-    "static/js/2.04c524e6.chunk.js.LICENSE.txt": "/hanabi-game/static/js/2.04c524e6.chunk.js.LICENSE.txt",
+    "static/css/main.c0d9b343.chunk.css.map": "/hanabi-game/static/css/main.c0d9b343.chunk.css.map",
+    "static/js/2.376287f4.chunk.js.LICENSE.txt": "/hanabi-game/static/js/2.376287f4.chunk.js.LICENSE.txt",
     "static/media/carta_amarilla_token.ad94c799.svg": "/hanabi-game/static/media/carta_amarilla_token.ad94c799.svg",
     "static/media/carta_azul_token.fc48523e.svg": "/hanabi-game/static/media/carta_azul_token.fc48523e.svg",
     "static/media/carta_blanca_token.acf012fb.svg": "/hanabi-game/static/media/carta_blanca_token.acf012fb.svg",
@@ -21,8 +21,8 @@
   },
   "entrypoints": [
     "static/js/runtime-main.709cc622.js",
-    "static/js/2.04c524e6.chunk.js",
-    "static/css/main.e6b1e4bd.chunk.css",
-    "static/js/main.2b0f9251.chunk.js"
+    "static/js/2.376287f4.chunk.js",
+    "static/css/main.c0d9b343.chunk.css",
+    "static/js/main.cf72401a.chunk.js"
   ]
 }
