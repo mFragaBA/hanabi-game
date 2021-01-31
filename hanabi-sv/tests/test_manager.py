@@ -143,7 +143,7 @@ class ManagerTest(unittest.TestCase):
                             'Rojo': [],
                             'Azul': [],
                             'Amarillo': [],
-                            'Verde': [],
+                            'Verde': [1],
                             'Blanco': []
                         }
                     },

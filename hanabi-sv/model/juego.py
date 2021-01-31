@@ -30,12 +30,20 @@ class Juego():
             self._cartas_por_jugador[jugador] = self._repartidor.repartir(tamanio_mano)
             self._pistas_por_jugador[jugador] = [set() for _ in range(tamanio_mano)]
 
-        self._tablero = {
+        self._tablero : Dict[str, int] = {
             "Rojo": 0,
             "Verde": 0,
             "Azul": 0,
             "Blanco": 0,
             "Amarillo": 0,
+        }
+
+        self._descarte : Dict[str,List[int]] = {
+            "Rojo": [],
+            "Verde": [],
+            "Azul": [],
+            "Blanco": [],
+            "Amarillo": [],
         }
 
 
@@ -49,7 +57,6 @@ class Juego():
 
     def tomar_accion(self, accion : Dict[str, Any]) -> None:
         Accion.accion_para(accion).realizar_en(self)
-            
 
     def descartar(self, carta : int) -> None:
         self._validar_partida_en_curso()
@@ -57,6 +64,8 @@ class Juego():
         jugador = self.turno_de()
         self._validar_pos_carta_para(jugador, carta)
 
+        numero, color = self._carta_en_posicion(jugador, carta)
+        self._descarte[color].append(numero)
         self._tirar_carta(jugador, carta)
         
         self._agregar_pista()
@@ -68,8 +77,7 @@ class Juego():
 
         self._validar_pos_carta_para(jugador, carta)
 
-        numero = self._cartas_por_jugador[jugador][carta][0]
-        color = self._cartas_por_jugador[jugador][carta][1]
+        numero, color = self._carta_en_posicion(jugador, carta)
 
         if numero == self._tablero[color] + 1:
             self._tablero[color] = numero
@@ -98,13 +106,7 @@ class Juego():
                 'cartas_restantes': self._repartidor.cartas_restantes(),
                 'tablero': self._tablero,
                 'puntaje': 0,
-                'descarte': {
-                    'Rojo': [],
-                    'Azul': [],
-                    'Amarillo': [],
-                    'Verde': [],
-                    'Blanco': []
-                }
+                'descarte': self._descarte
             },
             'estado_jugadores': {}
         }
@@ -122,6 +124,12 @@ class Juego():
                 }
             
         return estado
+
+    def _carta_en_posicion(self, jugador: str, posicion: int) -> Tuple[int, str]:
+        numero = self._cartas_por_jugador[jugador][posicion][0]
+        color = self._cartas_por_jugador[jugador][posicion][1]
+
+        return (numero, color)
 
     def _validar_pos_carta_para(self, jugador: str, carta: int) -> None:
         if len(self._cartas_por_jugador[jugador]) <= carta:
@@ -162,7 +170,6 @@ class Juego():
         self._turno_de = (self._turno_de + 1) % len(self._jugadores)
         if self._ultima_ronda:
             self._inicio_ultima_ronda = True
-            print("empieza la última ronda, la termina", self._termina_con)
             
 
     def _validar_partida_en_curso(self) -> None:

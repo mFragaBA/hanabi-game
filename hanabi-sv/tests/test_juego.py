@@ -426,7 +426,7 @@ class JuegoTest(unittest.TestCase):
                     }
                 }, juego.estado_para('Román'))
 
-    def test_juego_termina_una_ronda_después_de_terminar_el_mazo(self) -> None:
+    def test_juego_termina_una_ronda_despues_de_terminar_el_mazo(self) -> None:
         jugadores = ["Román", "Ramón"]
         juego = Juego(jugadores, 3, Repartidor(self.mezclar_mazo_minimal_mas_uno))
         
@@ -459,6 +459,22 @@ class JuegoTest(unittest.TestCase):
 
         self.assertTrue(juego.estado_para("Román")['global']['terminado'])
         self.assertTrue(juego.estado_para("Ramón")['global']['terminado'])
+
+    def test_juego_descartar_agrega_la_carta_al_descarte(self) -> None:
+        juego = self.juego_default_2p()
+        
+        accion = {
+                'jugador': "Román",
+                'accion': 'DESCARTAR',
+                'carta': 0
+        }
+        juego.tomar_accion(accion)
+        descarte = juego.estado_para("Román")['global']['descarte']
+
+        print("descarte", descarte)
+
+        self.assertTrue(1 in descarte["Verde"])
+
         
 
     def mezclar_mazo_minimal(self, mazo: List[Tuple[int, str]]) -> None:
