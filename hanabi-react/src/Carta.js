@@ -74,7 +74,7 @@ export default function Carta(props) {
 	}
 		
 	let pistaStr = "?";
-	let pistaClassName = "m-0.5 flex-none border rounded text-center text-lg text-black h-8 w-4 ";
+	let pistaClassName = "m-0.5 flex-none border rounded text-center font-bold text-lg text-black h-8 w-4 ";
 	let tieneColor = false;
 
 	props.pistas.forEach(pista => {

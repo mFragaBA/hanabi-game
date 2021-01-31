@@ -132,10 +132,14 @@ class JuegoView extends React.Component {
 		}
 		return ( 
 			<div className="flex flex-col p-5">
+			<h1 className="font-bold text-xl">Descarte</h1>
 			{ Object.entries(this.state.global.descarte).map( ([color, numeros]) => 
 				<div className="flex flex-row">
+					<div className={"m-0.5 flex-none border rounded text-black font-bold " + backColor[color]}>
+						{color}	
+					</div>
 					{numeros.map( (numero, index) =>
-						<div className={"m-0.5 flex-none border rounded text-black " + backColor[color]}>
+						<div className={"m-0.5 flex-none border rounded text-black font-bold " + backColor[color]}>
 							{numero}
 						</div>
 					)}
