@@ -7,8 +7,8 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret!'
 socketio = SocketIO(app,
         engineio_logger=True,
-        ping_timeout=20,
-        ping_interval=30,
+        ping_timeout=1700,
+        ping_interval=1800,
         cors_allowed_origins=['http://localhost:3000', 'https://mfragaba.github.io'],
         async_mode="gevent")
 
