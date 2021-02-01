@@ -7,8 +7,6 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret!'
 socketio = SocketIO(app,
         engineio_logger=True,
-        ping_timeout=1700,
-        ping_interval=1800,
         cors_allowed_origins=['http://localhost:3000', 'https://mfragaba.github.io'],
         async_mode="gevent")
 
@@ -185,6 +183,10 @@ def handle_actualizar_estado_lobby():
         emit('lobby_update', gamesManager.estado_del_lobby_de(jugador))
     except Exception as ex:
         emit('error_message', {'error': str(ex)})
+
+@socketio.on_error_default
+def default_error_handler(e):
+    print("ERROR:", e)
 
 if __name__ == '__main__':
     socketio.run(app)
