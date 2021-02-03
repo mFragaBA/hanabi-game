@@ -14,12 +14,13 @@ class LobbyView extends React.Component {
 
 	componentDidMount() {
 		this.props.socket.on('lobby_update', this.handleLobbyUpdate);
-    this.props.socket.on('estado_expirado', this.handleEstadoExpirado);
+    		this.props.socket.on('estado_expirado', this.handleEstadoExpirado);
 		this.props.socket.emit('estado_lobby_update');
 	}
 
 	componentWillUnmount() {
 		this.props.socket.off('lobby_update', this.handleLobbyUpdate)
+    		this.props.socket.off('estado_expirado', this.handleEstadoExpirado);
 	}
 
 	handleLobbyUpdate = (estado) => {
