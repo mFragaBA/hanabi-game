@@ -6,6 +6,7 @@ from model.manager import Manager
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret!'
 socketio = SocketIO(app,
+        logger=True,
         engineio_logger=True,
         cors_allowed_origins=['http://localhost:3000', 'https://mfragaba.github.io'],
         async_mode="gevent")
@@ -186,7 +187,8 @@ def handle_actualizar_estado_lobby():
 
 @socketio.on_error_default
 def default_error_handler(e):
-    print("ERROR:", e)
+    print(request.event["message"]) # "my error event"
+    print(request.event["args"])    # (data,)
 
 if __name__ == '__main__':
     socketio.run(app)
