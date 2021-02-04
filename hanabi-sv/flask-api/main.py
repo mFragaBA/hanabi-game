@@ -9,7 +9,7 @@ socketio = SocketIO(app,
         logger=True,
         engineio_logger=True,
         cors_allowed_origins=['http://localhost:3000', 'https://mfragaba.github.io'],
-        async_mode="gevent",
+        async_mode="eventlet",
         async_handlers=True,
         cookie='hanabi-sid')
 
