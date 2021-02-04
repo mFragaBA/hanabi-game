@@ -31,6 +31,14 @@ class App extends React.Component {
 		socket.on('unido_a_lobby', (lobby) => {
 			this.handleEntrarALobby(lobby)
 		});
+		socket.on('disconnect', (reason) => {
+			console.log('Desconectado. Motivo:', reason);
+			if (reason === 'io server disconnect') {
+				// the disconnection was initiated by the server, you need to reconnect manually
+				socket.connect();
+			}
+			// else the socket will automatically try to reconnect
+		});
 	}
 
 	handleEntrarALobby(lobby){
