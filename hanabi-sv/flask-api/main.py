@@ -9,7 +9,9 @@ socketio = SocketIO(app,
         logger=True,
         engineio_logger=True,
         cors_allowed_origins=['http://localhost:3000', 'https://mfragaba.github.io'],
-        async_mode="gevent")
+        async_mode="gevent",
+        async_handlers=True,
+        cookie='hanabi-sid')
 
 
 gamesManager = Manager()
@@ -187,6 +189,7 @@ def handle_actualizar_estado_lobby():
 
 @socketio.on_error_default
 def default_error_handler(e):
+    print("Error", e)
     print(request.event["message"]) # "my error event"
     print(request.event["args"])    # (data,)
 
