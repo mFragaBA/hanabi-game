@@ -89,13 +89,13 @@ def handle_disconnect():
     print('+++++++')
     print("Cliente DESCONECTADO:", current_user.id)
 
-    jugador = (session.get('value', ''), nombre_por_cliente[session.get('value', '')])
+    #jugador = (session.get('value', ''), nombre_por_cliente[session.get('value', '')])
 
-    lobby = gamesManager.sala_de(jugador)
-    gamesManager.sacar_jugador(jugador, lobby)
-    leave_room(lobby)
-    socketio.emit('estado_expirado', room=lobby)
-    del nombre_por_cliente[session.get('value', '')]
+    #lobby = gamesManager.sala_de(jugador)
+    #gamesManager.sacar_jugador(jugador, lobby)
+    #leave_room(lobby)
+    #socketio.emit('estado_expirado', room=lobby)
+    #del nombre_por_cliente[session.get('value', '')]
 
 @socketio.on('listar_lobbies')
 @authenticated_only
