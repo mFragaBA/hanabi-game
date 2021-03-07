@@ -14,25 +14,31 @@ class HomeView extends React.Component {
 	handleCambioDeNombre(event) {
 		let jugador = event.target.value;
 		this.setState({jugador: jugador});
-		this.props.app.setState({jugador: jugador});
+		this.props.actualizarJugador(jugador);
 	}
 
 	handleCambioDeLobby(event) {
 		let lobby = event.target.value;
 		this.setState({lobby: lobby});
-		this.props.app.setState({lobby: lobby});
+		this.props.actualizarLobby(lobby);
 	}
 
 	handleCrearLobbySubmit(event) {
 		event.preventDefault();
 		let jugador = this.state.jugador;
 		let lobby = this.state.lobby;
+		const cIdValue = document.cookie.split('; ')
+			.find(row => row.startsWith('c_id='))
+			.split('=')[1];
 
-		if (jugador && lobby) {
-			this.props.socket.emit('crear_lobby', {
-				'player_name': jugador,
-				'lobby_name': lobby
-			});
+		if (jugador && lobby && cIdValue) {
+			fetch(this.props.url + '/crear_lobby?player=' + jugador + '&lobby=' + lobby + '&c_id=' + cIdValue)
+			.catch(
+				(error) => {
+					console.log(error);
+				}
+			)
+			.then( (data) => this.props.handleMesaCreada(lobby));
 		}
 
 
@@ -40,15 +46,7 @@ class HomeView extends React.Component {
 
 	handleMostrarLobbies(event) {
 		event.preventDefault();
-		let jugador = this.state.jugador;
-		let lobby = this.state.lobby;
-
-		if (jugador) {
-			this.props.app.setState({
-				view: 'ListaLobbiesView',
-			})
-		}
-
+		this.props.handleMostrarLobbies();
 	}
 
 	campoInput(titulo, texto, callback) {

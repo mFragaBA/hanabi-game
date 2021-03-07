@@ -23,7 +23,9 @@ class JuegoView extends React.Component {
 	}
 
 	actualizarEstadoDelJuego = () => {
-		this.props.socket.emit('estado_juego_update');
+		this.props.socket.emit('estado_juego_update', {
+			'c_id': this.props.cId
+		});
 	}
 
 	handleJuegoUpdate = (data) => {
@@ -40,7 +42,10 @@ class JuegoView extends React.Component {
 	}
 
 	registrarYResetear = (accion) => {
-		this.props.socket.emit('registrar_accion', accion);
+		this.props.socket.emit('registrar_accion', {
+			'accion': accion,
+			'c_id': this.props.cId
+		});
 		this.setState({
 			accion: '',
 		},

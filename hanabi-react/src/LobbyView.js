@@ -14,8 +14,8 @@ class LobbyView extends React.Component {
 
 	componentDidMount() {
 		this.props.socket.on('lobby_update', this.handleLobbyUpdate);
-    		this.props.socket.on('estado_expirado', this.handleEstadoExpirado);
-		this.props.socket.emit('estado_lobby_update');
+    		this.props.socket.on('estado_expirado', this.handleEstadoExpirado);	
+		this.updateEstado();
 	}
 
 	componentWillUnmount() {
@@ -30,15 +30,23 @@ class LobbyView extends React.Component {
 	}
 
 	handleEstadoExpirado = () => {
-		this.props.socket.emit('estado_lobby_update'); 
+		this.updateEstado();
 	}
 
 	handleIniciarPartida() {
-		this.props.socket.emit('iniciar_partida')	
+		this.props.socket.emit('iniciar_partida', {
+			"c_id": this.props.cId
+		});	
 	}
 
 	handleJugadorSeleccionado = (jugador, index) => {
 		console.log(jugador);
+	}
+
+	updateEstado = () => {
+		this.props.socket.emit('estado_lobby_update', {
+			c_id: this.props.cId
+		});
 	}
 
 	render() {

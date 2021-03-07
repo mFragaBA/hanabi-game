@@ -11,12 +11,21 @@ class ListarLobbiesView extends React.Component {
 	}
 
 	componentDidMount() {
-		this.props.socket.on('lista_lobbies', this.handleListaLobbyUpdate);
-		this.props.socket.emit('listar_lobbies');
+		this.actualizar();
 	}
 
-	componentWillUnmount() {
-		this.props.socket.off('lista_lobbies', this.handleListaLobbyUpdate);
+	actualizar = () => {
+		fetch(this.props.url + '/listar_lobbies')
+			.catch(
+				(error) => {
+					console.log(error);
+				}
+			)
+			.then( response => {
+				console.log('response: ', response);
+				return response.json();
+			})
+			.then( data => this.handleListaLobbyUpdate(data['lobbies']));
 	}
 
 	handleListaLobbyUpdate = data => {
@@ -26,23 +35,21 @@ class ListarLobbiesView extends React.Component {
 	}
 
 	handleLobbySeleccionado = (lobby, index) => {
-		console.log(lobby + " - " + index);
 		this.selectedLobby = lobby.nombre;
-	}
-
-	handleActualizar() {
-		this.props.socket.emit('listar_lobbies');
 	}
 
 	handleEntrarALobby() {
 		if (this.selectedLobby) {
 			let pname = this.props.app.state.jugador
-			console.log("p: " + pname);
-			this.props.socket.emit('unirse_a_lobby',
-				{
-					player_name: pname,
-					lobby_name: this.selectedLobby,
-				})	
+			this.props.actualizarLobby(this.selectedLobby);
+
+			fetch(this.props.url + '/unirse_a_lobby?player=' + pname + '&lobby=' + this.selectedLobby + '&c_id=' + this.props.cId)
+				.catch(
+					(error) => {
+						console.log(error);
+					}
+				)
+				.then( this.props.handleSentarseEnMesa(this.selectedLobby) );
 		}
 	}
 
@@ -56,7 +63,7 @@ class ListarLobbiesView extends React.Component {
 					<button type="button" className="flex-initial focus:ring bg-opacity-30 border-opacity-30 bg-blue-300 hover:bg-yellow-500 text-black-400 font-semibold hover:text-white py-2 px-4 border border-yellow-500 hover:border-transparent rounded m-2" onClick={() => { this.handleEntrarALobby() }}>
 						Entrar Al Lobby
 					</button>
-					<button type="button" className="flex-initial focus:ring bg-opacity-30 border-opacity-30 bg-blue-300 hover:bg-yellow-500 text-black-400 font-semibold hover:text-white py-2 px-4 border border-yellow-500 hover:border-transparent rounded m-2" onClick={() => { this.handleActualizar() }}>
+					<button type="button" className="flex-initial focus:ring bg-opacity-30 border-opacity-30 bg-blue-300 hover:bg-yellow-500 text-black-400 font-semibold hover:text-white py-2 px-4 border border-yellow-500 hover:border-transparent rounded m-2" onClick={() => { this.actualizar() }}>
 						Actualizar
 					</button>
 				</div>
