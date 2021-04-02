@@ -86,27 +86,6 @@ def handle_unirse_a_lobby():
     except Exception as ex:
         return {'error': str(ex)}, 404
 
-"""
-@socketio.on('message')
-def handle_message(data):
-    print('received message:', data)
-
-@socketio.on('json')
-def handle_message(json):
-    print('received json:', json)
-
-@socketio.on('my_event')
-def handle_custom_event(json):
-    print('received json:', json)
-    #Any values returned from the handler function will be passed to the client as args in the callback function
-    return 'one', 2
-
-#can support multiple args
-@socketio.on('my_event')
-def handle_message(arg1, arg2, arg3):
-    print('received args:', arg1, arg2, arg3)
-"""
-
 nombre_por_cliente = {}
 lobby_por_cliente = {}
 
