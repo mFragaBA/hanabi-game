@@ -9,7 +9,7 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret!'
 app.config['CORS_HEADERS'] = 'Content-Type'
 
-cors = CORS(app, resources={r"/*": {"origins": "http://localhost:3000"}})
+cors = CORS(app, resources={r"/*": {"origins": ["http://localhost:3000", "https://mfragaba.github.io"]}})
 socketio = SocketIO(app,
         logger=True,
         engineio_logger=True,
