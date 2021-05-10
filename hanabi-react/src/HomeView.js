@@ -6,7 +6,7 @@ class HomeView extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			jugador: '',
+			jugador: props.jugador,
 			lobby: '',
 		};
 	}

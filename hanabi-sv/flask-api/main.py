@@ -19,7 +19,6 @@ socketio = SocketIO(app,
 
 
 gamesManager = Manager()
-next_id = 0
 
 @app.route('/')
 def index():
@@ -31,11 +30,11 @@ def time_api():
 
 @app.route('/session', methods=['GET'])
 def connect():
-    global next_id
+    #if "user_id" in request.args:
+        # Por ahora no handleamos login
     print("===============CONECTANDO================")
-    next_id = next_id + 1
     return {
-        'session': next_id
+        'session': uuid.uuid4()
     }
     
 @app.route('/listar_lobbies', methods=['GET'])

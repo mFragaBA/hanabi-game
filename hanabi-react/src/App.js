@@ -1,5 +1,6 @@
 import React from 'react'
 import './App.css';
+import EntranceView from './EntranceView.js'
 import HomeView from './HomeView.js'
 import ListarLobbiesView from './ListarLobbiesView.js'
 import MesaView from './MesaView.js'
@@ -11,9 +12,9 @@ class App extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			loaded: false,
+			loaded_session: false,
 			error: null,
-			view: 'HomeView',
+			view: 'EntranceView',
 			jugador: '',
 			lobby: '',
 		};
@@ -26,38 +27,26 @@ class App extends React.Component {
 
 		if (cIdCookie) {
 		  	cIdCookie = cIdCookie.split('=')[1];
-			this.setState({loaded: true});
-		} else {
-
-			fetch(url + '/session')
-				.catch(
-					(error) => {
-						console.log(error);
-					}
-				)
-				.then(response => response.json())
-				.then(
-					(result) => {
-						document.cookie = "c_id=" + result['session']
-						this.setState({
-							loaded: true
-						});
-					},
-					(error) => {
-						this.setState({
-							loaded: true,
-							error: error,
-						});
-					}
-				)
-				.catch(error => console.log(error));
+			this.setState({view: 'HomeView'});
 		}
+	}
+
+	handleEntrarAsGuest = () => {
+		this.setState({
+			view: 'HomeView',
+		});
 	}
 
 	handleSentarseEnMesa = (lobby) => {
 		this.setState({
 			view: 'MesaView',
 			lobby: lobby,
+		});
+	}
+
+	handleFalloSession = (error) => {
+		this.setState({
+			error: error,
 		});
 	}
 
@@ -78,13 +67,22 @@ class App extends React.Component {
 	}
 
 	viewMatchingState() {	
+		if (this.state.view === 'EntranceView') {
+			return ( <EntranceView app={this}
+				url={url}
+				entrarAsGuest={this.handleEntrarAsGuest} 
+				actualizarJugador={this.actualizarJugador} /> ); 
+		}
+
 		const cIdValue = document.cookie.split('; ')
-			.find(row => row.startsWith('c_id='))
-			.split('=')[1];
+		.find(row => row.startsWith('c_id='))
+		.split('=')[1];
+		
 		if (this.state.view === 'HomeView') {
 			return ( <HomeView app={this}
 				url={url}
 				cId={cIdValue}
+				jugador={this.state.jugador}
 				handleMesaCreada={this.handleSentarseEnMesa} 
 				handleMostrarLobbies={this.handleMostrarLobbies}
 				actualizarJugador={this.actualizarJugador}
@@ -113,27 +111,6 @@ class App extends React.Component {
 	}
 
 	render() {
-		const {loaded, error} = this.state;
-
-		if (error) {
-			return (
-				<div className="flex flex-col">
-					<div>
-						Error generando la sessión. Intentá actualizando o limpiando las cookies.
-					</div>
-					<div>
-						Error: {error}
-					</div>
-				</div>
-			);
-		} else if (!loaded) {
-			return (
-				<div className="min-h-screen bg-cover bg-scroll bg-no-repeat bg-hanabi">
-					Generando la sesión...
-				</div>
-			);
-		}
-
 		return (
 			<div className="min-h-screen bg-cover bg-scroll bg-no-repeat bg-hanabi">
 				<div className="h-screen p-20 overflow-auto">
