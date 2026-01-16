@@ -102,19 +102,9 @@ def handle_connection(data):
 
 @socketio.on('disconnect')
 def handle_disconnect():
-    #TODO handlear mejor el caso en que la sala se vacíe
-    print('+++++++')
-    print("Cliente DESCONECTADO")
-    #print("session:", session)
-    #print("current_user", current_user)
-
-    #jugador = (session.get('value', ''), nombre_por_cliente[session.get('value', '')])
-
-    #lobby = gamesManager.sala_de(jugador)
-    #gamesManager.sacar_jugador(jugador, lobby)
-    #leave_room(lobby)
-    #socketio.emit('estado_expirado', room=lobby)
-    #del nombre_por_cliente[session.get('value', '')]
+    # Don't clean up state on disconnect - client may reconnect
+    # State cleanup happens explicitly via 'salir_del_lobby' event
+    print('Cliente DESCONECTADO (estado preservado para reconexión)')
 
 
 

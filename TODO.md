@@ -4,7 +4,7 @@
 
 - [x] 1. Fix hardcoded SECRET_KEY (Security Critical) - DONE
 - [x] 2. Fix bug in `handle_salir_del_lobby` (Crash Bug) - DONE
-- [ ] 3. Implement disconnect handling
+- [x] 3. Implement disconnect handling - DONE (kept as-is: no cleanup on disconnect to allow reconnection)
 - [ ] ~~4. Thread-safe state management~~ (SKIPPED per user request)
 - [ ] 5. Fix cookie parsing error handling in frontend
 - [ ] 6. Change state-modifying endpoints from GET to POST
