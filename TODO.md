@@ -11,7 +11,7 @@
 - [x] 7. Implement proper input validation - SKIPPED per user request
 - [x] 8. Fix port mismatch between Dockerfile and serve.sh - DONE
 - [x] 9. Remove placeholder/dead code - DONE (removed "asd" divs in LobbyView.js, kept login placeholder)
-- [ ] 10. Replace print() with proper logging
+- [x] 10. Replace print() with proper logging - DONE
 
 ---
 
