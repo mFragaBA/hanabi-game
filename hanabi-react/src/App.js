@@ -6,7 +6,7 @@ import ListarLobbiesView from './ListarLobbiesView.js'
 import MesaView from './MesaView.js'
 
 const url = process.env.NODE_ENV === 'production'
-	? "https://hanabi-sv.fly.dev/" : "http://localhost:5000"
+	? "https://hanabi-sv.fly.dev/" : "http://localhost:8080"
 
 class App extends React.Component {
 	constructor(props) {
