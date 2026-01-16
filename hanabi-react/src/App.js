@@ -6,7 +6,7 @@ import ListarLobbiesView from './ListarLobbiesView.js'
 import MesaView from './MesaView.js'
 
 const url = process.env.NODE_ENV === 'production'
-	? "https://fierce-sea-39458.herokuapp.com" : "http://localhost:5000"
+	? "https://hanabi-sv.fly.dev/" : "http://localhost:5000"
 
 class App extends React.Component {
 	constructor(props) {

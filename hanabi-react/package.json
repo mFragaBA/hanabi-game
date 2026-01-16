@@ -4,7 +4,6 @@
   "private": true,
   "homepage": "https://mfragaba.github.io/hanabi-game",
   "dependencies": {
-    "@craco/craco": "^6.0.0",
     "@tailwindcss/postcss7-compat": "^2.0.2",
     "@testing-library/jest-dom": "^5.11.8",
     "@testing-library/react": "^11.2.2",
@@ -45,5 +44,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@craco/craco": "^6.4.5"
   }
 }
