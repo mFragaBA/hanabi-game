@@ -6,7 +6,7 @@
 - [x] 2. Fix bug in `handle_salir_del_lobby` (Crash Bug) - DONE
 - [x] 3. Implement disconnect handling - DONE (kept as-is: no cleanup on disconnect to allow reconnection)
 - [ ] ~~4. Thread-safe state management~~ (SKIPPED per user request)
-- [ ] 5. Fix cookie parsing error handling in frontend
+- [x] 5. Fix cookie parsing error handling in frontend - NOT NEEDED (flow guarantees cookie exists)
 - [ ] 6. Change state-modifying endpoints from GET to POST
 - [ ] 7. Implement proper input validation
 - [ ] 8. Fix port mismatch between Dockerfile and serve.sh
