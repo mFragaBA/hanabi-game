@@ -3,7 +3,7 @@
 ## Progress Tracker
 
 - [x] 1. Fix hardcoded SECRET_KEY (Security Critical) - DONE
-- [ ] 2. Fix bug in `handle_salir_del_lobby` (Crash Bug)
+- [x] 2. Fix bug in `handle_salir_del_lobby` (Crash Bug) - DONE
 - [ ] 3. Implement disconnect handling
 - [ ] ~~4. Thread-safe state management~~ (SKIPPED per user request)
 - [ ] 5. Fix cookie parsing error handling in frontend

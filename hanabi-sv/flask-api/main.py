@@ -132,14 +132,15 @@ def handle_iniciar_partida(data):
 @socketio.on('salir_del_lobby')
 def handle_salir_del_lobby(data):
     try:
-        player_name = nombre_por_cliente[data['c_id']]
-        lobby_name = lobby_por_cliente[data['c_id']]
-        jugador = (data['c_id'], player_name)
-        
-        gamesManager.sacar_jugador(jugador, lobby_name) 
+        c_id = data['c_id']
+        player_name = nombre_por_cliente[c_id]
+        lobby_name = lobby_por_cliente[c_id]
+        jugador = (c_id, player_name)
+
+        gamesManager.sacar_jugador(jugador, lobby_name)
 
         leave_room(lobby_name)
-        del lobby_por_cliente[session.get('value', '')]
+        del lobby_por_cliente[c_id]
         socketio.emit('lobby_update', gamesManager.estado_del_lobby_de(jugador), room=lobby_name)
 
     except Exception as ex:
