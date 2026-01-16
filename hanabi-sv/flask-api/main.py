@@ -1,3 +1,4 @@
+import os
 import time
 import uuid
 from flask import Flask, render_template, request, jsonify
@@ -5,8 +6,9 @@ from flask_cors import CORS, cross_origin
 from flask_socketio import SocketIO, join_room, leave_room, emit, send
 from model.manager import Manager
 
+
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'secret!'
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'dev-secret-key-change-in-production')
 app.config['CORS_HEADERS'] = 'Content-Type'
 
 cors = CORS(app, resources={r"/*": {"origins": ["http://localhost:3000", "https://mfragaba.github.io", "https://mfragaba.github.io/hanabi-game"]}})
