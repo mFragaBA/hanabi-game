@@ -43,7 +43,11 @@ class ListarLobbiesView extends React.Component {
 			let pname = this.props.app.state.jugador
 			this.props.actualizarLobby(this.selectedLobby);
 
-			fetch(this.props.url + '/unirse_a_lobby?player=' + pname + '&lobby=' + this.selectedLobby + '&c_id=' + this.props.cId)
+			fetch(this.props.url + '/unirse_a_lobby', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({ player: pname, lobby: this.selectedLobby, c_id: this.props.cId })
+			})
 				.catch(
 					(error) => {
 						console.log(error);

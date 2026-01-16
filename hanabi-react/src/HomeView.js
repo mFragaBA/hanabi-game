@@ -32,7 +32,11 @@ class HomeView extends React.Component {
 			.split('=')[1];
 
 		if (jugador && lobby && cIdValue) {
-			fetch(this.props.url + '/crear_lobby?player=' + jugador + '&lobby=' + lobby + '&c_id=' + cIdValue)
+			fetch(this.props.url + '/crear_lobby', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({ player: jugador, lobby: lobby, c_id: cIdValue })
+			})
 			.catch(
 				(error) => {
 					console.log(error);
@@ -40,8 +44,6 @@ class HomeView extends React.Component {
 			)
 			.then( (data) => this.props.handleMesaCreada(lobby));
 		}
-
-
 	}
 
 	handleMostrarLobbies(event) {

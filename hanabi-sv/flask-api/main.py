@@ -45,37 +45,37 @@ def handle_listar_lobbies():
     print("LISTANDO LOBBIES")
     return {'lobbies': lobbies}
 
-@app.route('/crear_lobby', methods=['GET'])
+@app.route('/crear_lobby', methods=['POST'])
 def handle_crear_lobby():
     try:
-        print("INTENTO DE CONEXION CON ARGS", request.args)
-        player_name = request.args.get('player')
-        lobby_name = request.args.get('lobby')
-        c_id = request.args.get('c_id')
+        data = request.json
+        print("INTENTO DE CONEXION CON DATA", data)
+        player_name = data.get('player')
+        lobby_name = data.get('lobby')
+        c_id = data.get('c_id')
         jugador = (c_id, player_name)
 
-        # TODO: arreglar crear_lobby para que use el nombre del jugador así validamos que el nombre sea válido (la otra es que haya un conectar y se encargue de registrar al jugador con dicho nombre)
-        #        gamesManager.crear_lobby(lobby_name)
-        gamesManager.agregar_jugador(jugador, lobby_name) 
+        gamesManager.agregar_jugador(jugador, lobby_name)
 
         nombre_por_cliente[c_id] = player_name
         lobby_por_cliente[c_id] = lobby_name
-        
+
         return {}, 204
     except Exception as ex:
         emit('error_message', {'error': str(ex)})
-        return {'error': str(ex)}, 404
+        return {'error': str(ex)}, 400
 
-@app.route('/unirse_a_lobby')
+@app.route('/unirse_a_lobby', methods=['POST'])
 def handle_unirse_a_lobby():
     try:
-        print("INTENTO DE CONEXION CON ARGS", request.args)
-        player_name = request.args.get('player')
-        lobby_name = request.args.get('lobby')
-        c_id = request.args.get('c_id')
+        data = request.json
+        print("INTENTO DE CONEXION CON DATA", data)
+        player_name = data.get('player')
+        lobby_name = data.get('lobby')
+        c_id = data.get('c_id')
         jugador = (c_id, player_name)
 
-        gamesManager.agregar_jugador(jugador, lobby_name) 
+        gamesManager.agregar_jugador(jugador, lobby_name)
 
         nombre_por_cliente[c_id] = player_name
         lobby_por_cliente[c_id] = lobby_name
@@ -85,7 +85,7 @@ def handle_unirse_a_lobby():
         socketio.emit('lobby_update', gamesManager.estado_del_lobby_de(jugador), room=lobby_name)
         return {}, 204
     except Exception as ex:
-        return {'error': str(ex)}, 404
+        return {'error': str(ex)}, 400
 
 nombre_por_cliente = {}
 lobby_por_cliente = {}
