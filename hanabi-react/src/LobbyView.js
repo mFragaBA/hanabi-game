@@ -79,26 +79,6 @@ class LobbyView extends React.Component {
 									{item}
 								</div>
 						)}
-						<div className="text-center bg-gray-600 rounded text-white border border-gray-400 shadow-xl m-1">asd</div>
-						<div className="text-center bg-gray-600 rounded text-white border border-gray-400 shadow-xl m-1">asd</div>
-						<div className="text-center bg-gray-600 rounded text-white border border-gray-400 shadow-xl m-1">asd</div>
-						<div className="text-center bg-gray-600 rounded text-white border border-gray-400 shadow-xl m-1">asd</div>
-						<div className="text-center bg-gray-600 rounded text-white border border-gray-400 shadow-xl m-1">asd</div>
-						<div className="text-center bg-gray-600 rounded text-white border border-gray-400 shadow-xl m-1">asd</div>
-						<div className="text-center bg-gray-600 rounded text-white border border-gray-400 shadow-xl m-1">asd</div>
-						<div className="text-center bg-gray-600 rounded text-white border border-gray-400 shadow-xl m-1">asd</div>
-						<div className="text-center bg-gray-600 rounded text-white border border-gray-400 shadow-xl m-1">asd</div>
-						<div className="text-center bg-gray-600 rounded text-white border border-gray-400 shadow-xl m-1">asd</div>
-						<div className="text-center bg-gray-600 rounded text-white border border-gray-400 shadow-xl m-1">asd</div>
-						<div className="text-center bg-gray-600 rounded text-white border border-gray-400 shadow-xl m-1">asd</div>
-						<div className="text-center bg-gray-600 rounded text-white border border-gray-400 shadow-xl m-1">asd</div>
-						<div className="text-center bg-gray-600 rounded text-white border border-gray-400 shadow-xl m-1">asd</div>
-						<div className="text-center bg-gray-600 rounded text-white border border-gray-400 shadow-xl m-1">asd</div>
-						<div className="text-center bg-gray-600 rounded text-white border border-gray-400 shadow-xl m-1">asd</div>
-						<div className="text-center bg-gray-600 rounded text-white border border-gray-400 shadow-xl m-1">asd</div>
-						<div className="text-center bg-gray-600 rounded text-white border border-gray-400 shadow-xl m-1">asd</div>
-						<div className="text-center bg-gray-600 rounded text-white border border-gray-400 shadow-xl m-1">asd</div>
-						<div className="text-center bg-gray-600 rounded text-white border border-gray-400 shadow-xl m-1">asd</div>
 					</div>
 					<div className="flex-grow flex flex-col bg-gray-600 text-white rounded border border-gray-400 mb-2 p-5 max-w-full">
 						<div className="text-center">
