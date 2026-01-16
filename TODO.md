@@ -7,8 +7,8 @@
 - [x] 3. Implement disconnect handling - DONE (kept as-is: no cleanup on disconnect to allow reconnection)
 - [ ] ~~4. Thread-safe state management~~ (SKIPPED per user request)
 - [x] 5. Fix cookie parsing error handling in frontend - NOT NEEDED (flow guarantees cookie exists)
-- [ ] 6. Change state-modifying endpoints from GET to POST
-- [ ] 7. Implement proper input validation
+- [x] 6. Change state-modifying endpoints from GET to POST - DONE
+- [x] 7. Implement proper input validation - SKIPPED per user request
 - [ ] 8. Fix port mismatch between Dockerfile and serve.sh
 - [ ] 9. Remove placeholder/dead code
 - [ ] 10. Replace print() with proper logging
