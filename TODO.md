@@ -9,7 +9,7 @@
 - [x] 5. Fix cookie parsing error handling in frontend - NOT NEEDED (flow guarantees cookie exists)
 - [x] 6. Change state-modifying endpoints from GET to POST - DONE
 - [x] 7. Implement proper input validation - SKIPPED per user request
-- [ ] 8. Fix port mismatch between Dockerfile and serve.sh
+- [x] 8. Fix port mismatch between Dockerfile and serve.sh - DONE
 - [ ] 9. Remove placeholder/dead code
 - [ ] 10. Replace print() with proper logging
 

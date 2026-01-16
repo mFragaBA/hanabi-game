@@ -1,4 +1,6 @@
 bidict==0.21.2
+eventlet==0.33.3
+gunicorn==21.2.0
 cachelib==0.1.1
 click==7.1.2
 dataclasses==0.6
